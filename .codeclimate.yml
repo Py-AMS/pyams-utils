@@ -1,8 +1,0 @@
-version: "2"
-plugins:
-  pep8:
-    enabled: true
-  radon:
-    enabled: true
-    config:
-      python_version: 3
