@@ -53,7 +53,7 @@ setup(name='pyams_utils',
       include_package_data=True,
       package_data={'': ['*.zcml', '*.txt', '*.pt', '*.pot', '*.po', '*.mo',
                          '*.png', '*.gif', '*.jpeg', '*.jpg', '*.css', '*.js']},
-      python_required='>=3.5',
+      python_requires='>=3.5',
       zip_safe=False,
       # uncomment this to be able to run tests with setup.py
       test_suite="pyams_utils.tests.test_utilsdocs.test_suite",
