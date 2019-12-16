@@ -39,7 +39,7 @@ class RequestSelector:
     """Interface based request selector
 
     This selector can be used as a subscriber predicate to define
-    an interface that the event's 'request' attribute must support for the event to be applied::
+    an interface that the event's 'request' attribute must support for the event to be applied:
 
     .. code-block:: python
 

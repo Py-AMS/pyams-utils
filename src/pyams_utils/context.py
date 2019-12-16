@@ -54,7 +54,7 @@ class ContextSelector:  # pylint: disable=too-few-public-methods
     """Interface based context selector
 
     This selector can be used as a predicate to define a class or an interface that the context
-    must inherit from or implement for the subscriber to be called::
+    must inherit from or implement for the subscriber to be called:
 
     .. code-block:: python
 

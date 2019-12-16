@@ -46,7 +46,7 @@ class ParentSelector:
     """Interface based parent selector
 
     This selector can be used as a subscriber predicate on IObjectAddedEvent to define
-    an interface that the new parent must support for the event to be applied::
+    an interface that the new parent must support for the event to be applied:
 
     .. code-block:: python
 

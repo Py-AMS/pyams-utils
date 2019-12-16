@@ -17,7 +17,7 @@ object. This object data may be any object which can be serialized to JSON, and 
 HTML *data* attribute. It can typically be used to set a *data-ams-data* attribute to objects,
 which is afterwards converted to classic *data-* attributes by **MyAMS.js** framework.
 
-For example, for a custom widget in a form::
+For example, for a custom widget in a form:
 
 .. code-block:: python
 
@@ -27,13 +27,13 @@ For example, for a custom widget in a form::
         alsoProvides(widget, IObjectData)
         widget.object_data = {'ams-colorpicker-position': 'top left'}
 
-You can then set an attribute in a TAL template like this::
+You can then set an attribute in a TAL template like this:
 
 .. code-block:: xml
 
     <div tal:attributes="data-ams-data extension:object_data(widget)">...</div>
 
-After data initialization by **MyAMS.js**, the following code will be converted to::
+After data initialization by **MyAMS.js**, the following code will be converted to:
 
 .. code-block:: html
 
@@ -72,7 +72,7 @@ class ObjectDataExtension(ContextRequestViewAdapter):
 
     This TALES extension is to be used in Chameleon templates to define a custom data attribute
     which stores all object data (see :py:class:`IObjectData
-    <pyams_utils.interfaces.data.IObjectData>` interface), like this::
+    <pyams_utils.interfaces.data.IObjectData>` interface), like this:
 
     .. code-block:: xml
 
@@ -98,7 +98,8 @@ class PyramidRequestDataExtension(ContextRequestViewAdapter):
 
     This TALES extension can be used to get a request data, previously stored in the request via
     an annotation.
-    For example::
+
+    For example:
 
     .. code-block:: xml
 

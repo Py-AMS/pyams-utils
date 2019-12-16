@@ -80,7 +80,7 @@ class FanstaticTalesExtension(ContextRequestViewAdapter):
     Resource is given as a string made of package name (in dotted form) followed by a colon and
     by the resource name.
 
-    For example::
+    For example:
 
     .. code-block:: html
 
@@ -108,7 +108,7 @@ class FanstaticNeededResourceTalesExtension(ContextRequestViewAdapter):
     Resource is given as a string made of package name (in dotted form) followed by a colon and by
     the resource name.
 
-    For example::
+    For example:
 
     .. code-block:: html
 
