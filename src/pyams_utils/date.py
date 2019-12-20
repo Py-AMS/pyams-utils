@@ -274,6 +274,6 @@ class TimestampTalesAdapter(ContextRequestViewAdapter):
         else:
             format_func = datetime.timestamp
         zdc = IZopeDublinCore(context, None)
-        if zdc is None:
+        if zdc is not None:
             return format_func(tztime(zdc.modified))
         return format_func(tztime(datetime.utcnow()))
