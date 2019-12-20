@@ -15,6 +15,9 @@
 This module contains a few special values which are used into forms.
 """
 
+from zope.interface import Interface
+
+
 __docformat__ = 'restructuredtext'
 
 
@@ -43,3 +46,29 @@ class TO_BE_DELETED:  # pylint: disable=invalid-name
 
 
 TO_BE_DELETED = TO_BE_DELETED()
+
+
+class IDataManager(Interface):
+    """Data manager interface"""
+
+    def get(self):
+        """Get the value.
+
+        If no value can be found, raise an error
+        """
+
+    def query(self, default=NO_VALUE):
+        """Get the value.
+
+        If no value can be found, return the default value.
+        If access is forbidden, raise an error.
+        """
+
+    def set(self, value):
+        """Set the value"""
+
+    def can_access(self):
+        """Can the value be accessed."""
+
+    def can_write(self):
+        """Can the data manager write a value."""
