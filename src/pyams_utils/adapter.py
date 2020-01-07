@@ -75,8 +75,10 @@ class adapter_config:    # pylint: disable=invalid-name
     Annotation parameters can be:
 
     :param str='' name: name of the adapter
-    :param [Interface...] context: an interface, or a tuple of interfaces, that the component adapts
-    :param Interface provides: the interface that the adapter provides
+    :param [Interface...] required: an interface, or a tuple of interfaces, that the component
+        adapts; 'adapts' and 'context' are synonyms for 'required' argument name
+    :param Interface provided: the interface that the adapter provides; 'provides' is a synonym
+        for 'provided' argument name
     :param registry: the registry into which adapter registration should be made
     """
 
@@ -84,8 +86,8 @@ class adapter_config:    # pylint: disable=invalid-name
 
     def __init__(self, **settings):
         if 'for_' in settings:
-            if settings.get('context') is None:
-                settings['context'] = settings.pop('for_')
+            if settings.get('required') is None:
+                settings['required'] = settings.pop('for_')
         self.__dict__.update(settings)
 
     def __call__(self, wrapped):
@@ -93,32 +95,32 @@ class adapter_config:    # pylint: disable=invalid-name
         depth = settings.pop('_depth', 0)
 
         def callback(context, name, obj):
-            adapts = settings.get('context')
-            if adapts is None:
-                adapts = getattr(obj, '__component_adapts__', None)
-                if adapts is None:
+            required = settings.get('required') or settings.get('adapts') or settings.get('context')
+            if required is None:
+                required = getattr(obj, '__component_adapts__', None)
+                if required is None:
                     raise TypeError("No for argument was provided for %r and "
                                     "can't determine what the factory adapts." % obj)
-            if not isinstance(adapts, tuple):
-                adapts = (adapts,)
+            if not isinstance(required, tuple):
+                required = (required,)
 
-            provides = settings.get('provides')
-            if provides is None:
+            provided = settings.get('provided') or settings.get('provides')
+            if provided is None:
                 intfs = list(implementedBy(obj))
                 if len(intfs) == 1:
-                    provides = intfs[0]
-                if provides is None:
-                    raise TypeError("Missing 'provides' argument")
+                    provided = intfs[0]
+                if provided is None:
+                    raise TypeError("Missing 'provided' argument")
 
             LOGGER.debug("Registering adapter %s for %s providing %s",
-                         str(obj), str(adapts), str(provides))
+                         str(obj), str(required), str(provided))
             registry = settings.get('registry')
             if registry is None:
                 config = context.config.with_package(info.module)  # pylint: disable=no-member
                 registry = config.registry
-            registry.registerAdapter(obj, adapts, provides, settings.get('name', ''))
+            registry.registerAdapter(obj, required, provided, settings.get('name', ''))
 
-        info = self.venusian.attach(wrapped, callback, category='pyams_adapter',
+        info = self.venusian.attach(wrapped, callback, category='pyams_utils',
                                     depth=depth + 1)
 
         if info.scope == 'class':  # pylint: disable=no-member
