@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.1.1
+-----
+ - added synonyms to "adapter_config" arguments names ('required' and 'adapts' for 'context', and
+   'provided' for 'provides')
+
 1.1.0
 -----
  - corrected "timestamp" TALES extension
