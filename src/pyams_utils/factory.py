@@ -129,7 +129,7 @@ class factory_config:  # pylint: disable=invalid-name,no-member
         depth = settings.pop('_depth', 0)
 
         def callback(context, name, obj):
-            name = settings.get('name', '')
+            factory_name = settings.get('name', '')
             provided = settings.get('provided')
             if not provided:
                 raise TypeError("No provided interface(s) was given for registered factory %r" %
@@ -141,11 +141,11 @@ class factory_config:  # pylint: disable=invalid-name,no-member
             for interface in provided:
                 if name:
                     LOGGER.debug("Registering factory %s for interface %s with name %s",
-                                 str(obj), str(interface), name)
+                                 str(obj), str(interface), factory_name)
                 else:
                     LOGGER.debug("Registering default factory %s for interface %s",
                                  str(obj), str(interface))
-                register_factory(interface, obj, config.registry, name)
+                register_factory(interface, obj, config.registry, factory_name)
 
         info = self.venusian.attach(wrapped, callback, category='pyams_factory', depth=depth + 1)
         if info.scope == 'class':  # pylint: disable=no-member
