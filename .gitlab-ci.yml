@@ -67,7 +67,7 @@ pylint:
 coverage:
     stage: quality
     allow_failure: true
-    image: ciricihq/gitlab-sonar-scanner
+    image: tflorac/gitlab:sonar-scanner-run
     variables:
         SONAR_URL: http://sonar.dev-dsm.onf.fr
         SONAR_ANALYSIS_MODE: publish
