@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.1.2
+-----
+ - renamed arguments and variables to avoid shadowing arguments names
+ - updated private Gitlab integration
+
 1.1.1
 -----
  - added synonyms to "adapter_config" arguments names ('required' and 'adapts' for 'context', and

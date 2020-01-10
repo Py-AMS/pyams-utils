@@ -5,3 +5,6 @@
 !/parts/
 !/develop-eggs/
 !/src/pyams_apm.egg-info/
+/.coverage
+/coverage.xml
+/.scannerwork/
