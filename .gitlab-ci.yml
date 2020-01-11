@@ -67,13 +67,18 @@ pylint:
 coverage:
     stage: quality
     allow_failure: true
-    image: tflorac/gitlab:sonar-scanner-run
+    image:
+        name: sonarsource/sonar-scanner-cli:latest
+        entrypoint: [""]
     variables:
         SONAR_URL: http://sonar.dev-dsm.onf.fr
+        SONAR_HOST_URL: http://sonar.dev-dsm.onf.fr
         SONAR_ANALYSIS_MODE: publish
     script:
-        - ls -l . src/pyams_utils/
-        - gitlab-sonar-scanner
+        - sonar-scanner -Dsonar.qualitygate.wait=true
+    only:
+        - merge_requests
+        - master
     except:
         variables:
             - $CODE_COVERAGE_DISABLED
