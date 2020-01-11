@@ -40,13 +40,22 @@ from pyams_utils import _
 def get_text_start(text, length, maxlen=0):
     """Get first words of given text with maximum given length
 
-    If *max* is specified, text is shortened only if remaining text is longer this value
+    Text is always truncated between words; if *maxlen* is specified, text is shortened only if
+    remaining text is longer this value.
 
     :param str text: initial text
     :param integer length: maximum length of resulting text
     :param integer maxlen: if > 0, *text* is shortened only if remaining text is longer than max
 
     >>> from pyams_utils.text import get_text_start
+
+    Setting text length higher than original text size returns original string:
+
+    >>> get_text_start('This is a long string', 30)
+    'This is a long string'
+
+    Otherwise, text is truncated:
+
     >>> get_text_start('This is a long string', 10)
     'This is a&#133;'
     >>> get_text_start('This is a long string', 20)
