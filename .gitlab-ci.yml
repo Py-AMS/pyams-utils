@@ -42,29 +42,6 @@ test-3.5:
             - ./coverage/
             - coverage.xml
 
-test-3.6:
-    stage: test
-    image: python:3.6
-    allow_failure: true
-    script:
-        - pip install anybadge
-        - ./bin/test
-
-test-3.7:
-    stage: test
-    image: python:3.7
-    allow_failure: true
-    script:
-        - pip install anybadge
-        - ./bin/test
-test-3.8:
-    stage: test
-    image: python:3.8
-    allow_failure: true
-    script:
-        - pip install anybadge
-        - ./bin/test
-
 dist:
     stage: dist
     script:
