@@ -75,7 +75,9 @@ coverage:
         SONAR_HOST_URL: http://sonar.dev-dsm.onf.fr
         SONAR_ANALYSIS_MODE: publish
     script:
-        - sonar-scanner -Dsonar.qualitygate.wait=true
+        - pwd
+        - head coverage.xml
+        - sonar-scanner -X -Dsonar.qualitygate.wait=true
     only:
         - merge_requests
         - master
