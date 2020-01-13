@@ -73,7 +73,6 @@ coverage:
     variables:
         SONAR_URL: http://sonar.dev-dsm.onf.fr
         SONAR_HOST_URL: http://sonar.dev-dsm.onf.fr
-        SONAR_ANALYSIS_MODE: publish
     script:
         - sonar-scanner -X -Dsonar.qualitygate.wait=true
     only:
