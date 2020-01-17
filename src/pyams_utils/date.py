@@ -46,6 +46,8 @@ def unidate(value):
     >>> value = datetime(2016, 11, 15, 10, 13, 12)
     >>> unidate(value)
     '2016-11-15T10:13:12+00:00'
+    >>> unidate(None) is None
+    True
     """
     if value is not None:
         value = gmtime(value)
@@ -64,6 +66,8 @@ def parse_date(value):
     >>> from pyams_utils.date import parse_date
     >>> parse_date('2016-11-15T10:13:12+00:00')
     datetime.datetime(2016, 11, 15, 10, 13, 12, tzinfo=<StaticTzInfo 'GMT'>)
+    >>> parse_date(None) is None
+    True
     """
     if value is not None:
         return gmtime(parseDatetimetz(value))
@@ -85,6 +89,8 @@ def date_to_datetime(value):
     >>> value
     datetime.datetime(2016, 11, 15, 10, 13, 12)
     >>> date_to_datetime(value) is value
+    True
+    >>> date_to_datetime(None) is None
     True
     """
     if not value:
@@ -116,6 +122,8 @@ def format_date(value, format_string=EXT_DATE_FORMAT, request=None):
     'on 15/11/2016'
     >>> format_date(value, SH_DATE_FORMAT)
     '15/11/2016'
+    >>> format_date(None)
+    '--'
     """
     if not value:
         return '--'
@@ -140,6 +148,8 @@ def format_datetime(value, format_string=EXT_DATETIME_FORMAT, request=None):
     'on 15/11/2016 at 10:13'
     >>> format_datetime(value, SH_DATETIME_FORMAT)
     '15/11/2016 - 10:13'
+    >>> format_datetime(None)
+    '--'
     """
     return format_date(value, format_string, request)
 
@@ -150,7 +160,31 @@ def get_age(value, request=None):
 
     :param datetime value: input datetime to be compared with current datetime
     :return: str; the delta value, converted to months, weeks, days, hours or minutes
+
+    >>> from datetime import datetime, timedelta
+    >>> from pyams_utils.date import get_age
+    >>> now = datetime.utcnow()
+    >>> get_age(now)
+    'less than 5 minutes ago'
+    >>> get_age(now - timedelta(minutes=10))
+    '10 minutes ago'
+    >>> get_age(now - timedelta(hours=2))
+    '2 hours ago'
+    >>> get_age(now - timedelta(days=1))
+    'yesterday'
+    >>> get_age(now - timedelta(days=2))
+    'the day before yesterday'
+    >>> get_age(now - timedelta(days=4))
+    '4 days ago'
+    >>> get_age(now - timedelta(weeks=2))
+    '2 weeks ago'
+    >>> get_age(now - timedelta(days=80))
+    '3 months ago'
+    >>> get_age(None)
+    '--'
     """
+    if not value:
+        return '--'
     if request is None:
         request = check_request()
     translate = request.localizer.translate
