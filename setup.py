@@ -28,7 +28,8 @@ version = '1.1.3'
 long_description = open(README).read() + '\n\n' + open(HISTORY).read()
 
 tests_require = [
-    'zope.site'
+    'zope.site',
+    'pyramid_chameleon'
 ]
 
 setup(name='pyams_utils',
