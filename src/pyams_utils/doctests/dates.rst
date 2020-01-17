@@ -4,6 +4,12 @@ Dates functions
 
 Dates functions are used to convert dates from/to string representation:
 
+    >>> from pyramid.testing import setUp, tearDown, DummyRequest
+    >>> config = setUp()
+
+    >>> from pyams_utils import includeme as include_utils
+    >>> include_utils(config)
+
     >>> import pytz
     >>> from datetime import datetime
     >>> from pyams_utils import date
@@ -36,6 +42,53 @@ is used as argument, it is returned 'as is':
     datetime.datetime(2008, 3, 8, 0, 0)
 
 
+Timestamp TALES extension
+-------------------------
+
+The *timestamp* TALES extension can be used to include an object timestamp into a Chameleon
+template:
+
+    >>> from pyramid_chameleon.zpt import renderer_factory
+    >>> config.add_renderer('.pt', renderer_factory)
+
+    >>> import os, tempfile
+    >>> temp_dir = tempfile.mkdtemp()
+
+    >>> from zope.annotation.interfaces import IAttributeAnnotatable
+    >>> from zope.dublincore.interfaces import IZopeDublinCore
+    >>> from zope.dublincore.annotatableadapter import ZDCAnnotatableAdapter
+    >>> config.registry.registerAdapter(ZDCAnnotatableAdapter, (IAttributeAnnotatable, ), IZopeDublinCore)
+
+    >>> template = os.path.join(temp_dir, 'timestamp.pt')
+    >>> with open(template, 'w') as file:
+    ...     _ = file.write("<div>${structure:tales:timestamp(context)}</div>")
+
+    >>> from zope.interface import implementer, Interface
+    >>> class IMyContent(Interface):
+    ...     """Custom marker interface"""
+
+    >>> @implementer(IMyContent, IAttributeAnnotatable)
+    ... class MyContent:
+    ...     """Custom class"""
+    >>> my_content = MyContent()
+
+    >>> zdc = IZopeDublinCore(my_content)
+    >>> zdc.modified = zdc.created = datetime.utcnow()
+
+    >>> from pyramid.renderers import render
+    >>> output = render(template, {'context': my_content, 'request': DummyRequest()})
+    >>> output == '<div>{}</div>'.format(zdc.modified.timestamp())
+    True
+
+    >>> template = os.path.join(temp_dir, 'timestamp-iso.pt')
+    >>> with open(template, 'w') as file:
+    ...     _ = file.write("<div>${structure:tales:timestamp(context, 'iso')}</div>")
+
+    >>> output = render(template, {'context': my_content, 'request': DummyRequest()})
+    >>> output == '<div>{}</div>'.format(zdc.modified.isoformat())
+    True
+
+
 Timezones handling
 ------------------
 
@@ -57,3 +110,8 @@ My current default user's timezone is set to 'Europe/Paris'; you should probably
 
     >>> timezone.gmtime(now)
     datetime.datetime(2008, 3, 8, 18, 13, 20, tzinfo=<StaticTzInfo 'GMT'>)
+
+
+Tests cleanup:
+
+    >>> tearDown()
