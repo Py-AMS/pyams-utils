@@ -257,6 +257,10 @@ def get_duration(first, last=None, request=None):  # pylint: disable=too-many-br
     >>> date2 = datetime(2015, 1, 1, 0, 0, 15)
     >>> get_duration(date1, date2, request)
     '15 seconds'
+    >>> now = datetime.utcnow()
+    >>> delta = now - date1
+    >>> get_duration(date1, None, request) == '%d months' % int(round(delta.days * 1.0 / 30))
+    True
     """
     if last is None:
         last = datetime.utcnow()
