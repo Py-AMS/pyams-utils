@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.1.3
+-----
+ - added doctests
+
 1.1.2
 -----
  - renamed arguments and variables to avoid shadowing arguments names
