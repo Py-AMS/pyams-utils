@@ -19,10 +19,11 @@ See :ref:`zca` to see how PyAMS can help components management.
 """
 
 import logging
+from inspect import isclass
 
 import venusian
 from zope.annotation.interfaces import IAnnotations
-from zope.interface import alsoProvides, implementedBy
+from zope.interface import alsoProvides, classImplements, implementedBy
 from zope.lifecycleevent import ObjectCreatedEvent
 from zope.location import locate as zope_locate
 
@@ -111,6 +112,8 @@ class adapter_config:    # pylint: disable=invalid-name
                     provided = intfs[0]
                 if provided is None:
                     raise TypeError("Missing 'provided' argument")
+                if isclass(obj) and not provided.implementedBy(obj):
+                    classImplements(obj, provided)
 
             LOGGER.debug("Registering adapter %s for %s providing %s",
                          str(obj), str(required), str(provided))
@@ -164,7 +167,7 @@ def get_annotation_adapter(context, key, factory=None, markers=None, notify=True
         if factory is None:
             return None
         if is_interface(factory):
-            factory = get_object_factory(factory)
+            factory = get_object_factory(factory, registry=kwargs.get('registry'))
             assert factory is not None, "Missing object factory"
         adapter = annotations[key] = factory()
         if markers:
