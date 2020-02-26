@@ -79,4 +79,4 @@ The extension doesn't return anything, but include the resource into needed ones
     >>> request = webob.Request.blank('/')
     >>> response = request.get_response(app)
     >>> print(response.body.decode())
-     <html><head><script type="text/javascript" src="/fanstatic/foo/x1.js"></script></head><body></body></html>
+    <html><head><script type="text/javascript" src="/fanstatic/foo/x1.js"></script></head><body></body></html>
