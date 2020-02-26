@@ -127,7 +127,7 @@ ENCODINGS = {
 class EncodingsVocabulary(SimpleVocabulary):
     """A vocabulary containing a set of registered encodings"""
 
-    def __init__(self, context, *interfaces):
+    def __init__(self, context, *interfaces):  # pylint: disable=unused-argument
         request = check_request()
         translate = request.localizer.translate
         terms = [SimpleTerm(v, title=translate(t)) for v, t in ENCODINGS.items()]
