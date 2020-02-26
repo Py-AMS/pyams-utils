@@ -24,6 +24,7 @@ from pyramid.path import DottedNameResolver
 from zope.interface import Interface
 
 from pyams_utils.adapter import ContextRequestViewAdapter, adapter_config
+from pyams_utils.data import format_data
 from pyams_utils.interfaces.tales import ITALESExtension
 
 
@@ -32,7 +33,33 @@ __docformat__ = 'restructuredtext'
 
 def render_js(url, defer=False):
     """Render tag to include Javascript resource"""
-    return '<script type="text/javascript" src="%s" %s></script>' % (url, 'defer' if defer else '')
+    return '<script type="text/javascript" src="%s" %s></script>' % \
+           (url, 'defer' if defer else '')
+
+
+class ResourceWithData(Resource):
+    """Resource with data attributes
+
+    Resource data is provided as a mapping, where "data-" prefix is not required.
+    """
+
+    data = None
+    dependency_nr = 0
+
+    def __init__(self, library, relpath, *args, **kwargs):
+        if 'data' in kwargs:
+            self.data = kwargs.pop('data')
+        super(ResourceWithData, self).__init__(library, relpath, *args, **kwargs)
+
+    def get_data_str(self):
+        """Get resource data as string"""
+        return format_data(self.data)
+
+    def render(self, library_url):
+        result = super(ResourceWithData, self).render(library_url)
+        if self.data:
+            result = result.replace(" type=", " {} type=".format(self.get_data_str()))
+        return result
 
 
 class ExternalResource(Resource):
