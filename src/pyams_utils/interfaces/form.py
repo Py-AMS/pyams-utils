@@ -51,7 +51,7 @@ TO_BE_DELETED = TO_BE_DELETED()
 class IDataManager(Interface):
     """Data manager interface"""
 
-    def get(self):
+    def get(self):  # pylint: disable=arguments-differ
         """Get the value.
 
         If no value can be found, raise an error
