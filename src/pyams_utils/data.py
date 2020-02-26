@@ -53,6 +53,14 @@ from pyams_utils.interfaces.tales import ITALESExtension
 __docformat__ = 'restructuredtext'
 
 
+def format_data(mapping):
+    """Format given mapping as HTML "data" attributes
+
+    "-data" prefix is not required for given mapping keys
+    """
+    return ' '.join(('data-{}="{}"'.format(k, v) for k, v in mapping.items()))
+
+
 @adapter_config(context=IObjectData, provides=IObjectDataRenderer)
 class ObjectDataRenderer(ContextAdapter):
     """Object data JSON renderer"""
