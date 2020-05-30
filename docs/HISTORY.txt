@@ -2,6 +2,12 @@
 Changelog
 =========
 
+1.2.0
+-----
+ - added Fanstatic resource type to define link "data" attributes, with new doctests
+ - added new "data" function to format data attributes
+ - Pylint code cleanup
+
 1.1.4
 -----
  - updated doctests
