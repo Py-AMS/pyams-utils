@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.2.2
+-----
+ - Pylint upgrade
+
 1.2.1
 -----
  - updated doctest
