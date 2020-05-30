@@ -58,7 +58,7 @@ Other systems can also get timezone from source IP address (see, for example,
 
     >>> tznow = tztime(now)
     >>> tznow
-    datetime.datetime(..., tzinfo=<DstTzInfo 'Europe/Paris' ... STD>)
+    datetime.datetime(..., tzinfo=<DstTzInfo 'Europe/Paris' ... DST>)
     >>> gmtime(tznow)
     datetime.datetime(..., tzinfo=<StaticTzInfo 'GMT'>)
     >>> localgmtime(tznow)
