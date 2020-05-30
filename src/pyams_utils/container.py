@@ -16,7 +16,7 @@
 This module provides several classes, adapters and functions about containers.
 """
 
-from BTrees.OOBTree import OOBTree
+from BTrees.OOBTree import OOBTree  # pylint: disable=import-error
 from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_registry
 from zope.container.interfaces import IContained, IContainer

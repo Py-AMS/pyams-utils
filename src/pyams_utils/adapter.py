@@ -95,7 +95,7 @@ class adapter_config:    # pylint: disable=invalid-name
         settings = self.__dict__.copy()
         depth = settings.pop('_depth', 0)
 
-        def callback(context, name, obj):
+        def callback(context, name, obj):  # pylint: disable=unused-argument
             required = settings.get('required') or settings.get('adapts') or settings.get('context')
             if required is None:
                 required = getattr(obj, '__component_adapts__', None)

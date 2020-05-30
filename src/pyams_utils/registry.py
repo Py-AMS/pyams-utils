@@ -224,7 +224,7 @@ class utility_config:  # pylint: disable=invalid-name
         settings = self.__dict__.copy()
         depth = settings.pop('_depth', 0)
 
-        def callback(context, name, obj):
+        def callback(context, name, obj):  # pylint: disable=unused-argument
             if isinstance(obj, type):
                 factory = obj
                 component = None

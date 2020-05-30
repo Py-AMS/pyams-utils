@@ -78,8 +78,8 @@ class EncodedPasswordField(Password):
 
     _type = None
 
-    def fromUnicode(self, str):  # pylint: disable=redefined-builtin
-        return str
+    def fromUnicode(self, value):  # pylint: disable=redefined-builtin
+        return value
 
     def constraint(self, value):  # pylint: disable=method-hidden
         return True
