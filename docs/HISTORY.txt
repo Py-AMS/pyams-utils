@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.2.1
+-----
+ - updated doctest
+
 1.2.0
 -----
  - added Fanstatic resource type to define link "data" attributes, with new doctests
