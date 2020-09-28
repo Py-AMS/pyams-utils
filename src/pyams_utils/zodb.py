@@ -20,6 +20,7 @@ from ZODB.interfaces import IConnection
 from persistent import Persistent
 from persistent.interfaces import IPersistent
 from pyramid.events import subscriber
+from pyramid.interfaces import ISettings
 from pyramid_zodbconn import db_from_uri, get_uris
 from transaction.interfaces import ITransactionManager
 from zope.annotation.interfaces import IAttributeAnnotatable
@@ -31,9 +32,10 @@ from zope.schema.fieldproperty import FieldProperty
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
 from pyams_utils.adapter import adapter_config
-from pyams_utils.interfaces import IOptionalUtility
+from pyams_utils.interfaces import IOptionalUtility, ZEO_CONNECTIONS_VOCABULARY_NAME, \
+    ZODB_CONNECTIONS_VOCABULARY_NAME
 from pyams_utils.interfaces.zeo import IZEOConnection
-from pyams_utils.registry import get_global_registry, get_utilities_for
+from pyams_utils.registry import get_utilities_for, get_utility
 from pyams_utils.vocabulary import vocabulary_config
 
 
@@ -195,7 +197,7 @@ def handle_removed_connection(event):
     manager.unregisterUtility(event.object, IZEOConnection, name=event.object.name)
 
 
-@vocabulary_config(name='PyAMS ZEO connections')
+@vocabulary_config(name=ZEO_CONNECTIONS_VOCABULARY_NAME)
 class ZEOConnectionVocabulary(SimpleVocabulary):
     """ZEO connections vocabulary"""
 
@@ -208,7 +210,7 @@ class ZEOConnectionVocabulary(SimpleVocabulary):
 def get_connection_from_settings(settings=None):
     """Load connection matching registry settings"""
     if settings is None:
-        settings = get_global_registry().settings  # pylint: disable=no-member
+        settings = get_utility(ISettings)
     for name, uri in get_uris(settings):
         zdb = db_from_uri(uri, name, {})
         return zdb.open()
@@ -236,7 +238,7 @@ class ZODBConnection:
     def __init__(self, name='', settings=None):
         self.name = name or ''
         if not settings:
-            settings = get_global_registry().settings  # pylint: disable=no-member
+            settings = get_utility(ISettings)
         self.settings = settings
 
     _connection = None
@@ -284,12 +286,12 @@ class ZODBConnection:
         self.close()
 
 
-@vocabulary_config(name='PyAMS ZODB connections')
+@vocabulary_config(name=ZODB_CONNECTIONS_VOCABULARY_NAME)
 class ZODBConnectionVocabulary(SimpleVocabulary):
     """ZODB connections vocabulary"""
 
     def __init__(self, context=None):  # pylint: disable=unused-argument
-        settings = get_global_registry().settings  # pylint: disable=no-member
+        settings = get_utility(ISettings)
         terms = [SimpleTerm(name, title=name) for name, uri in get_uris(settings)]
         super(ZODBConnectionVocabulary, self).__init__(terms)
 

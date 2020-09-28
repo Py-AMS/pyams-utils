@@ -59,6 +59,9 @@ NotAnIterator.__doc__ = _("""Not an iterator""")
 TIMEZONES_VOCABULARY_NAME = 'pyams_utils.timezones'
 ENCODINGS_VOCABULARY_NAME = 'pyams_utils.encodings'
 
+ZODB_CONNECTIONS_VOCABULARY_NAME = 'pyams_utils.zodb.connections'
+ZEO_CONNECTIONS_VOCABULARY_NAME = 'pyams_utils.zeo.connections'
+
 DISPLAY_CONTEXT_KEY_NAME = 'pyams_utils.request.display_context'
 
 
