@@ -295,6 +295,18 @@ def get_duration(first, last=None, request=None):  # pylint: disable=too-many-br
     return result
 
 
+def get_timestamp(context, formatting=None):
+    """Get timestamp matching context modification date"""
+    if formatting == 'iso':
+        format_func = datetime.isoformat
+    else:
+        format_func = datetime.timestamp
+    zdc = IZopeDublinCore(context, None)
+    if zdc is not None:
+        return format_func(tztime(zdc.modified))
+    return format_func(tztime(datetime.utcnow()))
+
+
 @adapter_config(name='timestamp', context=(Interface, Interface, Interface),
                 provides=ITALESExtension)
 class TimestampTalesAdapter(ContextRequestViewAdapter):
@@ -307,11 +319,4 @@ class TimestampTalesAdapter(ContextRequestViewAdapter):
         """Render TALES extension"""
         if context is None:
             context = self.request.context
-        if formatting == 'iso':
-            format_func = datetime.isoformat
-        else:
-            format_func = datetime.timestamp
-        zdc = IZopeDublinCore(context, None)
-        if zdc is not None:
-            return format_func(tztime(zdc.modified))
-        return format_func(tztime(datetime.utcnow()))
+        return get_timestamp(context, formatting)
