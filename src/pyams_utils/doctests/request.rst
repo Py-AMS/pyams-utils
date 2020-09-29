@@ -62,22 +62,25 @@ Annotations can be used to automatically reify a given property into request ann
     ...         return 1
     ...
     ...     @request_property()
-    ...     def my_other_property(self):
+    ...     def my_other_property(self, option=2):
     ...         print("This is another property")
-    ...         return 2
+    ...         return option
     ...
     >>> with RequestContext(request):
     ...     instance = RequestPropertyTestClass()
     ...     pprint.pprint((instance.my_property(),
-    ...                    instance.my_other_property()))
+    ...                    instance.my_other_property(),
+    ...                    instance.my_other_property(20),
+    ...                    instance.my_other_property(option=30)))
     This is my property
     This is another property
-    (1, 2)
+    This is another property
+    This is another property
+    (1, 2, 20, 30)
 
     >>> from pyams_utils.request import get_annotations
     >>> sorted(get_annotations(request).keys())
     ['My property', 'my_other_property::...', 'test']
-
 
 As property value is cached into request annotations, other property calls will just return
 cached value:
@@ -90,6 +93,33 @@ cached value:
     ...                    instance.my_other_property()))
     (1, 2)
 
+You can also provide a function to get annotations key:
+
+    >>> def get_key(context, request, option=3):
+    ...     return '{}::{}'.format(request.environ.get('USER_ID') or 'unknown', option)
+
+    >>> class AnotherRequestPropertyTestClass(object):
+    ...
+    ...     @request_property(get_key)
+    ...     def get_value(self, option=3):
+    ...         print("Getting value...")
+    ...         return option
+
+    >>> with RequestContext(request):
+    ...     instance = AnotherRequestPropertyTestClass()
+    ...     print(instance.get_value())
+    Getting value...
+    3
+
+    >>> with RequestContext(request):
+    ...     instance = AnotherRequestPropertyTestClass()
+    ...     print(instance.get_value(option=5))
+    Getting value...
+    5
+
+    >>> sorted(get_annotations(request).keys())
+    ['My property', 'my_other_property::...', 'test', 'unknown::3', 'unknown::5']
+
 The "copy_request" function  is used to clone another request. All request methods and properties
 defined via "add_request_method()" are kept, as "registry" and "root" attributes:
 
@@ -99,6 +129,42 @@ defined via "add_request_method()" are kept, as "registry" and "root" attributes
     True
     >>> request2.root is None
     True
+
+
+Using request selector
+----------------------
+
+"request_selector" is a custom predicate which can be used to filter requests matching given
+interface; it can be used, for example, to filter requests based on supported layers:
+
+    >>> from zope.interface import Interface, alsoProvides
+    >>> class IMyLayer(Interface):
+    ...     """Custom request marker interface"""
+
+    >>> from pyams_utils.request import RequestSelector
+    >>> selector = RequestSelector(IMyLayer, config)
+    >>> selector.text()
+    'request_selector = (<InterfaceClass pyams_utils.tests.test_utilsdocs.IMyLayer>,)'
+
+    >>> class RequestEvent:
+    ...     def __init__(self, request):
+    ...         self.request = request
+
+    >>> event = RequestEvent(request)
+    >>> selector(event)
+    False
+
+    >>> alsoProvides(request, IMyLayer)
+    >>> selector(event)
+    True
+
+Request selector can also be based on a class instead of an interface:
+
+    >>> from pyams_utils.request import PyAMSRequest
+    >>> selector = RequestSelector(PyAMSRequest, config)
+    >>> selector(event)
+    True
+
 
 Tests cleanup:
 
