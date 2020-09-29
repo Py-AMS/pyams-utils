@@ -144,7 +144,7 @@ class ZEOConnection:
     def get_connection(self, wait_timeout=30, get_storage=False):
         """Create ZEO client connection from current settings
 
-        :param boolean wait_timeout: connection timeout, in seconds
+        :param int wait_timeout: connection timeout, in seconds
         :param boolean get_storage: if *True*, the method should return a tuple containing
             storage and DB objects; otherwise only DB object is returned
         :return: tuple containing ZEO client storage and DB object (if *get_storage* argument is
