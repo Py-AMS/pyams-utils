@@ -28,10 +28,9 @@ from pyramid.url import QUERY_SAFE, resource_url
 from zope.interface import Interface
 
 from pyams_utils.adapter import ContextRequestAdapter, ContextRequestViewAdapter, adapter_config
-from pyams_utils.interfaces import DISPLAY_CONTEXT_KEY_NAME
 from pyams_utils.interfaces.tales import ITALESExtension
 from pyams_utils.interfaces.url import ICanonicalURL, IRelativeURL
-from pyams_utils.request import get_request_data
+from pyams_utils.request import get_display_context
 from pyams_utils.unicode import translate_string
 
 
@@ -75,20 +74,6 @@ def generate_url(title, min_word_length=2):
                            translate_string(title.replace('/', '-'), escape_slashes=False,
                                             force_lower=True, spaces='-', remove_punctuation=True,
                                             keep_chars='-').split('-')))
-
-
-#
-# Request display context
-#
-
-def get_display_context(request):
-    """Get current display context
-
-    The display context can be used when we generate a page to display an object in the context
-    of another one; PyAMS_content package is using this feature to display "shared" contents as
-    is they were located inside another site or folder...
-    """
-    return get_request_data(request, DISPLAY_CONTEXT_KEY_NAME, request.context)
 
 
 #

@@ -78,9 +78,9 @@ def request_property(key=None, prefix=None):
     If no request is currently running, a new one is created.
     `key` is a required argument; if None, the key will be the method's object
 
-    :param str key: annotations value key; if *None*, the key will be the method's object; if
+    :param str|func key: annotations value key; if *None*, the key will be the method's object; if
         *key* is a callable object, it will be called to get the actual session key
-    :param prefix: str; prefix to use for session key; if *None*, the prefix will be the property
+    :param str prefix: prefix to use for session key; if *None*, the prefix will be the property
         name
     """
 
@@ -90,7 +90,7 @@ def request_property(key=None, prefix=None):
             request = query_request()
             if request is not None:
                 if callable(key):
-                    key = key(obj, *args, **kwargs)
+                    key = key(obj, request, *args, **kwargs)
                 if not key:
                     key = prefix or func.__name__
                     if obj is not request:
@@ -269,4 +269,4 @@ def get_display_context(request):
     of another one; PyAMS_content package is using this feature to display "shared" contents as
     is they were located inside another site or folder...
     """
-    return request.annotations.get(DISPLAY_CONTEXT_KEY_NAME, request.context)
+    return get_request_data(request, DISPLAY_CONTEXT_KEY_NAME, request.context)
