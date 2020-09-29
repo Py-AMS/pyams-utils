@@ -19,6 +19,9 @@ __docformat__ = 'restructuredtext'
 import os
 import sys
 
+from persistent import Persistent
+from zope.location import Location
+
 
 def get_package_dir(value):
     """Get package directory"""
@@ -27,3 +30,7 @@ def get_package_dir(value):
     if package_dir not in sys.path:
         sys.path.append(package_dir)
     return package_dir
+
+
+class MyTestContent(Persistent, Location):
+    """Persistent class"""

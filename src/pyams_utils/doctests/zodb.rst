@@ -70,6 +70,17 @@ A vocabulary of available ZODB connections is available:
     ...
     zope.schema._bootstrapinterfaces.ConstraintNotSatisfied: ('missing', 'zodb')
 
+You can also get a connection from settings:
+
+    >>> from pyams_utils.zodb import get_connection_from_settings
+    >>> get_connection_from_settings()
+    <Connection at ...>
+
+A vocabulary is available to list registered ZEO connections:
+
+    >>> from pyams_utils.zodb import ZEOConnectionVocabulary
+    >>> vocabulary = ZEOConnectionVocabulary()
+
 
 Using volatile properties
 -------------------------
@@ -100,6 +111,43 @@ If you delete a volatile property, it's matching attribute is removed:
     >>> content.value
     'Getting value...'
     1
+
+
+Managing ZEO connections
+------------------------
+
+PyAMS provides an helper class to manage ZEO connections; these connections can be defined as
+persistent utilities stored into ZODB:
+
+    >>> from pyams_utils.zodb import ZEOConnection
+    >>> connection = ZEOConnection()
+    >>> pprint.pprint(connection.get_settings())
+    {'blob_dir': None,
+     'name': None,
+     'password': None,
+     'server_name': 'localhost',
+     'server_port': 8100,
+     'server_realm': None,
+     'shared_blob_dir': False,
+     'storage': '1',
+     'username': None}
+
+    >>> connection.update({'name': 'zeo_connection'})
+    >>> pprint.pprint(connection.get_settings())
+    {'blob_dir': None,
+     'name': 'zeo_connection',
+     'password': None,
+     'server_name': 'localhost',
+     'server_port': 8100,
+     'server_realm': None,
+     'shared_blob_dir': False,
+     'storage': '1',
+     'username': None}
+
+    >>> connection.get_connection(wait_timeout=1)
+    Traceback (most recent call last):
+    ...
+    ZEO.Exceptions.ClientDisconnected: timed out waiting for connection
 
 
 Tests cleanup:
