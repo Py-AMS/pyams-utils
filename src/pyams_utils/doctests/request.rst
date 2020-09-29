@@ -7,8 +7,13 @@ PyAMS_utils package provides some useful functions to handle requests.
 The "check_request" function can be used when you have to be sure that a request is active in
 the current execution thread; if no "real" request is active, a new one is created:
 
+    >>> import pprint
+
     >>> from pyramid.testing import setUp, tearDown
     >>> config = setUp()
+
+    >>> from pyams_utils import includeme as include_utils
+    >>> include_utils(config)
 
     >>> from pyams_utils.request import PyAMSRequest, query_request, check_request
     >>> request = query_request()
@@ -56,11 +61,23 @@ Annotations can be used to automatically reify a given property into request ann
     ...         print("This is my property")
     ...         return 1
     ...
+    ...     @request_property()
+    ...     def my_other_property(self):
+    ...         print("This is another property")
+    ...         return 2
+    ...
     >>> with RequestContext(request):
     ...     instance = RequestPropertyTestClass()
-    ...     instance.my_property()
+    ...     pprint.pprint((instance.my_property(),
+    ...                    instance.my_other_property()))
     This is my property
-    1
+    This is another property
+    (1, 2)
+
+    >>> from pyams_utils.request import get_annotations
+    >>> sorted(get_annotations(request).keys())
+    ['My property', 'my_other_property::...', 'test']
+
 
 As property value is cached into request annotations, other property calls will just return
 cached value:
@@ -68,6 +85,10 @@ cached value:
     >>> with RequestContext(request):
     ...     instance.my_property()
     1
+    >>> with RequestContext(request):
+    ...     pprint.pprint((instance.my_property(),
+    ...                    instance.my_other_property()))
+    (1, 2)
 
 The "copy_request" function  is used to clone another request. All request methods and properties
 defined via "add_request_method()" are kept, as "registry" and "root" attributes:
