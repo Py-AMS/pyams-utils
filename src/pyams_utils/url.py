@@ -31,6 +31,7 @@ from pyams_utils.adapter import ContextRequestAdapter, ContextRequestViewAdapter
 from pyams_utils.interfaces import DISPLAY_CONTEXT_KEY_NAME
 from pyams_utils.interfaces.tales import ITALESExtension
 from pyams_utils.interfaces.url import ICanonicalURL, IRelativeURL
+from pyams_utils.request import get_request_data
 from pyams_utils.unicode import translate_string
 
 
@@ -87,7 +88,7 @@ def get_display_context(request):
     of another one; PyAMS_content package is using this feature to display "shared" contents as
     is they were located inside another site or folder...
     """
-    return request.annotations.get(DISPLAY_CONTEXT_KEY_NAME, request.context)
+    return get_request_data(request, DISPLAY_CONTEXT_KEY_NAME, request.context)
 
 
 #
@@ -206,7 +207,7 @@ class DefaultRelativeURLAdapter(ContextRequestAdapter):
 def relative_url(context, request, display_context=None, view_name=None, query=None):
     """Get resource URL relative to given context"""
     if display_context is None:
-        display_context = request.annotations.get(DISPLAY_CONTEXT_KEY_NAME, request.context)
+        display_context = get_display_context(request)
     adapter = request.registry.getMultiAdapter((context, request), IRelativeURL)
     return adapter.get_url(display_context, view_name, query)
 
