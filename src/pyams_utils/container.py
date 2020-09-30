@@ -130,13 +130,15 @@ def find_objects_matching(root, condition, ignore_root=False):
             yield from find_objects_matching(location, condition, ignore_root=True)
 
 
-def find_objects_providing(root, interface):
+def find_objects_providing(root, interface, ignore_root=False):
     """Find all objects in root that provide the specified interface
 
     All sub-objects of the root will also be searched recursively.
 
     :param object root: object; the parent object from which search is started
     :param Interface interface: interface; an interface that sub-objects should provide
+    :param boolean ignore_root: if *True*, the root object will not be returned, even if it
+        provides the given interface
     :return: an iterator for all root's sub-objects that provide the given interface
     """
-    yield from find_objects_matching(root, interface.providedBy)
+    yield from find_objects_matching(root, interface.providedBy, ignore_root)
