@@ -20,6 +20,7 @@ It provides custom transports and allows storage of response cookies
 import base64
 import http.client
 import http.cookiejar
+import pkg_resources
 import socket
 import urllib.request
 import xmlrpc.client
@@ -154,18 +155,23 @@ class SecureXMLRPCCookieAuthTransport(XMLRPCCookieAuthTransport):
     _http_connection = http.client.HTTPSConnection
 
 
+CLIENT_VERSION = pkg_resources.get_distribution('pyams_utils').version
+
+
 def get_client(uri, credentials=(), verbose=False, allow_none=0,
                timeout=socket._GLOBAL_DEFAULT_TIMEOUT, headers=None):
     # pylint: disable=protected-access,too-many-arguments
     """Get an XML-RPC client which supports basic authentication"""
     if uri.startswith('https:'):
         transport = SecureXMLRPCCookieAuthTransport(
-            'Python XML-RPC Client/0.1 (PyAMS secure transport)', credentials,
-            timeout=timeout, headers=headers)
+            'Python XML-RPC Client/{} (PyAMS secure transport)'.format(CLIENT_VERSION),
+            credentials, timeout=timeout, headers=headers)
     else:
-        transport = XMLRPCCookieAuthTransport('Python XML-RPC Client/0.1 (PyAMS basic transport)',
-                                              credentials, timeout=timeout, headers=headers)
-    return xmlrpc.client.Server(uri, transport=transport, verbose=verbose, allow_none=allow_none)
+        transport = XMLRPCCookieAuthTransport(
+            'Python XML-RPC Client/{} (PyAMS basic transport)'.format(CLIENT_VERSION),
+            credentials, timeout=timeout, headers=headers)
+    return xmlrpc.client.Server(uri, transport=transport,
+                                verbose=verbose, allow_none=allow_none)
 
 
 def get_client_with_cookies(uri, credentials=(), verbose=False, allow_none=0,
@@ -176,10 +182,11 @@ def get_client_with_cookies(uri, credentials=(), verbose=False, allow_none=0,
         cookies = http.cookiejar.CookieJar()
     if uri.startswith('https:'):
         transport = SecureXMLRPCCookieAuthTransport(
-            'Python XML-RPC Client/0.1 (PyAMS secure cookie transport)',
+            'Python XML-RPC Client/{} (PyAMS secure cookie transport)'.format(CLIENT_VERSION),
             credentials, cookies, timeout, headers)
     else:
         transport = XMLRPCCookieAuthTransport(
-            'Python XML-RPC Client/0.1 (PyAMS basic cookie transport)',
+            'Python XML-RPC Client/{} (PyAMS basic cookie transport)'.format(CLIENT_VERSION),
             credentials, cookies, timeout, headers)
-    return xmlrpc.client.Server(uri, transport=transport, verbose=verbose, allow_none=allow_none)
+    return xmlrpc.client.Server(uri, transport=transport,
+                                verbose=verbose, allow_none=allow_none)
