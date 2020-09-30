@@ -42,7 +42,7 @@ class AttributeTraverser(ContextAdapter):
     def traverse(self, name, furtherpath=None):  # pylint: disable=unused-argument
         """Traverse from current context to given attribute"""
         if '.' in name:
-            name = name.split('.', 1)
+            name = name.split('.', 1)[0]
         try:
             return getattr(self.context, name)
         except AttributeError:
