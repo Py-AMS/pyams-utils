@@ -1,6 +1,7 @@
 
-Dates functions
----------------
+=======================
+PyAMS utils date module
+=======================
 
 Dates functions are used to convert dates from/to string representation:
 

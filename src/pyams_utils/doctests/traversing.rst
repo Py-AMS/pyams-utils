@@ -1,6 +1,7 @@
 
-Traversing management
----------------------
+=============================
+PyAMS_utils traversing module
+=============================
 
 Traversing is a common concept in web applications, which consists in going from parent to
 child based on request elements.

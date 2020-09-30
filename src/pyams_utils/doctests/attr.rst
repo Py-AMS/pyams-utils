@@ -1,7 +1,7 @@
 
-=================
-PyAMS attr module
-=================
+=======================
+PyAMS_utils attr module
+=======================
 
 This small PyAMS module is used to define a custom URL traverser, which can be used to get
 access to a specific object attribute:
