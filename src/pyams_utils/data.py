@@ -42,8 +42,8 @@ After data initialization by **MyAMS.js**, the following code will be converted 
 
 import json
 
-from pyramid.interfaces import IRequest
-from zope.interface import Interface
+from zope.interface import Interface, implementer
+from zope.schema.fieldproperty import FieldProperty
 
 from pyams_utils.adapter import ContextAdapter, ContextRequestViewAdapter, adapter_config
 from pyams_utils.interfaces.data import IObjectData, IObjectDataRenderer
@@ -59,6 +59,13 @@ def format_data(mapping):
     "-data" prefix is not required for given mapping keys
     """
     return ' '.join(('data-{}="{}"'.format(k, v) for k, v in mapping.items()))
+
+
+@implementer(IObjectData)
+class ObjectDataManagerMixin:
+    """Object data manager mixin class"""
+
+    object_data = FieldProperty(IObjectData['object_data'])
 
 
 @adapter_config(context=IObjectData, provides=IObjectDataRenderer)
@@ -97,25 +104,3 @@ class ObjectDataExtension(ContextRequestViewAdapter):
         if renderer is not None:
             return renderer.get_object_data()
         return None
-
-
-@adapter_config(name='request_data', context=(Interface, IRequest, Interface),
-                provides=ITALESExtension)
-class PyramidRequestDataExtension(ContextRequestViewAdapter):
-    """extension:request_data TALES extension for Pyramid request
-
-    This TALES extension can be used to get a request data, previously stored in the request via
-    an annotation.
-
-    For example:
-
-    .. code-block:: xml
-
-        <div tal:content="extension:request_data('my.annotation.key')">...</div>
-    """
-
-    def render(self, params=None):
-        """See :py:class:`ITALESExtension <pyams_utils.interfaces.tales.ITALESExtension>`
-        interface
-        """
-        return self.request.annotations.get(params)
