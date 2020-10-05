@@ -21,8 +21,8 @@ import string
 from persistent.list import PersistentList as PersistentListType
 from persistent.mapping import PersistentMapping
 from zope.interface import Interface, implementer
-from zope.schema import Choice, Decimal, Dict, List, Password, Text, TextLine, Tuple, \
-    ValidationError
+from zope.schema import Choice, Date, Datetime, Decimal, Dict, List, Password, Text, TextLine, \
+    Tuple, ValidationError
 from zope.schema.interfaces import IChoice, IDecimal, IDict, IList, IPassword, IText, ITextLine, \
     ITuple
 
@@ -53,12 +53,12 @@ class PersistentListField(List):
 # Persistent mapping field
 #
 
-class IPersistentDictField(IDict):
+class IPersistentMappingField(IDict):
     """Persistent mapping field marker interface"""
 
 
-@implementer(IPersistentDictField)
-class PersistentDictField(Dict):
+@implementer(IPersistentMappingField)
+class PersistentMappingField(Dict):
     """Persistent mapping field"""
 
     _type = PersistentMapping
@@ -112,7 +112,7 @@ class IJSONDictFieldsGetter(Interface):
     def get_fields(self, data):
         """Returns an iterator made of tuples
 
-        Each tuple may ocntain field name, field label and field value
+        Each tuple may contain field name, field label and field value
         """
 
 
@@ -177,8 +177,21 @@ class DatesRangeField(Tuple):
     """Dates range field"""
 
     def __init__(self, value_type=None, unique=False, **kw):
-        super(DatesRangeField, self).__init__(value_type=None, unique=False,
-                                              min_length=2, max_length=2, **kw)
+        super(DatesRangeField, self).__init__(value_type=Date(required=False),
+                                              unique=False, min_length=2, max_length=2, **kw)
+
+
+class IDatetimesRangeField(ITuple):
+    """Marker interface for datetimes range fields"""
+
+
+@implementer(IDatetimesRangeField)
+class DatetimesRangeField(Tuple):
+    """Datetimes range field"""
+
+    def __init__(self, value_type=None, unique=False, **kw):
+        super(DatetimesRangeField, self).__init__(value_type=Datetime(required=False),
+                                                  unique=False, min_length=2, max_length=2, **kw)
 
 
 #
@@ -194,7 +207,8 @@ class TextLineListField(List):
     """TextLine list field"""
 
     def __init__(self, value_type=None, unique=False, **kw):
-        super(TextLineListField, self).__init__(value_type=TextLine(), unique=True, **kw)
+        super(TextLineListField, self).__init__(value_type=TextLine(required=True),
+                                                unique=True, **kw)
 
 
 #
@@ -240,6 +254,10 @@ class TimezoneField(Choice):
     def __init__(self, **kw):
         if 'vocabulary' in kw:
             kw.pop('vocabulary')
+        if 'values' in kw:
+            del kw['values']
+        if 'source' in kw:
+            kw.pop('source')
         if 'default' not in kw:
             kw['default'] = u'GMT'
         super(TimezoneField, self).__init__(vocabulary=TIMEZONES_VOCABULARY_NAME, **kw)
@@ -257,10 +275,11 @@ class IEncodingField(IChoice):  # pylint: disable=too-many-ancestors
 class EncodingField(Choice):
     """Encoding schema field"""
 
-    def __init__(self, vocabulary=ENCODINGS_VOCABULARY_NAME, **kw):
+    def __init__(self, **kw):
+        if 'vocabulary' in kw:
+            kw.pop('vocabulary')
         if 'values' in kw:
             del kw['values']
         if 'source' in kw:
             del kw['source']
-        kw['vocabulary'] = vocabulary
-        super(EncodingField, self).__init__(**kw)
+        super(EncodingField, self).__init__(vocabulary=ENCODINGS_VOCABULARY_NAME, **kw)
