@@ -31,8 +31,8 @@ A vocabulary provides all Pygments lexers:
 
     >>> from pyams_utils.pygments import PygmentsLexersVocabulary
     >>> vocabulary = PygmentsLexersVocabulary(None)
-    >>> len(vocabulary)
-    478
+    >>> len(vocabulary) > 400
+    True
     >>> vocabulary._terms[0].value
     'auto'
     >>> vocabulary._terms[0].title
@@ -54,8 +54,8 @@ Pygments styles vocabulary
 
     >>> from pyams_utils.pygments import PygmentsStylesVocabulary
     >>> vocabulary = PygmentsStylesVocabulary(None)
-    >>> len(vocabulary)
-    36
+    >>> len(vocabulary) > 30
+    True
     >>> vocabulary._terms[0].value
     'abap'
     >>> vocabulary._terms[1].value

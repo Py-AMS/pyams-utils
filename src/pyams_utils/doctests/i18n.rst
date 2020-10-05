@@ -8,14 +8,14 @@ This module can be used to define server locales:
     >>> from pyramid.testing import setUp, tearDown
     >>> config = setUp()
 
-    >>> config.add_settings({'pyams.locale.lc_all': 'fr_FR.UTF-8'})
+    >>> config.add_settings({'pyams.locale.lc_all': 'C.UTF-8'})
 
     >>> from pyams_utils.i18n import set_locales
     >>> set_locales(config.registry.settings)
 
     >>> import locale
     >>> locale.getlocale(locale.LC_ALL)
-    ('fr_FR', 'UTF-8')
+    ('en_US', 'UTF-8')
 
 
 Tests cleanup:
