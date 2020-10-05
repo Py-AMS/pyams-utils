@@ -25,6 +25,7 @@ import urllib.request
 import xmlrpc.client
 
 import pkg_resources
+from pkg_resources import DistributionNotFound
 
 
 try:
@@ -157,7 +158,10 @@ class SecureXMLRPCCookieAuthTransport(XMLRPCCookieAuthTransport):
     _http_connection = http.client.HTTPSConnection
 
 
-CLIENT_VERSION = pkg_resources.get_distribution('pyams_utils').version
+try:
+    CLIENT_VERSION = pkg_resources.get_distribution('pyams_utils').version
+except DistributionNotFound:
+    CLIENT_VERSION = 'dev'
 
 
 def get_client(uri, credentials=(), verbose=False, allow_none=0,
