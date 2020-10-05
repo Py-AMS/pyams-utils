@@ -222,20 +222,23 @@ def get_duration(first, last=None, request=None):  # pylint: disable=too-many-br
     >>> from datetime import datetime
     >>> from pyams_utils.date import get_duration
     >>> from pyramid.testing import DummyRequest
-    >>> request = DummyRequest()
     >>> date1 = datetime(2015, 1, 1)
     >>> date2 = datetime(2014, 3, 1)
-    >>> get_duration(date1, date2, request)
+    >>> get_duration(date1, date2)
     '10 months'
 
     Dates order is not important:
 
-    >>> get_duration(date2, date1, request)
+    >>> get_duration(date2, date1)
     '10 months'
     >>> date2 = datetime(2014, 11, 10)
-    >>> get_duration(date1, date2, request)
+    >>> get_duration(date1, date2)
     '7 weeks'
     >>> date2 = datetime(2014, 12, 26)
+
+    Let's try with a requuest:
+
+    >>> request = DummyRequest()
     >>> get_duration(date1, date2, request)
     '6 days'
 

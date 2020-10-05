@@ -115,6 +115,10 @@ def html_to_text(value):
     """Utility function to extract text content from HTML
 
     >>> from pyams_utils.html import html_to_text
+
+    >>> html_to_text(None)
+    ''
+
     >>> html = '''<p>This is a HTML text part.</p>'''
     >>> html_to_text(html)
     'This is a HTML text part.\\n'
@@ -126,17 +130,31 @@ def html_to_text(value):
     HTML parser should handle entities correctly:
 
     >>> html = '''<div><p>Header</p><p>This is an &lt; &#242; &gt; entity.<br /></p></div>'''
-    >>> html_to_text(html)
-    'Header\\nThis is an < ò > entity.\\n\\n'
+    >>> print(html_to_text(html))
+    Header
+    This is an < o > entity.
 
-    >>> html = '''<div><p>Header</p><p>This is an &lt;&nbsp;&#242;&nbsp;&gt; ''' + \
+    >>> html = '''<div><p>Header</p><p>This is an &lt;&nbsp;&eacute;&nbsp;&gt; ''' + \
                '''entity.<br /></p></div>'''
-    >>> html_to_text(html)
-    'Header\\nThis is an <\xa0ò\xa0> entity.\\n\\n'
+    >>> print(html_to_text(html))
+    Header
+    This is an < é > entity.
+
+    >>> html = '''<div><p>Head</p><p><table><tr><td>This is my test</td></tr></table></p></div>'''
+    >>> print(html_to_text(html))
+    Head
+    This is my test
+
+You can also insert invalid characters:
+
+    >>> html = '''<div><p>Invalid &toto; &#712; &#str; characters</p></div>'''
+    >>> print(html_to_text(html))
+    Invalid   &#str; characters
+
     """
     if value is None:
         return ''
-    parser = MyHTMLParser()
+    parser = MyHTMLParser(convert_charrefs=False)
     parser.feed(value)
     parser.close()
     return parser.data

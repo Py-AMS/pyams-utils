@@ -13,42 +13,6 @@
 """PyAMS_utils.factory module
 
 This module provides a decorator and a small set of functions to handle object factories.
-
-Instead of directly using a class as an object factory, the object of this module is to
-let you create an object based on an interface. The first step is to create an object
-implementing this interface, and then to register it as a factory:
-
-.. code-block:: python
-
-    @implementer(IMyInterface)
-    class MyClass(object):
-        '''Class implementing my interface'''
-
-    register_factory(IMyInterface, MyClass)
-
-Factory registry can also be handle by a decorator called "factory_config":
-
-.. code-block:: python
-
-    @factory_config(IMyInterface)
-    class MyClass(object):
-        '''Class implementing my interface'''
-
-A class declared as factory for a specific interface automatically implements the given interface.
-You can also provide a tuple or set of interfaces in "factory_config()" decorator.
-
-When a factory is registered, you can look for a factory:
-
-.. code-block:: python
-
-    factory = get_object_factory(IMyInterface)
-    if factory is not None:
-        myobject = factory()
-    else:
-        myobject = MyDefaultImplementation()
-
-By registering their own objects factories, extension packages can easily provide their
-own implementation of any PyAMS interface handled by factories.
 """
 
 import logging
@@ -130,7 +94,7 @@ class factory_config:  # pylint: disable=invalid-name,no-member
 
         def callback(context, name, obj):
             factory_name = settings.get('name', '')
-            provided = settings.get('provided')
+            provided = settings.get('provides') or settings.get('provided')
             if not provided:
                 raise TypeError("No provided interface(s) was given for registered factory %r" %
                                 obj)

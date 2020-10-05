@@ -40,24 +40,6 @@ def unique(seq, key=None):
         in the list
     :return: list; a new list containing only unique elements of the original list in their initial
         order. Original list is not modified.
-
-    >>> from pyams_utils.list import unique
-    >>> mylist = [1, 2, 3, 2, 1]
-    >>> unique(mylist)
-    [1, 2, 3]
-
-    >>> mylist = [3, 2, 2, 1, 4, 2]
-    >>> unique(mylist)
-    [3, 2, 1, 4]
-
-    You can also set an 'id' function applied on each element:
-
-    >>> mylist = [1, 2, 3, '2', 4]
-    >>> unique(mylist, key=str)
-    [1, 2, 3, 4]
-    >>> mylist = ['A', 'B', 'b', '2', 4]
-    >>> unique(mylist, key=lambda x: str(x).lower())
-    ['A', 'B', '2', 4]
     """
     seen = set()
     seen_add = seen.add
@@ -82,24 +64,6 @@ def unique_iter(iterable, key=None):
     :param callable key: an identity function which is used to get 'identity' value of each element
         in the list
     :return: an iterator of unique values
-
-    >>> from pyams_utils.list import unique_iter
-    >>> mylist = [1, 2, 3, 2, 1]
-    >>> list(unique_iter(mylist))
-    [1, 2, 3]
-
-    >>> mylist = [3, 2, 2, 1, 4, 2]
-    >>> list(unique_iter(mylist))
-    [3, 2, 1, 4]
-
-    You can also set an 'id' function applied on each element:
-
-    >>> mylist = [1, 2, 3, '2', 4]
-    >>> list(unique_iter(mylist, key=str))
-    [1, 2, 3, 4]
-    >>> mylist = ['A', 'B', 'b', '2', 4]
-    >>> list(unique_iter(mylist, key=lambda x: str(x).lower()))
-    ['A', 'B', '2', 4]
     """
     seen = set()
     seen_add = seen.add
@@ -117,11 +81,6 @@ def unique_iter(iterable, key=None):
 
 def random_iter(iterable, limit=1):
     """Get items randomly from an iterator
-
-    >>> from pyams_utils.list import random_iter
-    >>> mylist = [1, 2, 3, 2, 1]
-    >>> list(random_iter(mylist, 2))
-    [..., ...]
     """
     selected = [None] * limit
     for index, item in enumerate(iterable):
@@ -140,24 +99,6 @@ def boolean_iter(iterable):
 
     The function returns a tuple containing a boolean flag indicating if the original iterator
     is empty or not, and the original un-consumed iterator.
-
-    >>> from pyams_utils.list import boolean_iter
-    >>> def empty(input):
-    ...     yield from input
-    >>> mylist = empty(())
-    >>> check, myiter = boolean_iter(mylist)
-    >>> check
-    False
-    >>> list(myiter)
-    []
-    >>> mylist = empty((1,2,3))
-    >>> check, myiter = boolean_iter(mylist)
-    >>> check
-    True
-    >>> list(myiter)
-    [1, 2, 3]
-    >>> list(myiter)
-    []
     """
 
     def inner_check():
@@ -176,7 +117,7 @@ def boolean_iter(iterable):
 
 @adapter_config(name='boolean_iter', context=(Interface, Interface, Interface),
                 provides=ITALESExtension)
-class IterValuesCheckerExpression(ContextRequestViewAdapter):
+class BooleanIterCheckerExpression(ContextRequestViewAdapter):
     """TALES expression used to handle iterators
 
     The expression returns a tuple containing a boolean flag indicating if the original iterator

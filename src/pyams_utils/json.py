@@ -20,6 +20,12 @@ dates and datetimes to ISO format
     >>> from pyams_utils import json
     >>> from pyams_utils.timezone import GMT
 
+    >>> stock_json.dumps('my string')
+    '"my string"'
+
+    >>> stock_json.dumps({'key': 'value'})
+    '{"key": "value"}'
+
     >>> value = datetime.fromtimestamp(1205000000, GMT)
     >>> stock_json.dumps(value)
     '"2008-03-08T18:13:20+00:00"'

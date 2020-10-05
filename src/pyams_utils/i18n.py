@@ -25,7 +25,7 @@ def normalize_lang(lang):
     """Normalize input languages string
 
     >>> from pyams_utils.i18n import normalize_lang
-    >>> lang = 'fr,en-US ; q=0.9, en-GB ; q=0.8, en ; q=0.7'
+    >>> lang = 'fr,en_US ; q=0.9, en-GB ; q=0.8, en ; q=0.7'
     >>> normalize_lang(lang)
     'fr,en-us;q=0.9,en-gb;q=0.8,en;q=0.7'
     """
@@ -44,7 +44,8 @@ def get_browser_language(request):
     >>> from pyams_utils.i18n import get_browser_language
 
     >>> request = DummyRequest()
-    >>> request.headers['Accept-Language'] = 'fr, en-US ; q=0.9, en-GB ; q=0.8, en ; q=0.7'
+    >>> request.headers['Accept-Language'] = 'fr, en_US ; q=0.9, en-GB ; q=bad, es; ' + \
+                                             'q=0.8, en ; q=0.7'
     >>> get_browser_language(request)
     'fr'
     """
@@ -92,12 +93,12 @@ def get_browser_language(request):
     return [lang for _, lang in accepts][0] if accepts else None
 
 
-def set_locales(config):
+def set_locales(settings):
     """Define locale environment variables
 
-    :param config: Pyramid's settings object
+    :param settings: Pyramid's settings object
     """
     for attr in ('LC_CTYPE', 'LC_COLLATE', 'LC_TIME', 'LC_MONETARY', 'LC_NUMERIC', 'LC_ALL'):
-        value = config.get('pyams.locale.{0}'.format(attr.lower()))
+        value = settings.get('pyams.locale.{0}'.format(attr.lower()))
         if value:
             locale.setlocale(getattr(locale, attr), value)

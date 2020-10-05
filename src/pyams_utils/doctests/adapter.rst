@@ -1,7 +1,7 @@
 
-=================
-Managing adapters
-=================
+==========================
+PyAMS_utils adapter module
+==========================
 
 Adapters are components which are used to adapt a set of "input" objects instances, implementing
 interfaces, to another object implementing another interface.
@@ -144,16 +144,64 @@ None value:
     True
 
 
+Registering adapters
+--------------------
+
+Adapters can be easilly registered using a custom decorator called "adapter_config":
+
+    >>> from pyams_utils.testing import call_decorator
+
+    >>> class ISimpleInterface(Interface):
+    ...     """Simple marker interface"""
+
+    >>> class SimpleAdapter(adapter.ContextAdapter):
+    ...     """Simple adapter"""
+
+    >>> call_decorator(config, adapter.adapter_config, SimpleAdapter,
+    ...                required=str, provided=ISimpleInterface)
+
+    >>> ISimpleInterface('string')
+    <pyams_utils.tests.test_utilsdocs.SimpleAdapter object at 0x...>
+
+If the adapter class doesn't implements the provided interface, the registration will
+automatically add the interface to class implementations:
+
+    >>> ISimpleInterface.implementedBy(SimpleAdapter)
+    True
+
+You can avoid the "provided" argument if your adapter implements a single interface:
+
+    >>> @implementer(ISimpleInterface)
+    ... class SimpleAdapter(adapter.ContextAdapter):
+    ...     """Simple adapter"""
+
+    >>> call_decorator(config, adapter.adapter_config, SimpleAdapter, for_=int)
+    >>> ISimpleInterface(42)
+    <pyams_utils.tests.test_utilsdocs.SimpleAdapter object at 0x...>
+
+    >>> @implementer(IMyAdapter, ISimpleInterface)
+    ... class SimpleAdapter(adapter.ContextAdapter):
+    ...     """Simple adapter"""
+
+    >>> call_decorator(config, adapter.adapter_config, SimpleAdapter, for_=int)
+    Traceback (most recent call last):
+    ...
+    TypeError: Missing 'provides' argument
+
+
 Sorting adapters
 ----------------
 
 It can be required to sort adapters based on a "weight":
 
+    >>> call_decorator(config, adapter.adapter_config, SimpleAdapter,
+    ...                required=IMyContext, provided=IMyAdapter, name='second')
+
     >>> context = MyContext()
     >>> sorted(config.registry.getAdapters((context,), IMyAdapter),
     ...        key=adapter.get_adapter_weight)
     Creating adapter...
-    [('', <...MyAdapter object at 0x...>)]
+    [('second', <....SimpleAdapter object at 0x...>), ('', <...MyAdapter object at 0x...>)]
 
 
 Tests cleanup:

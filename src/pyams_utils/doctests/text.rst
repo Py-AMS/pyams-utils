@@ -1,6 +1,7 @@
 
-Text management utilities
-=========================
+=======================
+PyAMS_utils text module
+=======================
 
 PyAMS_utils.text is a small module dedicated to small text management functions.
 
@@ -36,6 +37,13 @@ Truncating text
     >>> render(template, {'request': request})
     '<div>This is my&#133;</div>'
 
+    >>> template = os.path.join(temp_dir, 'truncate-empty.pt')
+    >>> with open(template, 'w') as file:
+    ...     _ = file.write("<div>${structure:tales:truncate('', 15)}</div>")
+
+    >>> render(template, {'request': request})
+    '<div></div>'
+
 
 Text rendering
 --------------
@@ -55,6 +63,17 @@ to *IHTMLRenderer* interface:
     "Text with \\'quotes\\'"
     >>> text_to_html("ReStructured **text**", 'rest')
     '<p>ReStructured <strong>text</strong></p>\n'
+
+Some renderers can receive additional arguments:
+
+    >>> import pprint
+    >>> from pyams_utils.context import capture_stderr
+    >>> with capture_stderr(text_to_html, "ReStructured **text**", 'rest', settings={'dump_settings': True}) as errors:
+    ...     pprint.pprint(errors)
+    ('\n'
+     '::: Runtime settings:\n'
+     ...
+
     >>> text_to_html("Markdown *text*", 'markdown')
     '<p>Markdown <em>text</em></p>'
 
@@ -70,8 +89,17 @@ A TALES extension called "html" is available to include renderers into page temp
     >>> extension = HTMLTalesExtension(context, request, view)
     >>> extension.render('Basic raw text', 'text')
     'Basic raw text'
+    >>> extension.render(123, 'text')
+    '123'
+    >>> extension.render(None)
+    ''
 
-You can also provide a custom HTML renderer which can render an object directly:
+Context is extracted from request if not specified explicitly:
+
+    >>> extension.render()
+    '<object object at 0x...>'
+
+You have to provide a custom HTML renderer to render an object directly:
 
     >>> from zope.interface import implementer, Interface
     >>> class IMyInterface(Interface):
@@ -102,6 +130,11 @@ You can also provide a custom HTML renderer which can render an object directly:
     >>> from pyramid.renderers import render
     >>> render(template, {'context': my_object, 'request': request})
     '<div>My class name</div>'
+
+A vocabulary is available to make a selection between all available renderers:
+
+    >>> from pyams_utils.text import RenderersVocabulary
+    >>> vocabulary = RenderersVocabulary()
 
 
 Breaking lines

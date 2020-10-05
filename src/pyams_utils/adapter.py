@@ -105,15 +105,15 @@ class adapter_config:    # pylint: disable=invalid-name
             if not isinstance(required, tuple):
                 required = (required,)
 
-            provided = settings.get('provided') or settings.get('provides')
+            provided = settings.get('provides') or settings.get('provided')
             if provided is None:
                 intfs = list(implementedBy(obj))
                 if len(intfs) == 1:
                     provided = intfs[0]
                 if provided is None:
-                    raise TypeError("Missing 'provided' argument")
-                if isclass(obj) and not provided.implementedBy(obj):
-                    classImplements(obj, provided)
+                    raise TypeError("Missing 'provides' argument")
+            if isclass(obj) and not provided.implementedBy(obj):
+                classImplements(obj, provided)
 
             LOGGER.debug("Registering adapter %s for %s providing %s",
                          str(obj), str(required), str(provided))

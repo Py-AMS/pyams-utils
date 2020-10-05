@@ -1,6 +1,7 @@
 
-Managing registry
------------------
+===========================
+PyAMS_utils registry module
+===========================
 
 Pyramid provides a components registry, but this one is "hidden" and doesn't always have to be used
 by Pyramid application developers.
@@ -16,6 +17,10 @@ So PyAMS provides custom functions which allows, for example, to look for utilit
 registry before looking into the global one; the local registry is generally set during request
 traversing (when using PyAMS own traverser) by a subscriber to IBeforeTraverseEvent on any
 object providing ISite:
+
+    >>> from pyams_utils.registry import get_registries, get_global_registry, get_current_registry
+    >>> get_current_registry()
+    <Registry global>
 
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
     >>> config = setUp()
@@ -53,7 +58,6 @@ Let's now create a new request and handle traversing:
 
 We can get the list of available registries:
 
-    >>> from pyams_utils.registry import get_registries, get_global_registry, get_current_registry
     >>> list(get_registries())
     [<LocalSiteManager ++etc++site>, <Registry testing>]
 
@@ -119,6 +123,83 @@ different names:
     [('', <...ServerTimezoneUtility object at 0x...>), ('tz2', <...ServerTimezoneUtility object at 0x...>)]
     >>> get_all_utilities_registered_for(IServerTimezone)
     [<...ServerTimezoneUtility object at 0x...>, <...ServerTimezoneUtility object at 0x...>]
+
+Looking for an unknown utility raises a ComponentLookupError:
+
+    >>> from zope.intid.interfaces import IIntIds
+    >>> get_utility(IIntIds)
+    Traceback (most recent call last):
+    ...
+    zope.interface.interfaces.ComponentLookupError: (<InterfaceClass zope.intid.interfaces.IIntIds>, '')
+
+
+Registering utilities
+---------------------
+
+A "utility_config" decorator is available to register a utility into global registry:
+
+    >>> from zope.interface import Interface
+    >>> from pyams_utils.registry import utility_config
+
+    >>> class IMyUtility(Interface):
+    ...     """Utility marker interface"""
+
+    >>> class Utility:
+    ...     """Utility class"""
+
+You can then simulate a venusian decorator call:
+
+    >>> from pyams_utils.testing import call_decorator
+
+    >>> call_decorator(config, utility_config, Utility, provides=IMyUtility)
+    >>> config.registry.getUtility(IMyUtility)
+    <pyams_utils.tests.test_utilsdocs.Utility object at 0x...>
+
+You can also register a utility instance instead of a factory:
+
+    >>> class IMySecondUtility(Interface):
+    ...     """Second utility interface"""
+
+    >>> utility = Utility()
+    >>> call_decorator(config, utility_config, utility, provides=IMySecondUtility)
+    >>> config.registry.getUtility(IMySecondUtility)
+    <pyams_utils.tests.test_utilsdocs.Utility object at 0x...>
+
+You cna omit the "provides" argument of "utility_config" if the registered utility is
+only implementing a single interface:
+
+    >>> from zope.interface import implementer
+
+    >>> class IMyThirdUtility(Interface):
+    ...     """Third utility interface"""
+
+    >>> @implementer(IMyThirdUtility)
+    ... class ThirdUtility:
+    ...     """Utility class"""
+
+    >>> call_decorator(config, utility_config, ThirdUtility)
+    >>> config.registry.getUtility(IMyThirdUtility)
+    <pyams_utils.tests.test_utilsdocs.ThirdUtility object at 0x...>
+
+    >>> utility = ThirdUtility()
+    >>> call_decorator(config, utility_config, utility, name='third')
+    >>> config.registry.getUtility(IMyThirdUtility, name='third')
+    <pyams_utils.tests.test_utilsdocs.ThirdUtility object at 0x...>
+
+If more than one interface are implemented, an exception is raised:
+
+    >>> class IMyFourthUtility(Interface):
+    ...     """Fourth utility interface"""
+
+    >>> @implementer(IMyThirdUtility, IMyFourthUtility)
+    ... class FourthUtility:
+    ...     """Utility class"""
+
+    >>> call_decorator(config, utility_config, FourthUtility)
+    Traceback (most recent call last):
+    ...
+    TypeError: Missing 'provides' argument
+
 
 Tests cleanup:
 

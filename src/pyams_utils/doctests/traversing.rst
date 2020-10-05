@@ -6,29 +6,31 @@ PyAMS_utils traversing module
 Traversing is a common concept in web applications, which consists in going from parent to
 child based on request elements.
 
+
+Basic traversal management
+--------------------------
+
 For this to work, we have to now which is the parent of a given object, and this object have
 to know which are it's childs.
 
+    >>> import pprint
+
     >>> from pyramid.testing import setUp, tearDown
     >>> config = setUp()
+    >>> config.registry.settings['zodbconn.uri'] = 'memory://'
 
-    >>> from zope.interface import implementer, Interface, Attribute
-    >>> class IMyFolder(Interface):
-    ...     """Folder marker interface"""
-    ...     value = Attribute("Test attribute")
+    >>> from pyramid_zodbconn import includeme as include_zodbconn
+    >>> include_zodbconn(config)
+    >>> from pyams_utils import includeme as include_utils
+    >>> include_utils(config)
 
-    >>> from zope.container.folder import Folder
-    >>> from zope.location import Location
+    >>> import transaction
+    >>> from pyams_utils.zodb import ZODBConnection
+    >>> from pyams_utils.tests import IMyFolder, MyFolder
 
-    >>> @implementer(IMyFolder)
-    ... class MyFolder(Folder):
-    ...     """Custom location"""
-    ...     name = ''
-    ...     def __init__(self):
-    ...         super(MyFolder, self).__init__()
-    ...         self.value = object()
-
-    >>> parent = MyFolder()
+    >>> conn = ZODBConnection()
+    >>> root = conn.get_connection().root()
+    >>> parent = root['application'] = MyFolder()
     >>> child = MyFolder()
     >>> parent['child'] = child
     >>> 'child' in parent
@@ -65,6 +67,10 @@ this condition is checked only if defined interface is implemented or adapted:
     >>> get_parent(child, condition=lambda x: x.name.startswith('Parent')) is parent
     True
 
+
+PyAMS namespace traverser
+-------------------------
+
 PyAMS provides a custom traverser called **NamespaceTraverser**; in addition to standard traverser
 provided by Pyramid, this traverser allows to define custom "traversing namespaces", which can be
 defined as adapters to *ITraversable* interface:
@@ -73,49 +79,74 @@ defined as adapters to *ITraversable* interface:
     >>> from pyams_utils.traversing import NamespaceTraverser
 
     >>> traverser = NamespaceTraverser(parent)
-    >>> request = DummyRequest(path='/child/index.html', matchdict=None)
+
+    >>> request = DummyRequest(path='/', matchdict=None)
     >>> result = traverser(request)
+    >>> pprint.pprint(result)
+    {'context': <...MyFolder object at 0x...>,
+     'root': <...MyFolder object at 0x...>,
+     'subpath': (),
+     'traversed': (),
+     'view_name': '',
+     'virtual_root': <...MyFolder object at 0x...>,
+     'virtual_root_path': ()}
     >>> result['root'] is parent
     True
     >>> result['virtual_root'] is parent
     True
-    >>> result['virtual_root_path']
-    ()
+    >>> result['context'] is parent
+    True
+
+    >>> request = DummyRequest(path='/child/index.html', matchdict=None)
+    >>> result = traverser(request)
+    >>> pprint.pprint(result)
+    {'context': <....MyFolder object at 0x...>,
+     'root': <...MyFolder object at 0x...>,
+     'subpath': (),
+     'traversed': ('child',),
+     'view_name': 'index.html',
+     'virtual_root': <...MyFolder object at 0x...>,
+     'virtual_root_path': ()}
+    >>> result['root'] is parent
+    True
+    >>> result['virtual_root'] is parent
+    True
     >>> result['context'] is child
     True
-    >>> result['view_name']
-    'index.html'
-    >>> result['traversed']
-    ('child',)
-    >>> result['subpath']
-    ()
 
 Let's try to add a sub-child:
 
     >>> subchild = MyFolder()
     >>> child['subchild'] = subchild
+    >>> transaction.commit()
 
     >>> request = DummyRequest(path='/child/subchild/index.html', matchdict=None)
     >>> result = traverser(request)
+    >>> pprint.pprint(result)
+    {'context': <....MyFolder object at 0x...>,
+     'root': <...MyFolder object at 0x...>,
+     'subpath': (),
+     'traversed': ('child', 'subchild'),
+     'view_name': 'index.html',
+     'virtual_root': <...MyFolder object at 0x...>,
+     'virtual_root_path': ()}
     >>> result['root'] is parent
     True
     >>> result['virtual_root'] is parent
     True
-    >>> result['virtual_root_path']
-    ()
     >>> result['context'] is subchild
     True
-    >>> result['view_name']
-    'index.html'
-    >>> result['traversed']
-    ('child', 'subchild')
-    >>> result['subpath']
-    ()
 
 Traversing namespaces are used by using a "++" in the URL, followed by the traversing adapter
 name which should be used; the *traverse* method should return an object, which will be the base
 of the following URL traversing; in some cases, some traversers can just update the initial
 context or request, and return the initial context:
+
+    >>> request = DummyRequest(path='/++test++/index.html', matchdict=None)
+    >>> result = traverser(request)
+    Traceback (most recent call last):
+    ...
+    pyramid.httpexceptions.HTTPNotFound: The resource could not be found.
 
     >>> from pyams_utils.adapter import ContextAdapter
     >>> class TestTraverser(ContextAdapter):
@@ -127,20 +158,20 @@ context or request, and return the initial context:
 
     >>> request = DummyRequest(path='/++test++/index.html', matchdict=None)
     >>> result = traverser(request)
+    >>> pprint.pprint(result)
+    {'context': <object object at 0x...>,
+     'root': <...MyFolder object at 0x...>,
+     'subpath': (),
+     'traversed': ('++test++',),
+     'view_name': 'index.html',
+     'virtual_root': <...MyFolder object at 0x...>,
+     'virtual_root_path': ()}
     >>> result['root'] is parent
     True
     >>> result['virtual_root'] is parent
     True
-    >>> result['virtual_root_path']
-    ()
     >>> result['context'] is parent.value
     True
-    >>> result['view_name']
-    'index.html'
-    >>> result['traversed']
-    ('++test++',)
-    >>> result['subpath']
-    ()
 
 Note here that the "name" argument is optional; if a value is present after the second "++"
 character in the URL, it is this value that is given as parameter to the *traverse* method:
@@ -153,20 +184,129 @@ character in the URL, it is this value that is given as parameter to the *traver
 
     >>> request = DummyRequest(path='/++attr++value/index.html', matchdict=None)
     >>> result = traverser(request)
+    >>> pprint.pprint(result)
+    {'context': <object object at 0x...>,
+     'root': <...MyFolder object at 0x...>,
+     'subpath': (),
+     'traversed': ('++attr++value',),
+     'view_name': 'index.html',
+     'virtual_root': <...MyFolder object at 0x...>,
+     'virtual_root_path': ()}
     >>> result['root'] is parent
     True
     >>> result['virtual_root'] is parent
     True
-    >>> result['virtual_root_path']
-    ()
     >>> result['context'] is parent.value
     True
-    >>> result['view_name']
-    'index.html'
-    >>> result['traversed']
-    ('++attr++value',)
-    >>> result['subpath']
-    ()
+
+
+Custom "+" traverser
+--------------------
+
+PyAMS support a custom traverser called "+", which allows to get short URLs in it's content
+management package (See "PyAMS_content" package):
+
+    >>> request = DummyRequest(path='/+/123', matchdict=None)
+    >>> result = traverser(request)
+    Traceback (most recent call last):
+    ...
+    pyramid.httpexceptions.HTTPNotFound: The resource could not be found.
+
+You need to create a custom traverse adapter called "+":
+
+    >>> from pyramid.httpexceptions import HTTPNotFound
+    >>> from pyams_utils.adapter import ContextRequestAdapter
+
+    >>> class PlusTraverser(ContextRequestAdapter):
+    ...     def traverse(self, name, furtherpath=None):
+    ...         if name == "subchild":
+    ...             return subchild
+    ...         raise HTTPNotFound
+
+    >>> from zope.traversing.interfaces import ITraversable
+    >>> config.registry.registerAdapter(PlusTraverser,
+    ...                                 required=(object, DummyRequest),
+    ...                                 provided=ITraversable,
+    ...                                 name='+')
+
+    >>> result = traverser(request)
+    Traceback (most recent call last):
+    ...
+    pyramid.httpexceptions.HTTPNotFound: The resource could not be found.
+
+    >>> request = DummyRequest(path='/+', matchdict=None)
+    >>> result = traverser(request)
+    Traceback (most recent call last):
+    ...
+    pyramid.httpexceptions.HTTPNotFound: The resource could not be found.
+
+    >>> request = DummyRequest(path='/+/subchild', matchdict=None)
+    >>> result = traverser(request)
+    >>> pprint.pprint(result)
+    {'context': <...MyFolder object at 0x...>,
+     'root': <...MyFolder object at 0x...>,
+     'subpath': (),
+     'traversed': ('+', 'subchild'),
+     'view_name': '',
+     'virtual_root': <...MyFolder object at 0x...>,
+     'virtual_root_path': ()}
+    >>> result['root'] is parent
+    True
+    >>> result['virtual_root'] is parent
+    True
+    >>> result['context'] is subchild
+    True
+
+
+Traverser should handle virtual host correctly:
+
+    >>> request = DummyRequest(path='/child/index.html',
+    ...                        environ={'HTTP_X_VHM_ROOT': '/vhost'})
+    >>> result = traverser(request)
+    >>> pprint.pprint(result)
+    {'context': <...MyFolder object at 0x...>,
+     'root': <...MyFolder object at 0x...>,
+     'subpath': (),
+     'traversed': ('vhost',),
+     'view_name': 'vhost',
+     'virtual_root': <...MyFolder object at 0x...>,
+     'virtual_root_path': ('vhost',)}
+    >>> result['root'] is parent
+    True
+    >>> result['virtual_root'] is parent
+    True
+    >>> result['context'] is parent
+    True
+
+
+Context path elements
+---------------------
+
+Getting path elements can be used to index all parents of a given element; this allows, for
+example, to add a "container" criteria to a catalog query to search only objects which are
+contained into a given container:
+
+    >>> from pyams_utils.traversing import PathElementsAdapter
+    >>> adapter = PathElementsAdapter(subchild)
+    >>> len(adapter.parents)
+    0
+
+    >>> from zope.intid.interfaces import IIntIds
+    >>> from zope.intid import IntIds
+
+    >>> intids = IntIds()
+    >>> config.registry.registerUtility(intids, IIntIds)
+
+    >>> parents = adapter.parents
+    >>> len(parents)
+    3
+    >>> intids.queryId(subchild) in parents
+    True
+    >>> intids.queryId(child) in parents
+    True
+    >>> intids.queryId(parent) in parents
+    True
+
 
 Tests cleanup:
 

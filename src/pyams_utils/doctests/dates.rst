@@ -58,7 +58,8 @@ template:
     >>> from zope.annotation.interfaces import IAttributeAnnotatable
     >>> from zope.dublincore.interfaces import IZopeDublinCore
     >>> from zope.dublincore.annotatableadapter import ZDCAnnotatableAdapter
-    >>> config.registry.registerAdapter(ZDCAnnotatableAdapter, (IAttributeAnnotatable, ), IZopeDublinCore)
+    >>> config.registry.registerAdapter(ZDCAnnotatableAdapter, (IAttributeAnnotatable, ),
+    ...                                 IZopeDublinCore)
 
     >>> template = os.path.join(temp_dir, 'timestamp.pt')
     >>> with open(template, 'w') as file:
@@ -88,6 +89,13 @@ template:
     >>> output = render(template, {'context': my_content, 'request': DummyRequest()})
     >>> output == '<div>{}</div>'.format(zdc.modified.isoformat())
     True
+
+Using this TALES extension on an object which doesn't support dublincore interface just returns
+current timestamp:
+
+    >>> content = object()
+    >>> render(template, {'request': DummyRequest(context=content)})
+    '<div>...-...-...T...:...:...+00:00</div>'
 
 
 Timezones handling

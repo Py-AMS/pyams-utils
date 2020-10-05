@@ -1,7 +1,7 @@
 
-==================
-PyAMS ZODB helpers
-==================
+=======================
+PyAMS_utils zodb module
+=======================
 
 PyAMS_utils provides a few helpers to manage ZODB connections.
 

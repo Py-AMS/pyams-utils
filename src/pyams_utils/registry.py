@@ -232,7 +232,7 @@ class utility_config:  # pylint: disable=invalid-name
                 factory = None
                 component = obj
 
-            provides = settings.get('provides')
+            provides = settings.get('provides') or settings.get('provided')
             if provides is None:
                 if factory:
                     provides = list(implementedBy(factory))

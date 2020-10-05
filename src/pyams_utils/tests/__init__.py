@@ -20,6 +20,8 @@ import os
 import sys
 
 from persistent import Persistent
+from zope.container.folder import Folder
+from zope.interface import Interface, implementer
 from zope.location import Location
 
 
@@ -34,3 +36,18 @@ def get_package_dir(value):
 
 class MyTestContent(Persistent, Location):
     """Persistent class"""
+
+
+class IMyFolder(Interface):
+    """Folder marker interface"""
+
+
+@implementer(IMyFolder)
+class MyFolder(Folder):
+    """Test folder class"""
+
+    name = ''
+
+    def __init__(self):
+        super(MyFolder, self).__init__()
+        self.value = object()

@@ -125,7 +125,13 @@ ENCODINGS = {
 
 @vocabulary_config(name=ENCODINGS_VOCABULARY_NAME)
 class EncodingsVocabulary(SimpleVocabulary):
-    """A vocabulary containing a set of registered encodings"""
+    """A vocabulary containing a set of registered encodings
+
+    >>> from pyams_utils.encoding import ENCODINGS, EncodingsVocabulary
+    >>> vocabulary = EncodingsVocabulary(None)
+    >>> len(vocabulary._terms) == len(ENCODINGS)
+    True
+    """
 
     def __init__(self, context, *interfaces):  # pylint: disable=unused-argument
         request = check_request()

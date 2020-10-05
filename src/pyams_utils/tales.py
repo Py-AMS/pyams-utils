@@ -24,6 +24,7 @@ from chameleon.tales import StringExpr
 from zope.contentprovider.tales import addTALNamespaceData
 
 from pyams_utils.interfaces.tales import ITALESExtension
+from pyams_utils.registry import get_current_registry
 
 
 __docformat__ = 'restructuredtext'
@@ -100,7 +101,10 @@ def render_extension(econtext, name):
             else:
                 args.append(arg)
 
-    registry = request.registry
+    if request is not None:
+        registry = request.registry
+    else:
+        registry = get_current_registry()
     extension = registry.queryMultiAdapter((context, request, view), ITALESExtension, name=name)
     if extension is None:
         extension = registry.queryMultiAdapter((context, request), ITALESExtension, name=name)

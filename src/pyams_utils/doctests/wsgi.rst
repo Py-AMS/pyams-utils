@@ -1,7 +1,7 @@
 
-======================
-WSGI environment cache
-======================
+=======================
+PyAMS_utils wsgi module
+=======================
 
 The "wsgi_environ_cache" can be used to cache a method result into request environment:
 

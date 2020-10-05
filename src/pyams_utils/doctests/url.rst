@@ -1,7 +1,7 @@
 
-==================
-PyAMS URLs helpers
-==================
+======================
+PyAMS_utils url module
+======================
 
 PyAMS provides several helpers which can be used to generate several kinds of URLs:
  - absolute URLs

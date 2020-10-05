@@ -30,31 +30,6 @@ from pyams_utils import _
 
 def get_human_size(value, request=None):
     """Convert given bytes value in human readable format
-
-    >>> from pyramid.testing import DummyRequest
-    >>> request = DummyRequest(params={'_LOCALE_': 'en'})
-    >>> request.locale_name
-    'en'
-    >>> from pyams_utils.size import get_human_size
-    >>> get_human_size(256, request)
-    '256 bytes'
-    >>> get_human_size(3678, request)
-    '3.6 Kb'
-    >>> get_human_size(6785342, request)
-    '6.47 Mb'
-    >>> get_human_size(3674815342, request)
-    '3.422 Gb'
-    >>> request = DummyRequest(params={'_LOCALE_': 'fr'})
-    >>> request.locale_name
-    'fr'
-    >>> get_human_size(256, request)
-    '256 bytes'
-    >>> get_human_size(3678, request)
-    '3,6 Kb'
-    >>> get_human_size(6785342, request)
-    '6,47 Mb'
-    >>> get_human_size(3674815342, request)
-    '3,422 Gb'
     """
     if request is None:
         request = check_request()

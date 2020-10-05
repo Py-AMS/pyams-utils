@@ -170,7 +170,7 @@ class MarkdownTextRenderer(BaseHTMLRenderer):
         return markdown(self.context)
 
 
-def text_to_html(text, renderer='text'):
+def text_to_html(text, renderer='text', **kwargs):
     """Convert text to HTML using the given renderer
 
     Renderer name can be any registered HTML renderer adapter.
@@ -183,7 +183,7 @@ def text_to_html(text, renderer='text'):
     for renderer_name in renderer.split(';'):
         renderer = registry.queryMultiAdapter((text, request), IHTMLRenderer, name=renderer_name)
         if renderer is not None:
-            text = renderer.render() or text
+            text = renderer.render(**kwargs) or text
     return text
 
 
@@ -204,7 +204,7 @@ class HTMLTalesExtension(ContextRequestViewAdapter):
     will then act as in a pipe, each renderer transforming output of the previous one.
     """
 
-    def render(self, context=EMPTY_MARKER, renderer='text'):
+    def render(self, context=EMPTY_MARKER, renderer='text', **kwargs):
         """Render TALES extension;
         see :py:class:`ITALESExtension <pyams_utils.interfaces.tales.ITALESExtension>`
         """
@@ -219,7 +219,7 @@ class HTMLTalesExtension(ContextRequestViewAdapter):
         if adapter is not None:
             return adapter.render()
         if isinstance(context, str):
-            return text_to_html(context, renderer)
+            return text_to_html(context, renderer, **kwargs)
         return str(context)
 
 

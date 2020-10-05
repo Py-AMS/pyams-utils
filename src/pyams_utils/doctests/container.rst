@@ -114,6 +114,7 @@ You can also include root object in your results:
     >>> list(find_objects_providing(container, IMyContainer, ignore_root=True))
     []
 
+
 Tests cleanup:
 
     >>> tearDown()

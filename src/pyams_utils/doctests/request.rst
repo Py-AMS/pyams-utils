@@ -1,6 +1,7 @@
 
-Managing requests
------------------
+==========================
+PyAMS_utils request module
+==========================
 
 PyAMS_utils package provides some useful functions to handle requests.
 
@@ -22,6 +23,10 @@ the current execution thread; if no "real" request is active, a new one is creat
     >>> request = check_request()
     >>> request
     <PyAMSRequest at ... GET http://localhost/>
+
+    >>> request2 = check_request(principal_id='admin:admin')
+    >>> request2 is request
+    False
 
 If a new request is created "from scratch", it's registry is assigned to global registry:
 
@@ -164,6 +169,62 @@ Request selector can also be based on a class instead of an interface:
     >>> selector = RequestSelector(PyAMSRequest, config)
     >>> selector(event)
     True
+
+
+Using request data
+------------------
+
+A request can store information in it's environment, but also in annotations.
+
+    >>> from pyams_utils.request import get_request_data, set_request_data
+    >>> get_request_data(request, 'mykey', 'default')
+    'default'
+    >>> set_request_data(request, 'mykey', 1)
+    >>> get_request_data(request, 'mykey', 'default')
+    1
+
+A TALES annotation is available to get request data from Chameleon templates:
+
+    >>> from pyams_utils.request import RequestDataExtension
+    >>> extension = RequestDataExtension(object(), request, None)
+    >>> extension.render('mykey')
+    1
+
+
+Using PyAMS request factory
+---------------------------
+
+PyAMS_utils provides a custom request factory, which defines a custom permission checker which
+can be used to check roles on it's context:
+
+    >>> from pyams_utils.request import PyAMSRequest
+    >>> request = check_request()
+    >>> isinstance(request, PyAMSRequest)
+    True
+
+    >>> request.context = object()
+    >>> request.has_permission('View')
+    <Allowed instance at ... with msg 'No authentication policy in use.'>
+
+So let's define an authentication policy:
+
+    >>> from pyramid.authorization import ACLAuthorizationPolicy
+    >>> from pyramid.authentication import BasicAuthAuthenticationPolicy
+    >>> config.set_authorization_policy(ACLAuthorizationPolicy())
+    >>> config.set_authentication_policy(BasicAuthAuthenticationPolicy(lambda a, b, c: True))
+
+    >>> request.has_permission('View')
+    <ACLDenied instance at ... with msg "ACLDenied permission 'View' via ACE '<default deny>' in ACL '<No ACL found on any object in resource lineage>' on context <object object at 0x...> for principals ['system.Everyone']">
+
+
+Debugging request
+-----------------
+
+This function is used for Zope compatibility:
+
+    >>> from pyams_utils.request import get_debug
+    >>> get_debug(request).showTAL
+    False
 
 
 Tests cleanup:

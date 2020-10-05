@@ -17,15 +17,19 @@
 
 import logging
 
-from pyramid.interfaces import IAuthenticationPolicy, IAuthorizationPolicy, IRequestFactory
+from pyramid.interfaces import IAuthenticationPolicy, IAuthorizationPolicy, IRequest, \
+    IRequestFactory
 from pyramid.request import Request
 from pyramid.security import Allowed
 from pyramid.threadlocal import get_current_registry, get_current_request
 from zope.annotation.interfaces import IAnnotations, IAttributeAnnotatable
-from zope.interface import alsoProvides
+from zope.interface import Interface, alsoProvides
 
-from pyams_utils.interfaces import ICacheKeyValue, MissingRequestError, DISPLAY_CONTEXT_KEY_NAME
+from pyams_utils.adapter import ContextRequestViewAdapter, adapter_config
+from pyams_utils.interfaces import DISPLAY_CONTEXT_KEY_NAME, ICacheKeyValue, MissingRequestError
+from pyams_utils.interfaces.tales import ITALESExtension
 from pyams_utils.registry import get_global_registry
+
 
 __docformat__ = 'restructuredtext'
 
@@ -146,7 +150,10 @@ class PyAMSRequest(Request):
         if authz_policy is None:
             raise ValueError('Authentication policy registered without '
                              'authorization policy')  # should never happen
-        principals = authn_policy.effective_principals(self, context)
+        try:
+            principals = authn_policy.effective_principals(self, context)
+        except TypeError:
+            principals = authn_policy.effective_principals(self)
         return authz_policy.permits(context, principals, permission)
 
 
@@ -180,8 +187,6 @@ def check_request(path='/', environ=None, base_url=None, headers=None,
     except MissingRequestError:
         if registry is None:
             registry = get_current_registry()
-            if registry is None:
-                registry = get_global_registry()
         factory = registry.queryUtility(IRequestFactory)
         if factory is None:
             factory = PyAMSRequest
@@ -204,8 +209,6 @@ def copy_request(request):
     request = request.copy()
     if not hasattr(request, 'registry'):
         registry = get_current_registry()
-        if registry is None:
-            registry = get_global_registry()
         request.registry = registry
     request.root = root
     return request
@@ -270,3 +273,25 @@ def get_display_context(request):
     is they were located inside another site or folder...
     """
     return get_request_data(request, DISPLAY_CONTEXT_KEY_NAME, request.context)
+
+
+@adapter_config(name='request_data', context=(Interface, IRequest, Interface),
+                provides=ITALESExtension)
+class RequestDataExtension(ContextRequestViewAdapter):
+    """extension:request_data TALES extension for Pyramid request
+
+    This TALES extension can be used to get a request data, previously stored in the request via
+    an annotation.
+
+    For example:
+
+    .. code-block:: xml
+
+        <div tal:content="extension:request_data('my.annotation.key')">...</div>
+    """
+
+    def render(self, key, default=None):
+        """See :py:class:`ITALESExtension <pyams_utils.interfaces.tales.ITALESExtension>`
+        interface
+        """
+        return get_request_data(self.request, key, default)

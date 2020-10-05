@@ -119,24 +119,6 @@ def init_progress_status(progress_id, owner, label, tags=None, length=None, curr
 
 
 @locked(name=PROGRESS_LOCK_NAME)
-def get_progress_status(progress_id):
-    """Get status of given task"""
-    progress_cache = get_progress_cache()
-    cache_key = PROGRESS_TASK_KEY.format(progress_id)
-    try:
-        status = progress_cache.get_value(cache_key)
-    except KeyError:
-        status = {'status': 'unknown'}
-    else:
-        if status.get('status') == 'finished':
-            progress_cache.remove_value(cache_key)
-            tasks = get_running_tasks()
-            if progress_id in tasks:
-                tasks.remove(progress_id)
-    return status
-
-
-@locked(name=PROGRESS_LOCK_NAME)
 def set_progress_status(progress_id, status='running', message=None, length=None, current=None):
     """Set status of given task
 
@@ -159,6 +141,24 @@ def set_progress_status(progress_id, status='running', message=None, length=None
         'current': current
     })
     progress_cache.set_value(cache_key, task_status)
+
+
+@locked(name=PROGRESS_LOCK_NAME)
+def get_progress_status(progress_id):
+    """Get status of given task"""
+    progress_cache = get_progress_cache()
+    cache_key = PROGRESS_TASK_KEY.format(progress_id)
+    try:
+        status = progress_cache.get_value(cache_key)
+    except KeyError:
+        status = {'status': 'unknown'}
+    else:
+        if status.get('status') == 'finished':
+            progress_cache.remove_value(cache_key)
+            tasks = get_running_tasks()
+            if progress_id in tasks:
+                tasks.remove(progress_id)
+    return status
 
 
 @view_config(name='get-progress-status.json', renderer='json', xhr=True)
