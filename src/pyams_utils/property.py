@@ -12,49 +12,6 @@
 
 """PyAMS_utils.property module
 
-This module is used to define:
- - a cached property; this read-only property is evaluated only once; it's value is stored into
-   object's attributes, and so should be freed with the object (so it should behave like a
-   Pyramid's "reify" decorator, but we have kept it for compatibility of existing code)
- - a class property; this decorator is working like a classic property, but can be assigned to a
-   class; to support class properties, this class also have to decorated with the
-   "classproperty_support" decorator
-
-    >>> from pyams_utils.property import cached_property
-
-    >>> class ClassWithCache:
-    ...     '''Class with cache'''
-    ...     @cached_property
-    ...     def cached_value(self):
-    ...         print("This is a cached value")
-    ...         return 1
-
-    >>> obj = ClassWithCache()
-    >>> obj.cached_value
-    This is a cached value
-    1
-
-On following calls, cached property method shouldn't be called again:
-
-    >>> obj.cached_value
-    1
-
-Class properties are used to define properties on class level:
-
-    >>> from pyams_utils.property import classproperty, classproperty_support
-
-    >>> @classproperty_support
-    ... class ClassWithProperties:
-    ...     '''Class with class properties'''
-    ...
-    ...     class_attribute = 1
-    ...
-    ...     @classproperty
-    ...     def my_class_property(cls):
-    ...         return cls.class_attribute
-
-    >>> ClassWithProperties.my_class_property
-    1
 """
 
 __docformat__ = 'restructuredtext'
@@ -79,62 +36,48 @@ class cached_property:  # pylint: disable=invalid-name
         return result
 
 
-class classproperty:  # pylint: disable=invalid-name
-    """Same decorator as property(), but passes obj.__class__ instead of obj to fget/fset/fdel.
+class _ClassPropertyDescriptor:
+    """Class property descriptor"""
 
-    Original code for property emulation:
-    https://docs.python.org/3.5/howto/descriptor.html#properties
-    """
-    def __init__(self, fget=None, fset=None, fdel=None, doc=None):
+    def __init__(self, fget, fset=None):
         self.fget = fget
         self.fset = fset
-        self.fdel = fdel
-        if doc is None and fget is not None:
-            doc = fget.__doc__
-        self.__doc__ = doc
 
-    def __get__(self, obj, objtype=None):
-        if obj is None:
-            return self
-        if self.fget is None:
-            raise AttributeError("Unreadable attribute")
-        return self.fget(obj.__class__)
+    def __get__(self, obj, owner):
+        if self in obj.__dict__.values():
+            return self.fget(obj)
+        return self.fget(owner)
 
     def __set__(self, obj, value):
-        if self.fset is None:
-            raise AttributeError("Can't set attribute")
-        self.fset(obj.__class__, value)
+        if not self.fset:
+            raise AttributeError("can't set attribute")
+        return self.fset(obj, value)
 
-    def __delete__(self, obj):
-        if self.fdel is None:
-            raise AttributeError("Can't delete attribute")
-        self.fdel(obj.__class__)
-
-    def getter(self, fget):
-        """Property getter"""
-        return type(self)(fget, self.fset, self.fdel, self.__doc__)
-
-    def setter(self, fset):
-        """Property setter"""
-        return type(self)(self.fget, fset, self.fdel, self.__doc__)
-
-    def deleter(self, fdel):
-        """Property deleter"""
-        return type(self)(self.fget, self.fset, fdel, self.__doc__)
+    def setter(self, func):
+        """Class property setter"""
+        self.fset = func
+        return self
 
 
-def classproperty_support(cls):
-    """Class decorator to add metaclass to a class.
+def _create_type(meta, name, attrs):
+    type_name = '{}Type'.format(name)
+    type_attrs = {}
+    for key, value in attrs.items():
+        if isinstance(value, _ClassPropertyDescriptor):
+            type_attrs[key] = value
+    return type(type_name, (meta,), type_attrs)
 
-    Metaclass uses to add descriptors to class attributes
-    """
-    class Meta(type):
-        """Meta class"""
 
-    for name, obj in vars(cls).items():
-        if isinstance(obj, classproperty):
-            setattr(Meta, name, property(obj.fget, obj.fset, obj.fdel))
+class ClassPropertyType(type):
+    """Class property type"""
 
-    class Wrapper(cls, metaclass=Meta):
-        """Wrapper class"""
-    return Wrapper
+    def __new__(meta, name, bases, attrs):  # pylint: disable=bad-mcs-classmethod-argument
+        Type = _create_type(meta, name, attrs)
+        cls = super().__new__(meta, name, bases, attrs)
+        cls.__class__ = Type
+        return cls
+
+
+def classproperty(func):
+    """Main class property decorator"""
+    return _ClassPropertyDescriptor(func)
