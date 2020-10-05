@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.2.4
+-----
+ - added distribution check
+
 1.2.3
 -----
  - small refactoring to add "get_timestamp" function to "pyams_utils.date" module
