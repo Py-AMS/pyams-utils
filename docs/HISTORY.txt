@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.2.7
+-----
+ - updated doctests
+
 1.2.6
 -----
  - updated doctests
