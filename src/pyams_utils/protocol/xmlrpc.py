@@ -20,10 +20,12 @@ It provides custom transports and allows storage of response cookies
 import base64
 import http.client
 import http.cookiejar
-import pkg_resources
 import socket
 import urllib.request
 import xmlrpc.client
+
+import pkg_resources
+
 
 try:
     import gzip
