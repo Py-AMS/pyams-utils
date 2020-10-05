@@ -28,6 +28,55 @@ from fanstatic.core import set_resource_file_existence_checking
 __docformat__ = 'restructuredtext'
 
 
+class DummyVenusianInfo:
+    """Dummy venusian info"""
+
+    scope = 'notaclass'
+    module = sys.modules['pyams_utils.testing']
+    codeinfo = 'codeinfo'
+
+
+class DummyVenusian:
+    """Dummy venusian class"""
+
+    def __init__(self, info=None):
+        if info is None:
+            info = DummyVenusianInfo()
+        self.info = info
+        self.attachments = []
+
+    def attach(self, wrapped, callback, category=None, depth=1):
+        """Venusian attachment"""
+        self.attachments.append((wrapped, callback, category, depth))
+        return self.info
+
+
+class DummyVenusianContext:
+    """Dummy venusian context"""
+
+    def __init__(self, config):
+        self.config = config
+
+
+def call_venusian(venusian, config, context=None):
+    """Call venusian decorator"""
+    if context is None:
+        context = DummyVenusianContext(config)
+    # pylint: disable=unused-variable
+    for wrapped, callback, category, depth in venusian.attachments:
+        callback(context, None, wrapped)
+    return context.config
+
+
+def call_decorator(config, decorator, context, *args, **kwargs):
+    """Call a venusian decorator for testing"""
+    venusian = DummyVenusian()
+    target = decorator(registry=config.registry, *args, **kwargs)
+    target.venusian = venusian
+    target(context)
+    call_venusian(venusian, config)
+
+
 def render_xpath(view, xpath='.'):
     """Render only an XPath selection of a full HTML code
 
@@ -39,6 +88,10 @@ def render_xpath(view, xpath='.'):
     >>> view = View()
     >>> render_xpath(view, './/div[2][@class="row"]')
     '<div class="row">\\n  <p>Row 2</p>\\n</div>\\n'
+    >>> render_xpath(view, './/div[2][@class="bad"]')
+    Traceback (most recent call last):
+    ...
+    ValueError: No elements matched by './/div[2][@class="bad"]'.
     """
     method = getattr(view, 'render', None)
     if method is None:
