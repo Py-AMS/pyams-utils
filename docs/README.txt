@@ -32,3 +32,5 @@ properties..., as well as custom schema fields.
 
 When included into Pyramid's configuration, this package also register several Zope packages
 through ZCML, typically to automatically inclure DublinCore extensions or IntIDs management.
+
+Most PyAMS_utils modules are documented using doctests in the /doctests/ sub-directory.

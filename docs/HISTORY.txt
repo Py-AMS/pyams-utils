@@ -2,6 +2,13 @@
 Changelog
 =========
 
+1.2.3
+-----
+ - small refactoring to add "get_timestamp" function to "pyams_utils.date" module
+ - small updates in "url" and "zodb" modules
+ - added venusian decorators testing helpers
+ - completed doctests
+
 1.2.2
 -----
  - Pylint upgrade
