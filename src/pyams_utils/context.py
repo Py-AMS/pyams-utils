@@ -50,6 +50,19 @@ def capture_stderr(func, *args, **kwargs):
         sys.stderr = err
 
 
+@contextmanager
+def capture_all(func, *args, **kwargs):
+    """Context manager used to capture standard output and standard error output"""
+    out, sys.stdout, err, sys.stderr = sys.stdout, StringIO(), sys.stderr, StringIO()
+    try:
+        func(*args, **kwargs)
+        sys.stdout.seek(0)
+        sys.stderr.seek(0)
+        yield sys.stdout.read(), sys.stderr.read()
+    finally:
+        sys.stdout, sys.stderr = out, err
+
+
 class ContextSelector:  # pylint: disable=too-few-public-methods
     """Interface based context selector
 
