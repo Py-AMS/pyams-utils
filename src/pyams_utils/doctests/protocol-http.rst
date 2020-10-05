@@ -13,11 +13,11 @@ PyAMS provides a few helpers to handle HTTP protocol, and mainly to handle HTTP 
     ...
     ConnectionRefusedError: [Errno 111] Connection refused
 
+    >>> from unittest.mock import patch
     >>> client = get_client_from_url('http://localhost/',
     ...                              credentials=('login', 'password'),
     ...                              proxy=('localhost', 18081),
     ...                              proxy_auth=('proxy_user', 'proxy_password'))
-    >>> client.get_response()
-    Traceback (most recent call last):
-    ...
-    IndexError: tuple index out of range
+    >>> with patch('httplib2.Http.request', return_value=(200, 'OK')):
+    ...     client.get_response()
+    (200, 'OK')
