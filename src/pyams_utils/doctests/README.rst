@@ -39,7 +39,7 @@ definition of it's attached interface field:
 
     >>> from pyams_utils import get_field_doc
     >>> MyContent.title1.__doc__
-    'The most base type'
+    '...'
     >>> MyContent.title2.__doc__
     'Field title'
     >>> MyContent.title3.__doc__

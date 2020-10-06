@@ -51,4 +51,6 @@ format:
 
 Tests cleanup:
 
+    >>> manager.pop()
+    {...}
     >>> tearDown()

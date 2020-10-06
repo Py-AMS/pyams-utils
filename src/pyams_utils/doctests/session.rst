@@ -75,4 +75,6 @@ You can provide your own key, or a function which will be called to get the key:
 
 Tests cleanup:
 
+    >>> manager.pop()
+    {...}
     >>> tearDown()

@@ -90,4 +90,5 @@ We can also handle objects removal:
 
 Tests cleanup:
 
+    >>> set_local_registry(None)
     >>> tearDown()
