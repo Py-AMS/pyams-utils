@@ -2,6 +2,13 @@
 Changelog
 =========
 
+1.3.0
+-----
+ - updated PyAMS registry management to only use Pyramid registry (using "hook_zca")
+ - local registry should only be used to handle local utilities, and not any kind of
+   components!
+ - updated doctests to use hooked ZCA
+
 1.2.8
 -----
  - updated doctests
