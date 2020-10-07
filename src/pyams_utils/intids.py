@@ -19,7 +19,6 @@ events
 
 from persistent.interfaces import IPersistent
 from pyramid.events import subscriber
-from pyramid.threadlocal import get_current_registry
 from zope.intid import intIdEventNotify
 from zope.intid.interfaces import IIntIdEvent, IIntIds, IntIdAddedEvent, IntIdRemovedEvent
 from zope.keyreference.interfaces import IKeyReference, NotYet
@@ -29,7 +28,8 @@ from zope.location.interfaces import ISublocations
 
 from pyams_utils.adapter import ContextAdapter, adapter_config
 from pyams_utils.interfaces.intids import IUniqueID
-from pyams_utils.registry import get_all_utilities_registered_for, query_utility
+from pyams_utils.registry import get_all_utilities_registered_for, get_current_registry, \
+    query_utility
 
 
 __docformat__ = 'restructuredtext'

@@ -18,12 +18,12 @@ This module provides a decorator and a small set of functions to handle object f
 import logging
 
 import venusian
-from zope.component import adapter
+from zope.component import adapter, queryAdapter
 from zope.interface import Interface, classImplements, implementer
 from zope.interface.interface import InterfaceClass
 
 from pyams_utils.interfaces import IObjectFactory
-from pyams_utils.registry import get_global_registry
+from pyams_utils.registry import get_current_registry
 
 
 __docformat__ = 'restructuredtext'
@@ -75,7 +75,7 @@ def register_factory(interface, klass, registry=None, name=''):
     if name:
         if_name = '{0}::{1}'.format(if_name, name)
     if registry is None:
-        registry = get_global_registry()
+        registry = get_current_registry()
     registry.registerAdapter(Temp, name=if_name)
 
 
@@ -134,6 +134,4 @@ def get_object_factory(interface, registry=None, name=''):
     if_name = get_interface_name(interface)
     if name:
         if_name = '{0}::{1}'.format(if_name, name)
-    if registry is None:
-        registry = get_global_registry()
-    return registry.queryAdapter(interface, IObjectFactory, name=if_name)
+    return queryAdapter(interface, IObjectFactory, name=if_name)

@@ -28,8 +28,7 @@ import venusian
 from ZODB.POSException import POSError
 from pyramid.events import subscriber
 from pyramid.interfaces import INewRequest
-from pyramid.threadlocal import get_current_registry as get_request_registry, manager
-from zope.component.globalregistry import getGlobalSiteManager
+from pyramid.threadlocal import get_current_registry as get_pyramid_registry, manager
 from zope.component.interfaces import ISite
 from zope.interface import implementedBy, providedBy
 from zope.interface.interfaces import ComponentLookupError
@@ -75,22 +74,13 @@ def set_local_registry(registry):
     local_registry.set_registry(registry)
 
 
-@subscriber(INewRequest)
-def handle_new_request(event):  # pylint: disable=unused-argument
-    """New request event subscriber
+def get_current_registry():
+    """Get current or global registry
 
-    Is used to initialize local registry to None for any new request
+    The function is looking for given request registry.
+    If registry is None, returns the global registry.
     """
-    set_local_registry(None)
-
-
-@subscriber(IBeforeTraverseEvent, context_selector=ISite)
-def handle_site_before_traverse(event):
-    """Before traverse event subscriber
-
-    Define site's local registry when an object implementing ISite is traversed
-    """
-    set_local_registry(event.object.getSiteManager())
+    return get_pyramid_registry()
 
 
 def get_registries():
@@ -112,31 +102,13 @@ def get_registries():
             append(stack_registry)
 
 
-def get_global_registry():
-    """Get global registry"""
-    return getGlobalSiteManager()
-
-
-def get_current_registry(context=None):
-    """Get current or global registry
-
-    The function is looking for given request registry.
-    If registry is None, returns the global registry.
-    """
-    registry = get_request_registry(context)
-    if registry is None:
-        registry = get_global_registry()
-    return registry
-
-
 def registered_utilities():
     """Get utilities registrations as generator
 
     Iterates over utilities defined in all registries, starting with local ones.
     """
     for registry in get_registries():
-        for utility in registry.registeredUtilities():
-            yield utility
+        yield from registry.registeredUtilities()
 
 
 def query_utility(provided, name='', default=None):
@@ -266,3 +238,25 @@ class utility_config:  # pylint: disable=invalid-name
 
         settings['_info'] = info.codeinfo  # pylint: disable=no-member
         return wrapped
+
+
+#
+# Request registry management
+#
+
+@subscriber(INewRequest)
+def handle_new_request(event):  # pylint: disable=unused-argument
+    """New request event subscriber
+
+    Is used to initialize local registry to None for any new request
+    """
+    set_local_registry(None)
+
+
+@subscriber(IBeforeTraverseEvent, context_selector=ISite)
+def handle_site_before_traverse(event):
+    """Before traverse event subscriber
+
+    Define site's local registry when an object implementing ISite is traversed
+    """
+    set_local_registry(event.object.getSiteManager())

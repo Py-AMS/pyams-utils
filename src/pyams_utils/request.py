@@ -28,7 +28,6 @@ from zope.interface import Interface, alsoProvides
 from pyams_utils.adapter import ContextRequestViewAdapter, adapter_config
 from pyams_utils.interfaces import DISPLAY_CONTEXT_KEY_NAME, ICacheKeyValue, MissingRequestError
 from pyams_utils.interfaces.tales import ITALESExtension
-from pyams_utils.registry import get_global_registry
 
 
 __docformat__ = 'restructuredtext'

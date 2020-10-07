@@ -21,10 +21,10 @@ import re
 from chameleon.astutil import Symbol
 from chameleon.codegen import template
 from chameleon.tales import StringExpr
+from zope.component import queryAdapter, queryMultiAdapter
 from zope.contentprovider.tales import addTALNamespaceData
 
 from pyams_utils.interfaces.tales import ITALESExtension
-from pyams_utils.registry import get_current_registry
 
 
 __docformat__ = 'restructuredtext'
@@ -101,15 +101,11 @@ def render_extension(econtext, name):
             else:
                 args.append(arg)
 
-    if request is not None:
-        registry = request.registry
-    else:
-        registry = get_current_registry()
-    extension = registry.queryMultiAdapter((context, request, view), ITALESExtension, name=name)
+    extension = queryMultiAdapter((context, request, view), ITALESExtension, name=name)
     if extension is None:
-        extension = registry.queryMultiAdapter((context, request), ITALESExtension, name=name)
+        extension = queryMultiAdapter((context, request), ITALESExtension, name=name)
     if extension is None:
-        extension = registry.queryAdapter(context, ITALESExtension, name=name)
+        extension = queryAdapter(context, ITALESExtension, name=name)
 
     # return an empty string if the extension was not found.
     if extension is None:

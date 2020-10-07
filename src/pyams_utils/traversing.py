@@ -23,8 +23,8 @@ from pyramid.compat import decode_path_info, is_nonstr_iter
 from pyramid.exceptions import NotFound, URLDecodeError
 from pyramid.interfaces import VH_ROOT_KEY
 from pyramid.location import lineage
-from pyramid.threadlocal import get_current_registry
 from pyramid.traversal import ResourceTreeTraverser, empty, slash, split_path_info
+from zope.component import queryAdapter, queryMultiAdapter
 from zope.interface import Interface
 from zope.intid.interfaces import IIntIds
 from zope.location import ILocation
@@ -122,8 +122,7 @@ class NamespaceTraverser(ResourceTreeTraverser):
                     # check for custom namespace called '+'
                     # currently this namespace is used in PyAMS_default_theme package to get
                     # direct access to a given content
-                    registry = get_current_registry()
-                    traverser = registry.queryMultiAdapter((obj, request), ITraversable, '+')
+                    traverser = queryMultiAdapter((obj, request), ITraversable, '+')
                     if traverser is None:
                         raise NotFound()
                     try:
@@ -152,10 +151,9 @@ class NamespaceTraverser(ResourceTreeTraverser):
                     # exception is raised if traverser can't be found, otherwise it's "traverse"
                     # method is called to get new context
                     nss, name = segment[2:].split(ns_selector, 1)
-                    registry = get_current_registry()
-                    traverser = registry.queryMultiAdapter((obj, request), ITraversable, nss)
+                    traverser = queryMultiAdapter((obj, request), ITraversable, nss)
                     if traverser is None:
-                        traverser = registry.queryAdapter(obj, ITraversable, nss)
+                        traverser = queryAdapter(obj, ITraversable, nss)
                     if traverser is None:
                         raise NotFound()
                     obj = traverser.traverse(name, vpath_tuple[vroot_idx + i + 1:])

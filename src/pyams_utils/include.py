@@ -64,8 +64,9 @@ def include_package(config):
 
     config.scan()
 
-    if hasattr(config, 'load_zcml') and \
-            os.path.exists(os.path.join(pyams_utils.__path__[0], 'configure.zcml')):
-        config.load_zcml('configure.zcml')
+    if hasattr(config, 'load_zcml'):
+        zcml_name = os.path.join(pyams_utils.__path__[0], 'configure.zcml')
+        if os.path.exists(zcml_name):
+            config.load_zcml(zcml_name)
 
     PageTemplateFile.expression_types['tales'] = ExtensionExpr
