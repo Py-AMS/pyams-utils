@@ -16,7 +16,7 @@ to know which are it's childs.
     >>> import pprint
 
     >>> from pyramid.testing import setUp, tearDown
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
     >>> config.registry.settings['zodbconn.uri'] = 'memory://'
 
     >>> from pyramid_zodbconn import includeme as include_zodbconn

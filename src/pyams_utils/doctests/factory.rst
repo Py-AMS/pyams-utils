@@ -8,7 +8,7 @@ let you create an object based on an interface. The first step is to create an o
 implementing this interface, and then to register it as a factory:
 
     >>> from pyramid.testing import setUp, tearDown
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> from zope.interface import Interface, implementer
     >>> class IMyInterface(Interface):

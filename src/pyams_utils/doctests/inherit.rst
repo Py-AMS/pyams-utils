@@ -7,7 +7,7 @@ This PyAMS module is used to handle inheritance between a parent object and a ch
 "inherit" from some of it's properties, as long as they share the same "target" interface.
 
     >>> from pyramid.testing import setUp, tearDown
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> from zope.interface import implementer, Interface, Attribute
     >>> from zope.schema import TextLine

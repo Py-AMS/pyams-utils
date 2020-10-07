@@ -10,7 +10,7 @@ example, to catalog objects.
     >>> import pprint
 
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
     >>> config.registry.settings['zodbconn.uri'] = 'memory://'
 
     >>> from pyramid_zodbconn import includeme as include_zodbconn
@@ -57,8 +57,17 @@ The default adapter relies on a registered IIntIds utility, which doesn't exist 
 
 We may now simulate a request and activate local components registry:
 
-    >>> from pyams_utils.registry import set_local_registry
-    >>> set_local_registry(lsm)
+    >>> from pyramid.events import NewRequest
+    >>> from pyams_utils.registry import handle_new_request, handle_site_before_traverse
+    >>> from zope.traversing.interfaces import BeforeTraverseEvent
+
+    >>> request = DummyRequest()
+    >>> handle_new_request(NewRequest(request))
+    >>> handle_site_before_traverse(BeforeTraverseEvent(app, request))
+
+    >>> from pyams_utils.registry import query_utility
+    >>> query_utility(IIntIds)
+     <zope.intid.IntIds object at 0x... oid 0x... in <Connection at ...>>
 
     >>> IUniqueID(content, None).oid is None
     True
@@ -90,5 +99,6 @@ We can also handle objects removal:
 
 Tests cleanup:
 
+    >>> from pyams_utils.registry import set_local_registry
     >>> set_local_registry(None)
     >>> tearDown()

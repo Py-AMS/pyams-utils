@@ -18,14 +18,30 @@ registry before looking into the global one; the local registry is generally set
 traversing (when using PyAMS own traverser) by a subscriber to IBeforeTraverseEvent on any
 object providing ISite:
 
-    >>> from pyams_utils.registry import get_registries, get_global_registry, get_current_registry
-    >>> get_current_registry()
-    <Registry global>
+    >>> import pprint
 
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
+    >>> config.registry
+    <Registry testing>
+
+    >>> from zope.component import getSiteManager
+    >>> getSiteManager()
+    <Registry testing>
+
+We are going to initialize registry using ZCML files; this will initialize our components
+registry with *zope.component* and *zope.dublincore* packages components:
+
+    >>> from pyramid_zcml import includeme as include_zcml
+    >>> include_zcml(config)
+    >>> from pyams_utils import includeme as include_utils
+    >>> include_utils(config)
 
     >>> from pyams_utils.registry import get_local_registry, set_local_registry
+    >>> from pyams_utils.registry import get_registries, get_current_registry
+
+    >>> get_current_registry()
+    <Registry testing>
     >>> get_local_registry() is None
     True
 
@@ -49,12 +65,13 @@ Let's now create a new request and handle traversing:
 
     >>> request = DummyRequest(context=root)
     >>> handle_new_request(NewRequest(request))
-    >>> get_local_registry() is None
-    True
-    >>> manager.push({'registry': config.registry, 'request': request})
     >>> handle_site_before_traverse(BeforeTraverseEvent(root, request))
+    >>> pprint.pprint(manager.stack)
+    [{'registry': <Registry testing>, 'request': None}]
     >>> get_local_registry() is lsm
     True
+    >>> get_current_registry() is lsm
+    False
 
 We can get the list of available registries:
 
@@ -62,14 +79,9 @@ We can get the list of available registries:
     [<LocalSiteManager ++etc++site>, <Registry testing>]
 
 We create a custom registry for testing, but while running into Pyramid the global registry is
-always Zope's base components registry (so that direct interfaces adapters always work without
-requiring the registry):
-
-    >>> get_global_registry()
-    <BaseGlobalComponents base>
-
-The "current" registry is not the local registry: it's the last registry registered into
-Pyramid's stack, or the global one if None:
+always Pyramid's global components registry (so that direct interfaces adapters always work without
+requiring the registry); the "current" registry is not the local registry: it's the last registry
+registered into Pyramid's stack:
 
     >>> get_current_registry()
     <Registry testing>
@@ -104,7 +116,7 @@ We can register this utility into our local registry:
     <...ServerTimezoneUtility object at 0x...>
     >>> list(get_utilities_for(IServerTimezone))
     [('', <...ServerTimezoneUtility object at 0x...>)]
-    >>> get_all_utilities_registered_for(IServerTimezone)
+    >>> list(get_all_utilities_registered_for(IServerTimezone))
     [<...ServerTimezoneUtility object at 0x...>]
 
 You can of course add several utilities for a same interface, as long as they are registered with
@@ -121,7 +133,7 @@ different names:
     <...ServerTimezoneUtility object at 0x...>
     >>> sorted(get_utilities_for(IServerTimezone))
     [('', <...ServerTimezoneUtility object at 0x...>), ('tz2', <...ServerTimezoneUtility object at 0x...>)]
-    >>> get_all_utilities_registered_for(IServerTimezone)
+    >>> list(get_all_utilities_registered_for(IServerTimezone))
     [<...ServerTimezoneUtility object at 0x...>, <...ServerTimezoneUtility object at 0x...>]
 
 Looking for an unknown utility raises a ComponentLookupError:

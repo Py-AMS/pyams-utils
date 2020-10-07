@@ -6,7 +6,7 @@ PyAMS_utils data module
 The IObjectData interface can be used to assign custom data to any object:
 
     >>> from pyramid.testing import setUp, tearDown
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)

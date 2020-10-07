@@ -7,7 +7,7 @@ This small PyAMS module is used to define a custom URL traverser, which can be u
 access to a specific object attribute:
 
     >>> from pyramid.testing import setUp, tearDown
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)

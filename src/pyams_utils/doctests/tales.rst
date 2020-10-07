@@ -8,7 +8,7 @@ TALES "extensions"; these extensions are custom single or multi-adapters to ITAL
 interface and can be used from Chameleon templates:
 
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)

@@ -7,7 +7,7 @@ This module can be used to handle session data, which works nearly as request da
 stored into session:
 
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> request = DummyRequest()
     >>> request.session

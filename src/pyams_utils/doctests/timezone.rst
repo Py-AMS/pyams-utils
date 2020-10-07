@@ -20,7 +20,7 @@ Other systems can also get timezone from source IP address (see, for example,
 `https://ip-api.com/').
 
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> from pyams_utils import includeme
     >>> includeme(config)

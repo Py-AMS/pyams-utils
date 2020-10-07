@@ -8,7 +8,7 @@ The "wsgi_environ_cache" can be used to cache a method result into request envir
     >>> import pprint
 
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> from pyams_utils.wsgi import wsgi_environ_cache
     >>> class MyUtility:

@@ -7,7 +7,7 @@ PyAMS_utils "pygments" module can be used to add syntax highlighting to any sour
 using the Pygments package.
 
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)

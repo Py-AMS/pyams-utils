@@ -11,7 +11,7 @@ the current execution thread; if no "real" request is active, a new one is creat
     >>> import pprint
 
     >>> from pyramid.testing import setUp, tearDown
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)
@@ -48,7 +48,6 @@ Requests can now support annotations to set and retrieve any information to a gi
 
     >>> from zope.annotation.interfaces import IAttributeAnnotatable, IAnnotations
     >>> from zope.annotation.attribute import AttributeAnnotations
-    >>> from pyams_utils.registry import get_global_registry
     >>> config.registry.registerAdapter(AttributeAnnotations, (IAttributeAnnotatable, ), IAnnotations)
 
     >>> from pyams_utils.request import get_request_data, set_request_data

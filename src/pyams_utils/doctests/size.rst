@@ -7,7 +7,7 @@ Thi smodule is providing a single function to convert size value (given in bytes
 format:
 
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> from pyramid.threadlocal import manager
     >>> request = DummyRequest(params={'_LOCALE_': 'en'})

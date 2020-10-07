@@ -14,7 +14,7 @@ constructor must accept as many arguments as defined into adapter's "required" p
 PyAMS_utils provides a small set of commonly used adapters:
 
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)

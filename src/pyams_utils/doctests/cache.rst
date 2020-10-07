@@ -7,7 +7,7 @@ This module is used to provide a few helpers related to cache management ; the I
 interface is used to get a cache key value for any object:
 
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
     >>> config.registry.settings['zodbconn.uri'] = 'memory://'
 
     >>> from pyramid_zodbconn import includeme as include_zodbconn

@@ -6,7 +6,7 @@ PyAMS utils date module
 Dates functions are used to convert dates from/to string representation:
 
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)

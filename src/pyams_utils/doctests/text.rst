@@ -6,7 +6,7 @@ PyAMS_utils text module
 PyAMS_utils.text is a small module dedicated to small text management functions.
 
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> from pyramid_chameleon.zpt import renderer_factory
     >>> config.add_renderer('.pt', renderer_factory)

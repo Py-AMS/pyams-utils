@@ -8,7 +8,7 @@ PyAMS_utils provides a few helpers to manage ZODB connections.
     >>> import pprint
 
     >>> from pyramid.testing import setUp, tearDown
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
     >>> config.registry.settings['zodbconn.uri'] = 'memory://'
 
     >>> from pyramid_zodbconn import includeme as include_zodbconn
