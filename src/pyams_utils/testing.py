@@ -68,12 +68,12 @@ def call_venusian(venusian, config, context=None):
     return context.config
 
 
-def call_decorator(config, decorator, context, *args, **kwargs):
+def call_decorator(config, decorator, handler, *args, **kwargs):
     """Call a venusian decorator for testing"""
     venusian = DummyVenusian()
     target = decorator(registry=config.registry, *args, **kwargs)
     target.venusian = venusian
-    target(context)
+    target(handler)
     call_venusian(venusian, config)
 
 
