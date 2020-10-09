@@ -34,7 +34,7 @@ def deprecated(*msg):
     ... def my_function(value):
     ...     return value
 
-    >>> with capture_stderr(my_function, 1) as err:
+    >>> with capture_stderr(my_function, 1) as (result, err):
     ...     print(err.split('\\n')[0])
     <doctest ... DeprecationWarning: Function my_function is deprecated.
 
@@ -42,7 +42,7 @@ def deprecated(*msg):
     ... def my_function_2(value):
     ...     return value
 
-    >>> with capture_stderr(my_function_2, 2) as err:
+    >>> with capture_stderr(my_function_2, 2) as (result, err):
     ...     print(err.split('\\n')[0])
     <doctest ... DeprecationWarning: Function my_function_2 is deprecated. Deprecation message
     """

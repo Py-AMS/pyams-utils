@@ -32,18 +32,18 @@ error output:
     ...     print_stdout()
     ...     print_stderr()
 
-    >>> with capture(print_stdout) as output:
+    >>> with capture(print_stdout) as (result, output):
     ...     printed = output
     >>> printed
     'This is a standard output\n'
 
-    >>> with capture_stderr(print_stderr) as output:
-    ...     printed = output
+    >>> with capture_stderr(print_stderr) as (result, errors):
+    ...     printed = errors
     >>> printed
     'This is a standard error\n'
 
-    >>> with capture_all(print_all) as output:
-    ...     printed = output
+    >>> with capture_all(print_all) as (result, output, errors):
+    ...     printed = (output, errors)
     >>> printed
     ('This is a standard output\n', 'This is a standard error\n')
 

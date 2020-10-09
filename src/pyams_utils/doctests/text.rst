@@ -68,7 +68,7 @@ Some renderers can receive additional arguments:
 
     >>> import pprint
     >>> from pyams_utils.context import capture_stderr
-    >>> with capture_stderr(text_to_html, "ReStructured **text**", 'rest', settings={'dump_settings': True}) as errors:
+    >>> with capture_stderr(text_to_html, "ReStructured **text**", 'rest', settings={'dump_settings': True}) as (result, errors):
     ...     pprint.pprint(errors)
     ('\n'
      '::: Runtime settings:\n'
