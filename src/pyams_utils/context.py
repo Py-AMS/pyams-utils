@@ -31,9 +31,9 @@ def capture(func, *args, **kwargs):
     """Context manager used to capture standard output"""
     out, sys.stdout = sys.stdout, StringIO()
     try:
-        func(*args, **kwargs)
+        result = func(*args, **kwargs)
         sys.stdout.seek(0)
-        yield sys.stdout.read()
+        yield result, sys.stdout.read()
     finally:
         sys.stdout = out
 
@@ -43,9 +43,9 @@ def capture_stderr(func, *args, **kwargs):
     """Context manager used to capture error output"""
     err, sys.stderr = sys.stderr, StringIO()
     try:
-        func(*args, **kwargs)
+        result = func(*args, **kwargs)
         sys.stderr.seek(0)
-        yield sys.stderr.read()
+        yield result, sys.stderr.read()
     finally:
         sys.stderr = err
 
@@ -55,10 +55,10 @@ def capture_all(func, *args, **kwargs):
     """Context manager used to capture standard output and standard error output"""
     out, sys.stdout, err, sys.stderr = sys.stdout, StringIO(), sys.stderr, StringIO()
     try:
-        func(*args, **kwargs)
+        result = func(*args, **kwargs)
         sys.stdout.seek(0)
         sys.stderr.seek(0)
-        yield sys.stdout.read(), sys.stderr.read()
+        yield result, sys.stdout.read(), sys.stderr.read()
     finally:
         sys.stdout, sys.stderr = out, err
 
