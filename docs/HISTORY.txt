@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.3.4
+-----
+ - always add "context" attribute to request when creating a new request
+
 1.3.3
 -----
  - changed format of "capture*" context managers to also get result of initial function call
