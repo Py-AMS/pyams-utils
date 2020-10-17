@@ -191,6 +191,7 @@ def check_request(path='/', environ=None, base_url=None, headers=None,
             factory = PyAMSRequest
         request = factory.blank(path, environ, base_url, headers, POST, **kwargs)
         request.registry = registry  # pylint: disable=attribute-defined-outside-init
+        request.context = kwargs.get('context', None)
         if principal_id is not None:
             try:
                 # pylint: disable=import-outside-toplevel
