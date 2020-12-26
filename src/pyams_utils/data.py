@@ -68,7 +68,7 @@ class ObjectDataManagerMixin:
     object_data = FieldProperty(IObjectData['object_data'])
 
 
-@adapter_config(context=IObjectData, provides=IObjectDataRenderer)
+@adapter_config(required=IObjectData, provides=IObjectDataRenderer)
 class ObjectDataRenderer(ContextAdapter):
     """Object data JSON renderer"""
 
@@ -80,7 +80,16 @@ class ObjectDataRenderer(ContextAdapter):
         return json.dumps(data.object_data) if data is not None else None
 
 
-@adapter_config(name='object_data', context=(Interface, Interface, Interface),
+def render_object_data(context):
+    """Render object data as JSON string"""
+    renderer = IObjectDataRenderer(context, None)
+    if renderer is not None:
+        return renderer.get_object_data()
+    return ''
+
+
+@adapter_config(name='object_data',
+                required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
 class ObjectDataExtension(ContextRequestViewAdapter):
     """extension:object_data TALES extension
@@ -100,7 +109,4 @@ class ObjectDataExtension(ContextRequestViewAdapter):
         """
         if context is None:
             context = self.context
-        renderer = IObjectDataRenderer(context, None)
-        if renderer is not None:
-            return renderer.get_object_data()
-        return None
+        return render_object_data(context)
