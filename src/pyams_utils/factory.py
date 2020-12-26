@@ -123,7 +123,7 @@ class factory_config:  # pylint: disable=invalid-name,no-member
         return wrapped
 
 
-def get_object_factory(interface, registry=None, name=''):
+def get_object_factory(interface, name=''):
     """Get registered factory for given interface
 
     :param interface: the interface for which a factory is requested
