@@ -98,7 +98,8 @@ def get_resource_path(resource, signature='--static--', versioning=True):
     return '{0}/{1}'.format(res.library_url(resource.library), resource.relpath)
 
 
-@adapter_config(name='resource_path', context=(Interface, Interface, Interface),
+@adapter_config(name='resource_path',
+                required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
 class FanstaticTalesExtension(ContextRequestViewAdapter):
     """tales:resource_path() TALES extension
@@ -125,7 +126,8 @@ class FanstaticTalesExtension(ContextRequestViewAdapter):
         return get_resource_path(resource)
 
 
-@adapter_config(name='need_resource', context=(Interface, Interface, Interface),
+@adapter_config(name='need_resource',
+                required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
 class FanstaticNeededResourceTalesExtension(ContextRequestViewAdapter):
     """tales:need_resource() TALES extension

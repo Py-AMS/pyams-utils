@@ -115,7 +115,8 @@ def boolean_iter(iterable):
     return next(values), values
 
 
-@adapter_config(name='boolean_iter', context=(Interface, Interface, Interface),
+@adapter_config(name='boolean_iter',
+                required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
 class BooleanIterCheckerExpression(ContextRequestViewAdapter):
     """TALES expression used to handle iterators

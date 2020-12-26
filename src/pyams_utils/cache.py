@@ -32,7 +32,7 @@ from pyams_utils.interfaces.tales import ITALESExtension
 __docformat__ = 'restructuredtext'
 
 
-@adapter_config(context=object, provides=ICacheKeyValue)
+@adapter_config(required=object, provides=ICacheKeyValue)
 def object_cache_key_adapter(obj):
     """Cache key adapter for any object
 
@@ -53,7 +53,7 @@ def object_cache_key_adapter(obj):
     return str(id(obj))
 
 
-@adapter_config(context=str, provides=ICacheKeyValue)
+@adapter_config(required=str, provides=ICacheKeyValue)
 def string_cache_key_adapter(obj):
     """Cache key adapter for string value
 
@@ -74,7 +74,7 @@ def string_cache_key_adapter(obj):
     return obj
 
 
-@adapter_config(context=IPersistent, provides=ICacheKeyValue)
+@adapter_config(required=IPersistent, provides=ICacheKeyValue)
 def persistent_cache_key_adapter(obj):
     """Cache key adapter for persistent object"""
     # pylint: disable=protected-access
@@ -83,7 +83,7 @@ def persistent_cache_key_adapter(obj):
     return str(id(obj))
 
 
-@adapter_config(name='cache_key', context=(Interface, Interface, Interface),
+@adapter_config(name='cache_key', required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
 class CacheKeyTalesExtension(ContextRequestViewAdapter):
     """extension:cache_key(context) TALES extension

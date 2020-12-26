@@ -275,7 +275,8 @@ def get_display_context(request):
     return get_request_data(request, DISPLAY_CONTEXT_KEY_NAME, request.context)
 
 
-@adapter_config(name='request_data', context=(Interface, IRequest, Interface),
+@adapter_config(name='request_data',
+                required=(Interface, IRequest, Interface),
                 provides=ITALESExtension)
 class RequestDataExtension(ContextRequestViewAdapter):
     """extension:request_data TALES extension for Pyramid request

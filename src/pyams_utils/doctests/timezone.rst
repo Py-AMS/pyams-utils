@@ -70,7 +70,7 @@ provided datetime is localized in GMT:
 
     >>> tznow = tztime(now)
     >>> tznow
-    datetime.datetime(..., tzinfo=<DstTzInfo 'Europe/Paris' ... DST>)
+    datetime.datetime(..., tzinfo=<DstTzInfo 'Europe/Paris' ...>)
     >>> gmtime(tznow)
     datetime.datetime(..., tzinfo=<StaticTzInfo 'GMT'>)
     >>> gmtime(None) is None

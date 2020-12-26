@@ -42,7 +42,7 @@ from pyams_utils.vocabulary import vocabulary_config
 __docformat__ = 'restructuredtext'
 
 
-@adapter_config(context=IPersistent, provides=IConnection)
+@adapter_config(required=IPersistent, provides=IConnection)
 def persistent_connection(obj):
     """An adapter which gets a ZODB connection from a persistent object
 
@@ -61,7 +61,7 @@ def persistent_connection(obj):
 
 # IPersistent adapters copied from zc.twist package
 # also register this for adapting from IConnection
-@adapter_config(context=IPersistent, provides=ITransactionManager)
+@adapter_config(required=IPersistent, provides=ITransactionManager)
 def persistent_transaction_manager(obj):
     """Transaction manager adapter for persistent objects"""
     conn = IConnection(obj)  # typically this will be

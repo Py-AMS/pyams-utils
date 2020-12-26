@@ -27,7 +27,7 @@ from pyams_utils.adapter import ContextAdapter, adapter_config
 __docformat__ = 'restructuredtext'
 
 
-@adapter_config(name='attr', context=Interface, provides=ITraversable)
+@adapter_config(name='attr', required=Interface, provides=ITraversable)
 class AttributeTraverser(ContextAdapter):
     """++attr++ namespace traverser
 

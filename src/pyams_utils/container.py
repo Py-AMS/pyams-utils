@@ -82,7 +82,7 @@ class ParentSelector:
         return False
 
 
-@adapter_config(context=IContained, provides=ISublocations)
+@adapter_config(required=IContained, provides=ISublocations)
 class ContainerSublocationsAdapter(ContextAdapter):
     """Contained object sub-locations adapter
 

@@ -167,7 +167,7 @@ def get_annotation_adapter(context, key, factory=None, markers=None, notify=True
         if factory is None:
             return None
         if is_interface(factory):
-            factory = get_object_factory(factory, registry=kwargs.get('registry'))
+            factory = get_object_factory(factory)
             assert factory is not None, "Missing object factory"
         adapter = annotations[key] = factory()
         if markers:

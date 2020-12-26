@@ -117,7 +117,8 @@ def absolute_url(context, request, view_name=None, query=None):
     return result
 
 
-@adapter_config(name='absolute_url', context=(Interface, Interface, Interface),
+@adapter_config(name='absolute_url',
+                required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
 class AbsoluteUrlTalesExtension(ContextRequestViewAdapter):
     """extension:absolute_url(context, view_name) TALES extension
@@ -158,7 +159,8 @@ def canonical_url(context, request, view_name=None, query=None):
     return absolute_url(context, request, view_name, query)
 
 
-@adapter_config(name='canonical_url', context=(Interface, Interface, Interface),
+@adapter_config(name='canonical_url',
+                required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
 class CanonicalUrlTalesExtension(ContextRequestViewAdapter):
     """extension:canonical_url(context, view_name) TALES extension
@@ -179,7 +181,7 @@ class CanonicalUrlTalesExtension(ContextRequestViewAdapter):
 # Relative URLs management
 #
 
-@adapter_config(context=(Interface, Interface), provides=IRelativeURL)
+@adapter_config(required=(Interface, Interface), provides=IRelativeURL)
 class DefaultRelativeURLAdapter(ContextRequestAdapter):
     """Default relative URL adapter"""
 
@@ -197,7 +199,8 @@ def relative_url(context, request, display_context=None, view_name=None, query=N
     return adapter.get_url(display_context, view_name, query)
 
 
-@adapter_config(name='relative_url', context=(Interface, Interface, Interface),
+@adapter_config(name='relative_url',
+                required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
 class RelativeUrlTalesExtension(ContextRequestViewAdapter):
     """extension:relative_url(context, view_name, query) TALES extension

@@ -44,7 +44,7 @@ The adapter is created to adapt an object providing IMyTargetInterface to IMyInf
 please note that the adapter *must* attach the created object to it's parent by setting
 __parent__ attribute:
 
-    >>> @adapter_config(context=IMyTargetInterface, provides=IMyInfoInterface)
+    >>> @adapter_config(required=IMyTargetInterface, provides=IMyInfoInterface)
     ... def my_info_factory(context):
     ...     info = getattr(context, '__info__', None)
     ...     if info is None:

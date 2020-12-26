@@ -55,7 +55,7 @@ Using this extension on an object which doesn't support IOBjectData interface re
 
     >>> extension = config.registry.getMultiAdapter((object(), None, None), ITALESExtension,
     ...                                             name='object_data')
-    >>> extension.render() is None
+    >>> extension.render() == ''
     True
 
 

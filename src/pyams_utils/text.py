@@ -75,7 +75,8 @@ def get_text_start(text, length, maxlen=0):
     return text
 
 
-@adapter_config(name='truncate', context=(Interface, Interface, Interface),
+@adapter_config(name='truncate',
+                required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
 class TruncateCharsTalesExtension(ContextRequestViewAdapter):
     """extension:truncate(value, length, max) TALES expression
@@ -95,7 +96,7 @@ class TruncateCharsTalesExtension(ContextRequestViewAdapter):
         return get_text_start(value, length, maxlen=maxlen)
 
 
-@adapter_config(name='raw', context=(str, IRequest), provides=IHTMLRenderer)
+@adapter_config(name='raw', required=(str, IRequest), provides=IHTMLRenderer)
 class BaseHTMLRenderer(ContextRequestAdapter):
     """Raw text HTML renderer
 
@@ -107,7 +108,7 @@ class BaseHTMLRenderer(ContextRequestAdapter):
         return self.context
 
 
-@adapter_config(name='text', context=(str, IRequest), provides=IHTMLRenderer)
+@adapter_config(name='text', required=(str, IRequest), provides=IHTMLRenderer)
 class TextRenderer(BaseHTMLRenderer):
     """Basic text HTML renderer
 
@@ -120,7 +121,7 @@ class TextRenderer(BaseHTMLRenderer):
         return html.escape(self.context).replace('\n', '<br />\n')
 
 
-@adapter_config(name='js', context=(str, IRequest), provides=IHTMLRenderer)
+@adapter_config(name='js', required=(str, IRequest), provides=IHTMLRenderer)
 class JsRenderer(BaseHTMLRenderer):
     """Custom Javascript HTML renderer
 
@@ -131,7 +132,7 @@ class JsRenderer(BaseHTMLRenderer):
         return self.context.replace("'", "\\'")
 
 
-@adapter_config(name='rest', context=(str, IRequest), provides=IHTMLRenderer)
+@adapter_config(name='rest', required=(str, IRequest), provides=IHTMLRenderer)
 class ReStructuredTextRenderer(BaseHTMLRenderer):
     """reStructuredText HTML renderer
 
@@ -156,7 +157,7 @@ class ReStructuredTextRenderer(BaseHTMLRenderer):
         return ''.join((parts['body_pre_docinfo'], parts['docinfo'], parts['body']))
 
 
-@adapter_config(name='markdown', context=(str, IRequest), provides=IHTMLRenderer)
+@adapter_config(name='markdown', required=(str, IRequest), provides=IHTMLRenderer)
 class MarkdownTextRenderer(BaseHTMLRenderer):
     """Markdown HTML renderer
 
@@ -190,7 +191,9 @@ def text_to_html(text, renderer='text', **kwargs):
 EMPTY_MARKER = object()
 
 
-@adapter_config(name='html', context=(Interface, Interface, Interface), provides=ITALESExtension)
+@adapter_config(name='html',
+                required=(Interface, Interface, Interface),
+                provides=ITALESExtension)
 class HTMLTalesExtension(ContextRequestViewAdapter):
     """*extension:html* TALES expression
 
@@ -242,7 +245,9 @@ class RenderersVocabulary(SimpleVocabulary):
         super(RenderersVocabulary, self).__init__(terms)
 
 
-@adapter_config(name='br', context=(Interface, Interface, Interface), provides=ITALESExtension)
+@adapter_config(name='br',
+                required=(Interface, Interface, Interface),
+                provides=ITALESExtension)
 class BrTalesExtension(ContextRequestViewAdapter):
     """extension:br(value, class) TALES expression
 

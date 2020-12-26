@@ -35,7 +35,7 @@ from pyams_utils.registry import get_all_utilities_registered_for, get_current_r
 __docformat__ = 'restructuredtext'
 
 
-@adapter_config(context=IPersistent, provides=IUniqueID)
+@adapter_config(required=IPersistent, provides=IUniqueID)
 class UniqueIdAdapter(ContextAdapter):
     """Object unique ID adapter
 

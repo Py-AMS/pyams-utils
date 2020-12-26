@@ -38,7 +38,7 @@ __docformat__ = 'restructuredtext'
 GMT = pytz.timezone('GMT')
 
 
-@adapter_config(context=IRequest, provides=ITZInfo)
+@adapter_config(required=IRequest, provides=ITZInfo)
 def tzinfo(request=None):  # pylint: disable=unused-argument
     """request to timezone adapter
 

@@ -310,7 +310,8 @@ def get_timestamp(context, formatting=None):
     return format_func(tztime(datetime.utcnow()))
 
 
-@adapter_config(name='timestamp', context=(Interface, Interface, Interface),
+@adapter_config(name='timestamp',
+                required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
 class TimestampTalesAdapter(ContextRequestViewAdapter):
     """extension:timestamp(context) TALES adapter

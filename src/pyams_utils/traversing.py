@@ -244,7 +244,7 @@ def get_parent(context, interface=Interface, allow_context=True, condition=None)
     return None
 
 
-@adapter_config(context=IContained, provides=IPathElements)
+@adapter_config(required=IContained, provides=IPathElements)
 class PathElementsAdapter(ContextAdapter):
     """Contained object path elements adapter
 
