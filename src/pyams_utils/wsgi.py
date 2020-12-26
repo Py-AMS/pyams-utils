@@ -27,15 +27,21 @@ def wsgi_environ_cache(*names):
 
     def decorator(func):
 
-        def function_wrapper(self, request):
+        def function_wrapper(self, request, **kwargs):
             scalar = len(names) == 1
+            args_key = ''
+            if kwargs:
+                args_key += ':' + ':'.join(('{}={}'.format(key, value)
+                                            for key, value in kwargs.items()))
             try:
-                env = [request.environ[cached_key] for cached_key in names]
+                env = [request.environ['{}{}'.format(cached_key, args_key)]
+                       for cached_key in names]
             except KeyError:
-                env = func(self, request)
+                env = func(self, request, **kwargs)
                 if scalar:
                     env = [env, ]
-                request.environ.update(zip(names, env))
+                for idx, cached_key in enumerate(names):
+                    request.environ['{}{}'.format(cached_key, args_key)] = env[idx]
             return env[0] if scalar else env
 
         return function_wrapper
