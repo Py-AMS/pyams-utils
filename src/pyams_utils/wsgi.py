@@ -18,11 +18,12 @@ This module provides a method decorator which can store it's value into request 
 __docformat__ = 'restructuredtext'
 
 
-def wsgi_environ_cache(*names):
+def wsgi_environ_cache(*names, store_none=True):
     """Wrap a function/method to cache its result for call into request.environ
 
     :param [string...] names: keys to cache into environ; len(names) must
         be equal to the result's length or scalar
+    :param bool store_none: if False, None values are not stored into request environment
     """
 
     def decorator(func):
@@ -41,7 +42,8 @@ def wsgi_environ_cache(*names):
                 if scalar:
                     env = [env, ]
                 for idx, cached_key in enumerate(names):
-                    request.environ['{}{}'.format(cached_key, args_key)] = env[idx]
+                    if store_none or (env[idx] is not None):
+                        request.environ['{}{}'.format(cached_key, args_key)] = env[idx]
             return env[0] if scalar else env
 
         return function_wrapper

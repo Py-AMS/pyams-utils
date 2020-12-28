@@ -17,6 +17,11 @@ The "wsgi_environ_cache" can be used to cache a method result into request envir
     ...     def get_value(self, request):
     ...         pprint.pprint("Getting value...")
     ...         return 1
+    ...
+    ...     @wsgi_environ_cache('MyKey 2', store_none=False)
+    ...     def get_other_value(self, request):
+    ...         pprint.pprint("Getting second value...")
+    ...         return None
 
     >>> request = DummyRequest()
 
@@ -30,6 +35,17 @@ The "wsgi_environ_cache" can be used to cache a method result into request envir
 
     >>> request.environ.get('MyKey')
     1
+
+    >>> utility.get_other_value(request) is None
+    'Getting second value...'
+    True
+
+    >>> utility.get_other_value(request) is None
+    'Getting second value...'
+    True
+
+    >>> request.environ.get('MyKey 2') is None
+    True
 
 
 Tests cleanup:
