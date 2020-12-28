@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.3.7
+-----
+ - updated Travis configuration
+
 1.3.6
 -----
  - updated WSGI environment decorator to prevent storing null values into request environment
