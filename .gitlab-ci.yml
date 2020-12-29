@@ -1,8 +1,8 @@
 image: python:3.5
 
 stages:
-    - quality
     - test
+    - quality
     - build
     - dist
 
@@ -23,6 +23,22 @@ bootstrap:
     script:
         - python3.5 bootstrap.py
         - ./bin/buildout
+
+test-3.5:
+    stage: test
+    script:
+        - pip install anybadge coverage
+        - mkdir ./coverage
+        - coverage erase
+        - coverage run ./bin/test | tee ./coverage/coverage.log
+        - coverage xml
+        - GLOBAL_COVER=$(coverage report | grep TOTAL | awk '{print $4}' | cut -d '%' -f 1)
+        - anybadge --label=Coverage --file=./coverage/coverage.svg --value=$GLOBAL_COVER coverage
+        - echo "Global tests coverage is $GLOBAL_COVER %"
+    artifacts:
+        paths:
+            - ./coverage/
+            - coverage.xml
 
 pylint:
     stage: quality
@@ -55,58 +71,6 @@ coverage:
     except:
         variables:
             - $CODE_COVERAGE_DISABLED
-
-quality:
-    stage: quality
-    allow_failure: true
-    image: docker:stable
-    services:
-        - docker:stable-dind
-    variables:
-        DOCKER_DRIVER: overlay2
-        DOCKER_TLS_CERTDIR: ""
-    script:
-        - |
-            if ! docker info &>/dev/null; then
-              if [ -z "$DOCKER_HOST" -a "$KUBERNETES_PORT" ]; then
-                export DOCKER_HOST='tcp://localhost:2375'
-              fi
-            fi
-        - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
-        - docker run
-            --env SOURCE_CODE="$PWD"
-            --volume "$PWD":/code
-            --volume /var/run/docker.sock:/var/run/docker.sock
-            "registry.gitlab.com/gitlab-org/security-products/codequality:$SP_VERSION" /code
-    artifacts:
-        reports:
-            codequality: gl-code-quality-report.json
-        expire_in: 1 week
-    dependencies: []
-    only:
-        refs:
-            - branches
-            - tags
-    except:
-        variables:
-            - $CODE_QUALITY_DISABLED
-
-test-3.5:
-    stage: test
-    script:
-        - pip install anybadge coverage coveralls
-        - mkdir ./coverage
-        - coverage erase
-        - coverage run ./bin/test | tee ./coverage/coverage.log
-        - coverage xml
-        - GLOBAL_COVER=$(coverage report | grep TOTAL | awk '{print $4}' | cut -d '%' -f 1)
-        - anybadge --label=Coverage --file=./coverage/coverage.svg --value=$GLOBAL_COVER coverage
-        - echo "Global tests coverage is $GLOBAL_COVER %"
-        - coveralls
-    artifacts:
-        paths:
-            - ./coverage/
-            - coverage.xml
 
 build-3.5:
     stage: build
