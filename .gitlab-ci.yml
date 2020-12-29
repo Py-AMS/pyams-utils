@@ -1,9 +1,10 @@
 image: python:3.5
 
 stages:
-    - test
-    - dist
     - quality
+    - test
+    - build
+    - dist
 
 cache:
     paths:
@@ -20,35 +21,8 @@ before_script:
 bootstrap:
     stage: .pre
     script:
-        - python3.5 bootstrap.py --buildout-version=2.12.0
+        - python3.5 bootstrap.py
         - ./bin/buildout
-
-test-3.5:
-    stage: test
-    script:
-        - pip install anybadge coverage
-        - mkdir ./coverage
-        - coverage erase
-        - coverage run ./bin/test | tee ./coverage/coverage.log
-        - coverage xml
-        - GLOBAL_COVER=$(coverage report | grep TOTAL | awk '{print $4}' | cut -d '%' -f 1)
-        - anybadge --label=Coverage --file=./coverage/coverage.svg --value=$GLOBAL_COVER coverage
-        - echo "Global tests coverage is $GLOBAL_COVER %"
-    artifacts:
-        paths:
-            - ./coverage/
-            - coverage.xml
-
-dist:
-    stage: dist
-    script:
-        - ./bin/buildout setup setup.py clean --all sdist bdist_egg bdist_wheel
-    artifacts:
-        paths:
-            - ./dist
-    only:
-        refs:
-            - tags
 
 pylint:
     stage: quality
@@ -116,3 +90,126 @@ quality:
     except:
         variables:
             - $CODE_QUALITY_DISABLED
+
+test-3.5:
+    stage: test
+    script:
+        - pip install anybadge coverage coveralls
+        - mkdir ./coverage
+        - coverage erase
+        - coverage run ./bin/test | tee ./coverage/coverage.log
+        - coverage xml
+        - GLOBAL_COVER=$(coverage report | grep TOTAL | awk '{print $4}' | cut -d '%' -f 1)
+        - anybadge --label=Coverage --file=./coverage/coverage.svg --value=$GLOBAL_COVER coverage
+        - echo "Global tests coverage is $GLOBAL_COVER %"
+        - coveralls
+    artifacts:
+        paths:
+            - ./coverage/
+            - coverage.xml
+
+build-3.5:
+    stage: build
+    script:
+        - ./bin/buildout setup setup.py clean --all sdist bdist_egg bdist_wheel
+    artifacts:
+        paths:
+            - ./dist
+    only:
+        refs:
+            - tags
+
+dist-3.5:
+    stage: dist
+    script:
+        - pip install twine
+        - twine upload dist/*
+    variables:
+        TWINE_USERNAME: $PYPI_USERNAME
+        TWINE_PASSWORD: $PYPI_PASSWORD
+    only:
+        refs:
+            - tags
+    except:
+        variables:
+            - $PYPI_UPLOAD_DISABLED
+
+dist-3.6:
+    stage: dist
+    image: python:3.6
+    script:
+        - python3.6 bootstrap.py
+        - ./bin/buildout
+        - ./bin/test
+        - ./bin/buildout setup setup.py bdist_egg
+        - pip install twine
+        - twine upload dist/*
+    variables:
+        TWINE_USERNAME: $PYPI_USERNAME
+        TWINE_PASSWORD: $PYPI_PASSWORD
+    only:
+        refs:
+            - tags
+    except:
+        variables:
+            - $PYPI_UPLOAD_DISABLED
+
+dist-3.7:
+    stage: dist
+    image: python:3.7
+    script:
+        - python3.7 bootstrap.py
+        - ./bin/buildout
+        - ./bin/test
+        - ./bin/buildout setup setup.py bdist_egg
+        - pip install twine
+        - twine upload dist/*
+    variables:
+        TWINE_USERNAME: $PYPI_USERNAME
+        TWINE_PASSWORD: $PYPI_PASSWORD
+    only:
+        refs:
+            - tags
+    except:
+        variables:
+            - $PYPI_UPLOAD_DISABLED
+
+dist-3.8:
+    stage: dist
+    image: python:3.8
+    script:
+        - python3.8 bootstrap.py
+        - ./bin/buildout
+        - ./bin/test
+        - ./bin/buildout setup setup.py bdist_egg
+        - pip install twine
+        - twine upload dist/*
+    variables:
+        TWINE_USERNAME: $PYPI_USERNAME
+        TWINE_PASSWORD: $PYPI_PASSWORD
+    only:
+        refs:
+            - tags
+    except:
+        variables:
+            - $PYPI_UPLOAD_DISABLED
+
+dist-3.9:
+    stage: dist
+    image: python:3.9
+    script:
+        - python3.9 bootstrap.py
+        - ./bin/buildout
+        - ./bin/test
+        - ./bin/buildout setup setup.py bdist_egg
+        - pip install twine
+        - twine upload dist/*
+    variables:
+        TWINE_USERNAME: $PYPI_USERNAME
+        TWINE_PASSWORD: $PYPI_PASSWORD
+    only:
+        refs:
+            - tags
+    except:
+        variables:
+            - $PYPI_UPLOAD_DISABLED
