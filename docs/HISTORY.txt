@@ -2,6 +2,13 @@
 Changelog
 =========
 
+1.4.0
+-----
+ - added Beaker's cache management functions and vocabulary
+ - always make a registered utility class to provide it's registered interface
+ - added HTTPMethodField schema field, a tuple used to combine an HTTP method and an URL in
+   a single property
+
 1.3.8
 -----
  - updated Gitlab-CI settings to remove Travis-CI
