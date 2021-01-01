@@ -23,6 +23,7 @@ See :ref:`zca` to get a brief introduction about using a local registry with PyA
 
 import logging
 import threading
+from inspect import isclass
 
 import venusian
 from ZODB.POSException import POSError
@@ -30,7 +31,7 @@ from pyramid.events import subscriber
 from pyramid.interfaces import INewRequest
 from pyramid.threadlocal import get_current_registry as get_pyramid_registry, manager
 from zope.component.interfaces import ISite
-from zope.interface import implementedBy, providedBy
+from zope.interface import classImplements, implementedBy, providedBy
 from zope.interface.interfaces import ComponentLookupError
 from zope.traversing.interfaces import IBeforeTraverseEvent
 
@@ -204,27 +205,29 @@ class utility_config:  # pylint: disable=invalid-name
                 factory = None
                 component = obj
 
-            provides = settings.get('provides') or settings.get('provided')
-            if provides is None:
+            provided = settings.get('provides') or settings.get('provided')
+            if provided is None:
                 if factory:
-                    provides = list(implementedBy(factory))
+                    provided = list(implementedBy(factory))
                 else:
-                    provides = list(providedBy(component))
-                if len(provides) == 1:
-                    provides = provides[0]
+                    provided = list(providedBy(component))
+                if len(provided) == 1:
+                    provided = provided[0]
                 else:
                     raise TypeError("Missing 'provides' argument")
+            if isclass(obj) and not provided.implementedBy(obj):
+                classImplements(obj, provided)
 
             LOGGER.debug("Registering utility {0} named '{1}' providing {2}".format(
                 str(component) if component else str(factory),
                 settings.get('name', ''),
-                str(provides)))
+                str(provided)))
             registry = settings.get('registry')
             if registry is None:
                 config = context.config.with_package(info.module)  # pylint: disable=no-member
                 registry = config.registry
             registry.registerUtility(component=component, factory=factory,
-                                     provided=provides, name=settings.get('name', ''))
+                                     provided=provided, name=settings.get('name', ''))
 
         info = self.venusian.attach(wrapped, callback, category='pyams_utility',
                                     depth=depth + 1)
