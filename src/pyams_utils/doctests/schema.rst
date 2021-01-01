@@ -257,3 +257,18 @@ Encodings vocabulary is forced:
     >>> field = EncodingField(source='My source')
     >>> field.vocabularyName
     'pyams_utils.encodings'
+
+
+HTTP method schema fields
+-------------------------
+
+An HTTP method schema field is a tuple combining an HTTP verb (GET, POST...) and an URL.
+
+    >>> from pyams_utils.schema import HTTPMethodField
+    >>> field = HTTPMethodField()
+    >>> field.value_type
+    <zope.schema._bootstrapfields.TextLine object at 0x...>
+    >>> field.min_length
+    2
+    >>> field.max_length
+    2

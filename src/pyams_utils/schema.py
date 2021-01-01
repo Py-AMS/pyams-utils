@@ -283,3 +283,27 @@ class EncodingField(Choice):
         if 'source' in kw:
             del kw['source']
         super(EncodingField, self).__init__(vocabulary=ENCODINGS_VOCABULARY_NAME, **kw)
+
+
+#
+# HTTP method field
+# This field combines an HTTP method (GET, POST...) and an URL
+#
+
+class IHTTPMethodField(ITuple):
+    """HTTP method field marker interface"""
+
+
+@implementer(IHTTPMethodField)
+class HTTPMethodField(Tuple):
+    """HTTP method getter field
+
+    This schema field is made of two elements which are the HTTP method (GET, POST...) and
+    the service URL.
+    """
+
+    def __init__(self, **kw):
+        super(HTTPMethodField, self).__init__(value_type=TextLine(),
+                                              min_length=2,
+                                              max_length=2,
+                                              **kw)
