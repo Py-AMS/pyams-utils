@@ -21,8 +21,12 @@ an HTML page.
 A TALES helper extension is also provided to get an object's cache key from a Chameleon template.
 """
 
+from threading import local
+
+from beaker.cache import CacheManager, cache_regions
 from persistent.interfaces import IPersistent
 from zope.interface import Interface
+from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
 from pyams_utils.adapter import ContextRequestViewAdapter, adapter_config
 from pyams_utils.interfaces import ICacheKeyValue
@@ -30,6 +34,32 @@ from pyams_utils.interfaces.tales import ITALESExtension
 
 
 __docformat__ = 'restructuredtext'
+
+
+_CACHES = local()
+
+
+BEAKER_CACHES_VOCABULARY = SimpleVocabulary([
+    SimpleTerm(key, title='{} ({} sec.)'.format(key, str(val.get('expire'))))
+    for key, val in sorted(cache_regions.items(), key=lambda x: x[1].get('expire'))
+])
+
+
+def get_cache(name, region, namespace):
+    """Get Beaker cache matching region and namespace"""
+    try:
+        cache = getattr(_CACHES, name)
+    except AttributeError:
+        manager = CacheManager(**cache_regions[region])
+        cache = manager.get_cache(namespace)
+        setattr(_CACHES, name, cache)
+    return cache
+
+
+def clear_cache(name, region, namespace):
+    """Invalidate cache namespace entries"""
+    cache = get_cache(name, region, namespace)
+    cache.clear()
 
 
 @adapter_config(required=object, provides=ICacheKeyValue)

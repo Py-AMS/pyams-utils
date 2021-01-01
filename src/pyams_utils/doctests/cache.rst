@@ -47,6 +47,33 @@ A TALES extension is also available to get a cache key from a Chameleon template
     '1'
 
 
+Cache management functions and vocabulary
+-----------------------------------------
+
+Let's declare a few caches:
+
+    >>> from beaker.cache import CacheManager, cache_regions
+    >>> cache = CacheManager(**{'cache.type': 'memory'})
+    >>> cache_regions.update({'short': {'type': 'memory', 'expire': 10}})
+    >>> cache_regions.update({'long': {'type': 'memory', 'expire': 600}})
+
+We can now get an easy access to any cache:
+
+    >>> from pyams_utils.cache import get_cache, clear_cache
+    >>> my_cache = get_cache('pyams_utils', 'short', 'test::ns')
+    >>> my_cache
+    <beaker.cache.Cache object at 0x...>
+    >>> my_cache.set_value('test_value', 1)
+    >>> my_cache.get_value('test_value')
+    1
+
+    >>> clear_cache('myams_utils', 'short', 'test::ns')
+    >>> my_cache.get_value('test_value')
+    Traceback (most recent call last):
+    ...
+    KeyError: b'test_value'
+
+
 Tests cleanup:
 
     >>> tearDown()
