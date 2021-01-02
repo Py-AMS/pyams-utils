@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.4.1
+-----
+ - make "object_data" TALES extension return None instead of an empty string when no
+   data is available
+
 1.4.0
 -----
  - added Beaker's cache management functions and vocabulary
