@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.4.2
+-----
+ - package version mismatch
+
 1.4.1
 -----
  - make "object_data" TALES extension return None instead of an empty string when no
