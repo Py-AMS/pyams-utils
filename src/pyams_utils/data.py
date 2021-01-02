@@ -85,7 +85,7 @@ def render_object_data(context):
     renderer = IObjectDataRenderer(context, None)
     if renderer is not None:
         return renderer.get_object_data()
-    return ''
+    return None
 
 
 @adapter_config(name='object_data',
