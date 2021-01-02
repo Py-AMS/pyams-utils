@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.4.3
+-----
+ - updated doctests for last Pygments release
+
 1.4.2
 -----
  - package version mismatch
