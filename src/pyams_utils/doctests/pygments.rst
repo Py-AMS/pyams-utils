@@ -21,7 +21,7 @@ A view is used to get CSS styles:
     >>> from pyams_utils.pygments import get_pygments_style_view
     >>> request = DummyRequest()
     >>> get_pygments_style_view(request).body
-    b'.source .hll { ... */'
+    b'pre { line-height: 125%; }...'
 
 
 Pygments lexers vocabulary
@@ -74,11 +74,11 @@ Source code rendering
     ...     return value + 1
     ... '''
     >>> render_source(src, settings)
-    '<div class="source"><pre><span></span><span class="lineno">1 </span><span class="err">def test(value):</span>\n<span class="lineno">2 </span><span class="err">    print(&#39;Getting value...&#39;)</span>\n<span class="lineno">3 </span><span class="err">    return value + 1</span>\n</pre></div>\n'
+    '<div class="source"><pre><span></span><span class="linenos">1</span><span class="err">def test(value):</span>\n<span class="linenos">2</span><span class="err">    print(&#39;Getting value...&#39;)</span>\n<span class="linenos">3</span><span class="err">    return value + 1</span>\n</pre></div>\n'
 
     >>> settings.lexer = 'python'
     >>> render_source(src, settings)
-    '<div class="source"><pre><span></span><span class="lineno">1 </span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>\n<span class="lineno">2 </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Getting value...&#39;</span><span class="p">)</span>\n<span class="lineno">3 </span>    <span class="k">return</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">1</span>\n</pre></div>\n'
+    '<div class="source"><pre><span></span><span class="linenos">1</span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>\n<span class="linenos">2</span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Getting value...&#39;</span><span class="p">)</span>\n<span class="linenos">3</span>    <span class="k">return</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">1</span>\n</pre></div>\n'
 
     >>> settings.display_linenos = False
 
