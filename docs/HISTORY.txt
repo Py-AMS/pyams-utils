@@ -2,6 +2,12 @@
 Changelog
 =========
 
+1.5.0
+-----
+ - updated "get_duration" function to directly accept a timedelta object
+ - added dict formatter function (mainly used for tests)
+ - use keywords arguments in "request.has_permission" call to use request cache
+
 1.4.3
 -----
  - updated doctests for last Pygments release
