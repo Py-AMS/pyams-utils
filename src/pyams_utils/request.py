@@ -150,7 +150,7 @@ class PyAMSRequest(Request):
             raise ValueError('Authentication policy registered without '
                              'authorization policy')  # should never happen
         try:
-            principals = authn_policy.effective_principals(self, context)
+            principals = authn_policy.effective_principals(self, context=context)
         except TypeError:
             principals = authn_policy.effective_principals(self)
         return authz_policy.permits(context, principals, permission)
