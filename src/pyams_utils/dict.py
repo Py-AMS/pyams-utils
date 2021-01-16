@@ -52,3 +52,24 @@ def update_dict(input_dict, key, value):
     """
     if value:
         input_dict[key] = value
+
+
+def format_dict(input_dict):
+    """Dict string formatter
+
+    >>> from collections import OrderedDict
+    >>> from pyams_utils.dict import format_dict
+    >>> input = {}
+    >>> format_dict(input)
+    '{}'
+    >>> input = OrderedDict((('key1', 'Value 1'), ('key2', 'Value 2'),))
+    >>> print(format_dict(input))
+    {
+        key1: Value 1
+        key2: Value 2
+    }
+    """
+    if not input_dict:
+        return '{}'
+    return "{{\n{}\n}}".format('\n'.join(('    {}: {}'.format(key, value)
+                                         for key, value in input_dict.items())))
