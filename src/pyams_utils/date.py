@@ -16,7 +16,7 @@ This module provides several functions concerning conversion, parsing and format
 dates and datetimes.
 """
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from zope.datetime import parseDatetimetz
 from zope.dublincore.interfaces import IZopeDublinCore
@@ -214,14 +214,21 @@ def get_age(value, request=None):
 def get_duration(first, last=None, request=None):  # pylint: disable=too-many-branches
     """Get 'human' delta as string between two dates
 
-    :param datetime first: start date
+    :param datetime|timedelta first: start date
     :param datetime last: end date, or current date (in UTC) if None
     :param request: the request from which to extract localization infos
     :return: str; approximate delta between the two input dates
 
-    >>> from datetime import datetime
+    >>> from datetime import datetime, timedelta
     >>> from pyams_utils.date import get_duration
     >>> from pyramid.testing import DummyRequest
+
+    Let's try with a provided timedelta:
+
+    >>> duration = timedelta(seconds=20)
+    >>> get_duration(duration)
+    '20 seconds'
+
     >>> date1 = datetime(2015, 1, 1)
     >>> date2 = datetime(2014, 3, 1)
     >>> get_duration(date1, date2)
@@ -265,14 +272,17 @@ def get_duration(first, last=None, request=None):  # pylint: disable=too-many-br
     >>> get_duration(date1, None, request) == '%d months' % int(round(delta.days * 1.0 / 30))
     True
     """
-    if last is None:
-        last = datetime.utcnow()
-    assert isinstance(first, datetime) and isinstance(last, datetime)
+    if isinstance(first, timedelta):
+        delta = first
+    else:
+        if last is None:
+            last = datetime.utcnow()
+        assert isinstance(first, datetime) and isinstance(last, datetime)
+        first, last = min(first, last), max(first, last)
+        delta = last - first
     if request is None:
         request = check_request()
     translate = request.localizer.translate
-    first, last = min(first, last), max(first, last)
-    delta = last - first
     if delta.days > 60:
         result = translate(_("%d months")) % int(round(delta.days * 1.0 / 30))
     elif delta.days > 10:
