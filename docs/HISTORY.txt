@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.5.1
+-----
+ - translation update
+
 1.5.0
 -----
  - updated "get_duration" function to directly accept a timedelta object
