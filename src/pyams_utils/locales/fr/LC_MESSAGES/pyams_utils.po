@@ -24,7 +24,7 @@ msgstr "0.0## Go"
 
 #: src/pyams_utils/size.py:67
 msgid "0 bytes"
-msgstr "0 octet"
+msgstr "0 octets"
 
 #: src/pyams_utils/size.py:70
 msgid "0.# Kb"
