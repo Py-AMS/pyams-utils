@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.5.2
+-----
+ - removed Travis-CI configuration
+
 1.5.1
 -----
  - translation update
