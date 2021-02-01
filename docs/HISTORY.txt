@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.6.1
+-----
+ - updated Gitlab-CI configuration
+
 1.6.0
 -----
  - added ILocation copy hook (copied from "zope.location" package)
