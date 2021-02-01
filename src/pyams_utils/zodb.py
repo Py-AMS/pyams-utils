@@ -35,8 +35,8 @@ from pyams_utils.adapter import adapter_config
 from pyams_utils.interfaces import IOptionalUtility, ZEO_CONNECTIONS_VOCABULARY_NAME, \
     ZODB_CONNECTIONS_VOCABULARY_NAME
 from pyams_utils.interfaces.zeo import IZEOConnection
-from pyams_utils.registry import get_utilities_for, get_utility
-from pyams_utils.vocabulary import vocabulary_config
+from pyams_utils.registry import get_utility
+from pyams_utils.vocabulary import LocalUtilitiesVocabulary, vocabulary_config
 
 
 __docformat__ = 'restructuredtext'
@@ -198,13 +198,10 @@ def handle_removed_connection(event):
 
 
 @vocabulary_config(name=ZEO_CONNECTIONS_VOCABULARY_NAME)
-class ZEOConnectionVocabulary(SimpleVocabulary):
+class ZEOConnectionVocabulary(LocalUtilitiesVocabulary):
     """ZEO connections vocabulary"""
 
-    def __init__(self, context=None):  # pylint: disable=unused-argument
-        terms = [SimpleTerm(name, title=util.name)
-                 for name, util in get_utilities_for(IZEOConnection)]
-        super(ZEOConnectionVocabulary, self).__init__(terms)
+    interface = IZEOConnection
 
 
 def get_connection_from_settings(settings=None):

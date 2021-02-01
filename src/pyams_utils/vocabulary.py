@@ -20,13 +20,28 @@ import logging
 import venusian
 from zope.interface import directlyProvides
 from zope.schema.interfaces import IVocabularyFactory
-from zope.schema.vocabulary import getVocabularyRegistry
+from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary, getVocabularyRegistry
+
+from pyams_utils.registry import get_utilities_for
 
 
 __docformat__ = 'restructuredtext'
 
 
 LOGGER = logging.getLogger('PyAMS (utils)')
+
+
+class LocalUtilitiesVocabulary(SimpleVocabulary):
+    """Local utilities vocabulary"""
+
+    interface = None
+
+    def __init__(self, context=None):  # pylint: disable=unused-argument
+        terms = [
+            SimpleTerm(name, title=util.name)
+            for name, util in get_utilities_for(self.interface)
+        ]
+        super().__init__(terms)
 
 
 class vocabulary_config:  # pylint: disable=invalid-name
