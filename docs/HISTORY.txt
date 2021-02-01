@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.6.0
+-----
+ - added ILocation copy hook (copied from "zope.location" package)
+ - added base class for local utilities vocabulary
+
 1.5.2
 -----
  - removed Travis-CI configuration

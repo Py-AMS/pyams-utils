@@ -24,7 +24,7 @@ DOCS = os.path.join(os.path.dirname(__file__),
 README = os.path.join(DOCS, 'README.txt')
 HISTORY = os.path.join(DOCS, 'HISTORY.txt')
 
-version = '1.5.2'
+version = '1.6.0'
 long_description = open(README).read() + '\n\n' + open(HISTORY).read()
 
 tests_require = [
@@ -86,6 +86,7 @@ setup(name='pyams_utils',
           'zope.component',
           'zope.container',
           'zope.contentprovider',
+          'zope.copy',
           'zope.datetime',
           'zope.dublincore',
           'zope.interface',
