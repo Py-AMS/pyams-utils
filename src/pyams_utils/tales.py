@@ -37,7 +37,7 @@ class ContextExprMixin:
 
     def __call__(self, target, engine):
         # Make call to superclass to assign value to target
-        assignment = super(ContextExprMixin, self).__call__(target, engine)
+        assignment = super().__call__(target, engine)
         transform = template("target = transform(econtext, target)",
                              target=target,
                              transform=self.transform)

@@ -46,6 +46,21 @@ definition of it's attached interface field:
     'Field title: Field description'
 
 
+Custom interfaces values
+------------------------
+
+    >>> from pyams_utils.interfaces.form import NOT_CHANGED, NO_VALUE, TO_BE_DELETED
+
+    >>> repr(NOT_CHANGED)
+    '<NOT_CHANGED>'
+
+    >>> repr(NO_VALUE)
+    '<NO_VALUE>'
+
+    >>> repr(TO_BE_DELETED)
+    '<TO_BE_DELETED>'
+
+
 Tests cleanup:
 
     >>> tearDown()

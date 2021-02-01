@@ -93,7 +93,7 @@ class PygmentsLexersVocabulary(SimpleVocabulary):
                                     title='{0}{1}'.format(name,
                                                           ' ({})'.format(', '.join(filetypes))
                                                           if filetypes else '')))
-        super(PygmentsLexersVocabulary, self).__init__(terms)
+        super().__init__(terms)
 
 
 @vocabulary_config(name=PYGMENTS_STYLES_VOCABULARY_NAME)
@@ -104,7 +104,7 @@ class PygmentsStylesVocabulary(SimpleVocabulary):
         terms = []
         for name in sorted(get_all_styles()):
             terms.append(SimpleTerm(name))
-        super(PygmentsStylesVocabulary, self).__init__(terms)
+        super().__init__(terms)
 
 
 #

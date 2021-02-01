@@ -49,14 +49,14 @@ class ResourceWithData(Resource):
     def __init__(self, library, relpath, *args, **kwargs):
         if 'data' in kwargs:
             self.data = kwargs.pop('data')
-        super(ResourceWithData, self).__init__(library, relpath, *args, **kwargs)
+        super().__init__(library, relpath, *args, **kwargs)
 
     def get_data_str(self):
         """Get resource data as string"""
         return format_data(self.data)
 
     def render(self, library_url):
-        result = super(ResourceWithData, self).render(library_url)
+        result = super().render(library_url)
         if self.data:
             result = result.replace(" type=", " {} type=".format(self.get_data_str()))
         return result

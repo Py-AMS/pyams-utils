@@ -45,5 +45,5 @@ class AttributeTraverser(ContextAdapter):
             name = name.split('.', 1)[0]
         try:
             return getattr(self.context, name)
-        except AttributeError:
-            raise NotFound
+        except AttributeError as exc:
+            raise NotFound from exc

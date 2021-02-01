@@ -80,7 +80,8 @@ class NamespaceTraverser(ResourceTreeTraverser):
                 # if environ['PATH_INFO'] is just not there
                 path = slash
             except UnicodeDecodeError as exc:
-                raise URLDecodeError(exc.encoding, exc.object, exc.start, exc.end, exc.reason)
+                raise URLDecodeError(exc.encoding, exc.object, exc.start, exc.end, exc.reason) \
+                    from exc
 
         if VH_ROOT_KEY in environ:
             # HTTP_X_VHM_ROOT
@@ -128,10 +129,10 @@ class NamespaceTraverser(ResourceTreeTraverser):
                     try:
                         obj = traverser.traverse(vpath_tuple[vroot_idx + i + 2],
                                                  vpath_tuple[vroot_idx + i + 3:])
-                    except IndexError:
+                    except IndexError as exc:
                         # the "+" namespace traverser is waiting for additional elements from
                         # input URL so a "+" URL not followed by something else is just an error!
-                        raise NotFound()
+                        raise NotFound() from exc
                     else:
                         i += 1
                         return {

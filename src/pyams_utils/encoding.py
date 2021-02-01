@@ -138,4 +138,4 @@ class EncodingsVocabulary(SimpleVocabulary):
         translate = request.localizer.translate
         terms = [SimpleTerm(v, title=translate(t)) for v, t in ENCODINGS.items()]
         terms.sort(key=lambda x: x.title)
-        super(EncodingsVocabulary, self).__init__(terms, *interfaces)
+        super().__init__(terms, *interfaces)

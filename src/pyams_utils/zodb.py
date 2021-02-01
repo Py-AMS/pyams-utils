@@ -290,7 +290,7 @@ class ZODBConnectionVocabulary(SimpleVocabulary):
     def __init__(self, context=None):  # pylint: disable=unused-argument
         settings = get_utility(ISettings)
         terms = [SimpleTerm(name, title=name) for name, uri in get_uris(settings)]
-        super(ZODBConnectionVocabulary, self).__init__(terms)
+        super().__init__(terms)
 
 
 VOLATILE_MARKER = object()

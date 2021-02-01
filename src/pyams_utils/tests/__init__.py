@@ -49,5 +49,5 @@ class MyFolder(Folder):
     name = ''
 
     def __init__(self):
-        super(MyFolder, self).__init__()
+        super().__init__()
         self.value = object()

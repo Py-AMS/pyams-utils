@@ -242,7 +242,7 @@ class RenderersVocabulary(SimpleVocabulary):
         for name, adapter in registry.getAdapters(('', request), IHTMLRenderer):
             if hasattr(adapter, 'label'):
                 append(SimpleTerm(name, title=translate(adapter.label)))
-        super(RenderersVocabulary, self).__init__(terms)
+        super().__init__(terms)
 
 
 @adapter_config(name='br',

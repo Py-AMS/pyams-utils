@@ -12,7 +12,7 @@
 
 """PyAMS_utils.location module
 
-This module provides a copy hook (copied from zope.copy package itself)
+This module provides a copy hook (copied from zope.location package itself)
 to handle copy of located objects.
 """
 

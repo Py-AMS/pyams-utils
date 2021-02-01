@@ -31,4 +31,4 @@ class TimezonesVocabulary(SimpleVocabulary):
 
     def __init__(self, *args, **kw):  # pylint: disable=unused-argument
         terms = [SimpleTerm(t, t, t) for t in pytz.all_timezones]
-        super(TimezonesVocabulary, self).__init__(terms)
+        super().__init__(terms)

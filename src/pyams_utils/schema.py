@@ -121,9 +121,9 @@ class JSONDictField(Dict):
     """JSON dict value field"""
 
     def __init__(self, key_type=None, value_type=None, **kw):
-        super(JSONDictField, self).__init__(key_type=TextLine(),
-                                            value_type=TextLine(),
-                                            **kw)
+        super().__init__(key_type=TextLine(),
+                         value_type=TextLine(),
+                         **kw)
 
 
 #
@@ -139,7 +139,7 @@ class ColorField(TextLine):
     """Color field"""
 
     def __init__(self, *args, **kw):
-        super(ColorField, self).__init__(max_length=6, *args, **kw)
+        super().__init__(max_length=6, *args, **kw)
 
     def _validate(self, value):
         if len(value) not in (3, 6):
@@ -148,7 +148,7 @@ class ColorField(TextLine):
             if val not in string.hexdigits:
                 raise ValidationError(_("Color value must contain only valid hexadecimal color "
                                         "codes (numbers or letters between 'A' end 'F')"))
-        super(ColorField, self)._validate(value)
+        super()._validate(value)
 
 
 #
@@ -177,8 +177,8 @@ class DatesRangeField(Tuple):
     """Dates range field"""
 
     def __init__(self, value_type=None, unique=False, **kw):
-        super(DatesRangeField, self).__init__(value_type=Date(required=False),
-                                              unique=False, min_length=2, max_length=2, **kw)
+        super().__init__(value_type=Date(required=False),
+                         unique=False, min_length=2, max_length=2, **kw)
 
 
 class IDatetimesRangeField(ITuple):
@@ -190,8 +190,8 @@ class DatetimesRangeField(Tuple):
     """Datetimes range field"""
 
     def __init__(self, value_type=None, unique=False, **kw):
-        super(DatetimesRangeField, self).__init__(value_type=Datetime(required=False),
-                                                  unique=False, min_length=2, max_length=2, **kw)
+        super().__init__(value_type=Datetime(required=False),
+                         unique=False, min_length=2, max_length=2, **kw)
 
 
 #
@@ -199,7 +199,7 @@ class DatetimesRangeField(Tuple):
 #
 
 class ITextLineListField(IList):
-    """Marker interface for textline list field"""
+    """Marker interface for text line list field"""
 
 
 @implementer(ITextLineListField)
@@ -207,8 +207,8 @@ class TextLineListField(List):
     """TextLine list field"""
 
     def __init__(self, value_type=None, unique=False, **kw):
-        super(TextLineListField, self).__init__(value_type=TextLine(required=True),
-                                                unique=True, **kw)
+        super().__init__(value_type=TextLine(required=True),
+                         unique=True, **kw)
 
 
 #
@@ -234,7 +234,7 @@ class MailAddressField(TextLine):
     """Mail address field"""
 
     def _validate(self, value):
-        super(MailAddressField, self)._validate(value)
+        super()._validate(value)
         if not EMAIL_REGEX.match(value):
             raise InvalidEmail(value)
 
@@ -260,7 +260,7 @@ class TimezoneField(Choice):
             kw.pop('source')
         if 'default' not in kw:
             kw['default'] = u'GMT'
-        super(TimezoneField, self).__init__(vocabulary=TIMEZONES_VOCABULARY_NAME, **kw)
+        super().__init__(vocabulary=TIMEZONES_VOCABULARY_NAME, **kw)
 
 
 #
@@ -282,7 +282,7 @@ class EncodingField(Choice):
             del kw['values']
         if 'source' in kw:
             del kw['source']
-        super(EncodingField, self).__init__(vocabulary=ENCODINGS_VOCABULARY_NAME, **kw)
+        super().__init__(vocabulary=ENCODINGS_VOCABULARY_NAME, **kw)
 
 
 #
@@ -303,7 +303,7 @@ class HTTPMethodField(Tuple):
     """
 
     def __init__(self, **kw):
-        super(HTTPMethodField, self).__init__(value_type=TextLine(),
-                                              min_length=2,
-                                              max_length=2,
-                                              **kw)
+        super().__init__(value_type=TextLine(),
+                         min_length=2,
+                         max_length=2,
+                         **kw)
