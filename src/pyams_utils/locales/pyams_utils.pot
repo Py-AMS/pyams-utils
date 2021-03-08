@@ -1,12 +1,12 @@
 #
 # SOME DESCRIPTIVE TITLE
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-12-13 16:31+0100\n"
+"POT-Creation-Date: 2021-03-07 03:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,32 +14,39 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Lingua 3.10.dev0\n"
+"Generated-By: Lingua 4.14\n"
 
+#: ./src/pyams_utils/rest.py:38
+msgid "Item value"
+msgstr ""
+
+#: ./src/pyams_utils/rest.py:69
+msgid "Range beginning date"
+msgstr ""
+
+#: ./src/pyams_utils/rest.py:72
+msgid "Range ending date (excluded)"
+msgstr ""
+
+#. pylint: disable=unused-argument
 #: ./src/pyams_utils/pygments.py:87
 msgid "Automatic detection"
 msgstr ""
 
-#: ./src/pyams_utils/size.py:75
-msgid "0.0## Gb"
-msgstr ""
-
-#: ./src/pyams_utils/size.py:67
+#: ./src/pyams_utils/size.py:42
 msgid "0 bytes"
 msgstr ""
 
-#: ./src/pyams_utils/size.py:70
+#: ./src/pyams_utils/size.py:45
 msgid "0.# Kb"
 msgstr ""
 
-#: ./src/pyams_utils/size.py:73
+#: ./src/pyams_utils/size.py:48
 msgid "0.0# Mb"
 msgstr ""
 
-#: ./src/pyams_utils/schema.py:214
-msgid ""
-"Email address must be entered as « name@domain.name », without '<' and '>' "
-"characters"
+#: ./src/pyams_utils/size.py:50
+msgid "0.0## Gb"
 msgstr ""
 
 #: ./src/pyams_utils/schema.py:146
@@ -52,96 +59,102 @@ msgid ""
 "letters between 'A' end 'F')"
 msgstr ""
 
-#: ./src/pyams_utils/date.py:97
+#: ./src/pyams_utils/schema.py:228
+msgid ""
+"Email address must be entered as « name@domain.name », without '<' and '>' "
+"characters"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:103
 msgid "%d/%m/%Y"
 msgstr ""
 
-#: ./src/pyams_utils/date.py:98
+#: ./src/pyams_utils/date.py:104
 msgid "%d/%m/%Y - %H:%M"
 msgstr ""
 
-#: ./src/pyams_utils/date.py:100
+#: ./src/pyams_utils/date.py:106
 msgid "on %d/%m/%Y"
 msgstr ""
 
-#: ./src/pyams_utils/date.py:101
+#: ./src/pyams_utils/date.py:107
 msgid "on %d/%m/%Y at %H:%M"
 msgstr ""
 
-#: ./src/pyams_utils/date.py:160
+#: ./src/pyams_utils/date.py:194
 #, c-format
 msgid "%d months ago"
 msgstr ""
 
-#: ./src/pyams_utils/date.py:236
-#, c-format
-msgid "%d months"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:162
+#: ./src/pyams_utils/date.py:196
 #, c-format
 msgid "%d weeks ago"
 msgstr ""
 
-#: ./src/pyams_utils/date.py:238
-#, c-format
-msgid "%d weeks"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:164
+#: ./src/pyams_utils/date.py:198
 #, c-format
 msgid "%d days ago"
 msgstr ""
 
-#: ./src/pyams_utils/date.py:166
+#: ./src/pyams_utils/date.py:200
 msgid "the day before yesterday"
 msgstr ""
 
-#: ./src/pyams_utils/date.py:240
-#, c-format
-msgid "%d days"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:168
+#: ./src/pyams_utils/date.py:202
 msgid "yesterday"
 msgstr ""
 
-#: ./src/pyams_utils/date.py:245
-msgid "24 hours"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:247
-#, c-format
-msgid "%d day and %d hours"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:250
-#, c-format
-msgid "%d hours"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:172
+#: ./src/pyams_utils/date.py:206
 #, c-format
 msgid "%d hours ago"
 msgstr ""
 
-#: ./src/pyams_utils/date.py:176
+#: ./src/pyams_utils/date.py:208
+#, c-format
+msgid "%d minutes ago"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:210
 msgid "less than 5 minutes ago"
 msgstr ""
 
-#: ./src/pyams_utils/date.py:254
+#: ./src/pyams_utils/date.py:287
+#, c-format
+msgid "%d months"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:289
+#, c-format
+msgid "%d weeks"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:291
+#, c-format
+msgid "%d days"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:296
+msgid "24 hours"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:298
+#, c-format
+msgid "%d day and %d hours"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:301
+#, c-format
+msgid "%d hours"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:305
 #, c-format
 msgid "%d minutes"
 msgstr ""
 
-#: ./src/pyams_utils/date.py:256
+#: ./src/pyams_utils/date.py:307
 #, c-format
 msgid "%d seconds"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:174
-#, c-format
-msgid "%d minutes ago"
 msgstr ""
 
 #: ./src/pyams_utils/encoding.py:31
@@ -513,15 +526,15 @@ msgstr ""
 msgid "all languages (utf_8_sig)"
 msgstr ""
 
-#: ./src/pyams_utils/text.py:108
+#: ./src/pyams_utils/text.py:118
 msgid "Simple text"
 msgstr ""
 
-#: ./src/pyams_utils/text.py:132
+#: ./src/pyams_utils/text.py:142
 msgid "ReStructured text"
 msgstr ""
 
-#: ./src/pyams_utils/text.py:157
+#: ./src/pyams_utils/text.py:167
 msgid "Markdown text"
 msgstr ""
 
