@@ -19,7 +19,7 @@ import os.path
 
 from chameleon import PageTemplateFile
 from persistent import IPersistent
-from zope.annotation import IAttributeAnnotatable, IAnnotations
+from zope.annotation import IAnnotations, IAttributeAnnotatable
 from zope.annotation.attribute import AttributeAnnotations
 from zope.keyreference.interfaces import IKeyReference
 from zope.keyreference.persistent import KeyReferenceToPersistent
