@@ -4,6 +4,7 @@ Changelog
 
 1.7.0
 -----
+ - remove support for Python < 3.7
  - added global OpenAPI specification view
  - added simple Cornice schema fields and converters
  - added custom handling of newlines character in "br" TALES extension
