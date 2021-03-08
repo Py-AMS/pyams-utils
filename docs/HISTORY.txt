@@ -2,6 +2,12 @@
 Changelog
 =========
 
+1.7.0
+-----
+ - added global OpenAPI specification view
+ - added simple Cornice schema fields and converters
+ - added custom handling of newlines character in "br" TALES extension
+
 1.6.1
 -----
  - updated Gitlab-CI configuration
