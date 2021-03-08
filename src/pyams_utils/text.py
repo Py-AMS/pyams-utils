@@ -263,6 +263,8 @@ class BrTalesExtension(ContextRequestViewAdapter):
         if not value:
             return ''
         br_tag = '<br {0} />'.format('class="{0}"'.format(css_class) if css_class else '')
+        if character == '\\n':
+            character = '\n'
         elements = value.split(character)
         if start_tag:
             elements[0] = '<{0}>{1}</{0}>'.format(start_tag, elements[0])

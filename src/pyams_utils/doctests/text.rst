@@ -11,6 +11,8 @@ PyAMS_utils.text is a small module dedicated to small text management functions.
     >>> from pyramid_chameleon.zpt import renderer_factory
     >>> config.add_renderer('.pt', renderer_factory)
 
+    >>> from cornice import includeme as include_cornice
+    >>> include_cornice(config)
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)
 
@@ -160,6 +162,14 @@ line breaks, eventually adding start and end tags:
 
     >>> from pyramid.renderers import render
     >>> render(template, {'request': request})
+    '<div>This is my<br  />text to break</div>'
+
+You can specify the character used to handle line breaks:
+
+    >>> template2 = os.path.join(temp_dir, 'break-2.pt')
+    >>> with open(template2, 'w') as file:
+    ...     _ = file.write("<div>${structure:tales:br('This is my\ntext to break', character='\\n')}</div>")
+    >>> render(template2, {'request': request})
     '<div>This is my<br  />text to break</div>'
 
 
