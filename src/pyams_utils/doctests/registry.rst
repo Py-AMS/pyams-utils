@@ -34,6 +34,8 @@ registry with *zope.component* and *zope.dublincore* packages components:
 
     >>> from pyramid_zcml import includeme as include_zcml
     >>> include_zcml(config)
+    >>> from cornice import includeme as include_cornice
+    >>> include_cornice(config)
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)
 

@@ -10,6 +10,8 @@ This test is copied from "zope.location" package, from which this hook is copied
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
     >>> config = setUp(hook_zca=True)
 
+    >>> from cornice import includeme as include_cornice
+    >>> include_cornice(config)
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)
 

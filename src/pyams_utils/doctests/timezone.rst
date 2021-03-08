@@ -22,8 +22,10 @@ Other systems can also get timezone from source IP address (see, for example,
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
     >>> config = setUp(hook_zca=True)
 
-    >>> from pyams_utils import includeme
-    >>> includeme(config)
+    >>> from cornice import includeme as include_cornice
+    >>> include_cornice(config)
+    >>> from pyams_utils import includeme as include_utils
+    >>> include_utils(config)
 
     >>> request = DummyRequest()
     >>> from zope.interface.common.idatetime import ITZInfo

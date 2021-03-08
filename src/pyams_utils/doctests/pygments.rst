@@ -9,6 +9,8 @@ using the Pygments package.
     >>> from pyramid.testing import setUp, tearDown, DummyRequest
     >>> config = setUp(hook_zca=True)
 
+    >>> from cornice import includeme as include_cornice
+    >>> include_cornice(config)
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)
 
@@ -61,7 +63,7 @@ Pygments styles vocabulary
     >>> vocabulary._terms[1].value
     'algol'
     >>> vocabulary._terms[-1].value
-    'xcode'
+    'zenburn'
 
 
 Source code rendering
@@ -74,7 +76,7 @@ Source code rendering
     ...     return value + 1
     ... '''
     >>> render_source(src, settings)
-    '<div class="source"><pre><span></span><span class="linenos">1</span><span class="err">def test(value):</span>\n<span class="linenos">2</span><span class="err">    print(&#39;Getting value...&#39;)</span>\n<span class="linenos">3</span><span class="err">    return value + 1</span>\n</pre></div>\n'
+    '<div class="source"><pre><span></span><span class="linenos">1</span><span class="nv">def</span> <span class="nv">test</span><span class="ss">(</span><span class="nv">value</span><span class="ss">)</span>:\n<span class="linenos">2</span>    <span class="nv">print</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">Getting value...</span><span class="s1">&#39;</span><span class="ss">)</span>\n<span class="linenos">3</span>    <span class="k">return</span> <span class="nv">value</span> <span class="o">+</span> <span class="mi">1</span>\n</pre></div>\n'
 
     >>> settings.lexer = 'python'
     >>> render_source(src, settings)
