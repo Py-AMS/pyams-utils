@@ -21,6 +21,8 @@ from zope.schema import Int, TextLine
 
 __docformat__ = 'restructuredtext'
 
+from pyams_utils import _
+
 
 #
 # Generic interfaces
@@ -29,7 +31,8 @@ __docformat__ = 'restructuredtext'
 class IIndexLength(Interface):
     """Index length interface"""
 
-    count = Int(title="Indexed elements count")
+    count = Int(title=_("Indexed elements count"),
+                readonly=True)
 
 
 class IUniqueID(Interface):

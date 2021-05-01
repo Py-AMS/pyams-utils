@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PyAMS_utils 1.0.0\n"
-"POT-Creation-Date: 2021-03-07 03:02+0100\n"
+"POT-Creation-Date: 2021-05-01 03:15+0200\n"
 "PO-Revision-Date: 2019-12-04 20:42+0100\n"
 "Last-Translator: Thierry Florac <tflorac@ulthar.net>\n"
 "Language-Team: FRENCH <FR@li.org>\n"
@@ -584,6 +584,10 @@ msgstr "Style de couleur"
 #: src/pyams_utils/interfaces/pygments.py:52
 msgid "Selected color style"
 msgstr "Feuille de style utilisée pour la mise en forme de la syntaxe"
+
+#: src/pyams_utils/interfaces/intids.py:34
+msgid "Indexed elements count"
+msgstr "Nombre d'éléments indexés"
 
 #: src/pyams_utils/interfaces/__init__.py:34
 msgid "Wrong contained type"

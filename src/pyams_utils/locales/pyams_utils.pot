@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2021-03-07 03:02+0100\n"
+"POT-Creation-Date: 2021-05-01 03:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -578,6 +578,10 @@ msgstr ""
 
 #: ./src/pyams_utils/interfaces/pygments.py:52
 msgid "Selected color style"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/intids.py:34
+msgid "Indexed elements count"
 msgstr ""
 
 #: ./src/pyams_utils/interfaces/__init__.py:34
