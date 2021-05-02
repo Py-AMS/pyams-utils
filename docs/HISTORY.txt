@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.7.1
+-----
+ - added missing interface translation
+
 1.7.0
 -----
  - remove support for Python < 3.7
