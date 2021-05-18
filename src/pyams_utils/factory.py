@@ -111,7 +111,8 @@ class factory_config:  # pylint: disable=invalid-name,no-member
                                  str(obj), str(interface))
                 register_factory(interface, obj, config.registry, factory_name)
 
-        info = self.venusian.attach(wrapped, callback, category='pyams_factory', depth=depth + 1)
+        info = self.venusian.attach(wrapped, callback, category='pyramid',
+                                    depth=depth + 1)
         if info.scope == 'class':  # pylint: disable=no-member
             # if the decorator was attached to a method in a class, or
             # otherwise executed at class scope, we need to set an

@@ -100,7 +100,7 @@ class vocabulary_config:  # pylint: disable=invalid-name
             directlyProvides(obj, IVocabularyFactory)
             getVocabularyRegistry().register(self.name, obj)
 
-        info = self.venusian.attach(wrapped, callback, category='pyams_vocabulary',
+        info = self.venusian.attach(wrapped, callback, category='pyramid',
                                     depth=depth + 1)
 
         if info.scope == 'class':  # pylint: disable=no-member

@@ -229,7 +229,7 @@ class utility_config:  # pylint: disable=invalid-name
             registry.registerUtility(component=component, factory=factory,
                                      provided=provided, name=settings.get('name', ''))
 
-        info = self.venusian.attach(wrapped, callback, category='pyams_utility',
+        info = self.venusian.attach(wrapped, callback, category='pyramid',
                                     depth=depth + 1)
 
         if info.scope == 'class':  # pylint: disable=no-member
