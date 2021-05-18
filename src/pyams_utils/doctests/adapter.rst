@@ -206,6 +206,23 @@ It can be required to sort adapters based on a "weight":
     [('second', <....SimpleAdapter object at 0x...>), ('', <...MyAdapter object at 0x...>)]
 
 
+Querying adapters
+-----------------
+
+PyAMS provides a small helper to do an adapter lookup; this function is trying to do
+a multi-adapter lookup for context, request and view (if view is provided), then for
+context and request, and finally for context only.
+
+If context is not provided or is None, request context is used:
+
+    >>> from pyams_utils.adapter import query_adapter
+
+    >>> request = DummyRequest()
+    >>> request.context = context
+    >>> query_adapter(IMyAdapter, request, name='second')
+    <...SimpleAdapter object at 0x...>
+
+
 Tests cleanup:
 
   >>> tearDown()

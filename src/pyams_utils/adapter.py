@@ -137,6 +137,31 @@ class adapter_config:    # pylint: disable=invalid-name
         return wrapped
 
 
+def query_adapter(interface, request, context=None, view=None, name=''):
+    """Registry adapter lookup helper
+
+    If view is provided, this function is trying to find a multi-adapter to given interface
+    for request, context and view; if not found, the lookup is done for request and context,
+    and finally only for context.
+
+    :param interface: adapter provided interface
+    :param request: current request
+    :param context: current context; if context is None, request context is used
+    :param view: current view
+    :param name: adapter name
+    """
+    registry = request.registry
+    if context is None:
+        context = request.context
+    adapter = registry.queryMultiAdapter((context, request, view), interface, name=name) \
+        if view is not None else None
+    if adapter is None:
+        adapter = registry.queryMultiAdapter((context, request), interface, name=name)
+    if adapter is None:
+        adapter = registry.queryAdapter(context, interface, name=name)
+    return adapter
+
+
 def get_annotation_adapter(context, key, factory=None, markers=None, notify=True,
                            locate=True, parent=None, name=None, callback=None, **kwargs):
     # pylint: disable=too-many-arguments
