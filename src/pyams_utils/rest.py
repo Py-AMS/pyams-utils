@@ -54,8 +54,6 @@ class PropertiesMapping(Mapping):
         return appstruct
 
     def deserialize(self, node, cstruct):
-        if cstruct is null:
-            return null
         return cstruct
 
 
