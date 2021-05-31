@@ -2,6 +2,12 @@
 Changelog
 =========
 
+1.8.0
+-----
+ - updated Venusian decorator callbacks category to "pyramid" for compatibility
+   with Pyramid 2.0
+ - added registry helper to do adapters lookups
+
 1.7.1
 -----
  - added missing interface translation
