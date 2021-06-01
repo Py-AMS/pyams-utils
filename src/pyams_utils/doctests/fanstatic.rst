@@ -14,7 +14,9 @@ or to add custom "data" attributes to a given resource:
 
     >>> from pyams_utils.testing import library
     >>> set_resource_file_existence_checking(False)
-    >>> x1 = fanstatic.ResourceWithData(library, 'a.js', data={'test-value': 'nested'})
+    >>> x1_css = fanstatic.ResourceWithData(library, 'a.css', data={'test-value': 'nested'})
+    >>> x1_js = fanstatic.ResourceWithData(library, 'a.js', data={'test-value': 'nested'}, depends=(x1_css,))
+    >>> x1_img = fanstatic.ResourceWithData(library, 'a.img', data={'test-value': 'nested'}, depends=(x1_js,))
     >>> set_resource_file_existence_checking(True)
 
 Let's try to create a custom WSGI application to test this resource:
@@ -22,7 +24,7 @@ Let's try to create a custom WSGI application to test this resource:
     >>> def app(environ, start_response):
     ...     start_response('200 OK', [('Content-Type', 'text/html')])
     ...     needed = get_needed()
-    ...     needed.need(x1)
+    ...     needed.need(x1_img)
     ...     needed.set_base_url('http://example.com')
     ...     return [b'<html><head></head><body></body></html>']
 
@@ -30,12 +32,14 @@ Let's try to create a custom WSGI application to test this resource:
     >>> request = webob.Request.blank('/')
     >>> response = request.get_response(app)
     >>> print(response.body.decode())
-    <html><head><script data-test-value="nested" type="text/javascript" src="http://example.com/fanstatic/foo/a.js"></script></head><body></body></html>
+    <html><head><link rel="stylesheet" data-test-value="nested" type="text/css" href="http://example.com/fanstatic/foo/a.css" />
+    <script data-test-value="nested" type="text/javascript" src="http://example.com/fanstatic/foo/a.js"></script>
+    </head><body></body></html>
 
 Let's try with an external resource now, with another app:
 
     >>> x2 = fanstatic.ExternalResource(library, 'http://cdn.example.com/pyams/b.js',
-    ...                                 renderer=None, defer=True, depends=(x1,),)
+    ...                                 renderer=None, defer=True, depends=(x1_js,),)
 
     >>> def app(environ, start_response):
     ...     start_response('200 OK', [('Content-Type', 'text/html')])
@@ -48,13 +52,14 @@ Let's try with an external resource now, with another app:
     >>> request = webob.Request.blank('/')
     >>> response = request.get_response(app)
     >>> print(response.body.decode())
-    <html><head><script data-test-value="nested" type="text/javascript" src="http://example.com/fanstatic/foo/a.js"></script>
+    <html><head><link rel="stylesheet" data-test-value="nested" type="text/css" href="http://example.com/fanstatic/foo/a.css" />
+    <script data-test-value="nested" type="text/javascript" src="http://example.com/fanstatic/foo/a.js"></script>
     <script type="text/javascript" src="http://cdn.example.com/pyams/b.js" defer></script></head><body></body></html>
 
 Let's try with another resource type:
 
     >>> x3 = fanstatic.ExternalResource(library, 'http://cdn.example.com/pyams/c.css',
-    ...                                 resource_type='css', defer=False, depends=(x1,),)
+    ...                                 resource_type='css', defer=False, depends=(x1_js,),)
 
     >>> def app(environ, start_response):
     ...     start_response('200 OK', [('Content-Type', 'text/html')])
@@ -67,7 +72,8 @@ Let's try with another resource type:
     >>> request = webob.Request.blank('/')
     >>> response = request.get_response(app)
     >>> print(response.body.decode())
-    <html><head><link rel="stylesheet" type="text/css" href="http://cdn.example.com/pyams/c.css" />
+    <html><head><link rel="stylesheet" data-test-value="nested" type="text/css" href="http://example.com/fanstatic/foo/a.css" />
+    <link rel="stylesheet" type="text/css" href="http://cdn.example.com/pyams/c.css" />
     <script data-test-value="nested" type="text/javascript" src="http://example.com/fanstatic/foo/a.js"></script></head><body></body></html>
 
 Other resources are not supported:

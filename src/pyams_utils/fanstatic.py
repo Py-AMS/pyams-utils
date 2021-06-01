@@ -33,8 +33,8 @@ __docformat__ = 'restructuredtext'
 
 def render_js(url, defer=False):
     """Render tag to include Javascript resource"""
-    return '<script type="text/javascript" src="%s" %s></script>' % \
-           (url, 'defer' if defer else '')
+    return '<script type="text/javascript" src="%s"%s></script>' % \
+           (url, ' defer' if defer else '')
 
 
 class ResourceWithData(Resource):
@@ -49,14 +49,22 @@ class ResourceWithData(Resource):
     def __init__(self, library, relpath, *args, **kwargs):
         if 'data' in kwargs:
             self.data = kwargs.pop('data')
-        super().__init__(library, relpath, *args, **kwargs)
+        super().__init__(library, relpath,
+                         renderer=self.custom_renderer,
+                         *args, **kwargs)
 
     def get_data_str(self):
         """Get resource data as string"""
         return format_data(self.data)
 
-    def render(self, library_url):
-        result = super().render(library_url)
+    def custom_renderer(self, resource_url):
+        """Custom resource renderer used to include custom data attributes"""
+        if self.ext == '.js':
+            result = render_js(resource_url)
+        elif self.ext == '.css':
+            result = render_css(resource_url)
+        else:
+            result = ''
         if self.data:
             result = result.replace(" type=", " {} type=".format(self.get_data_str()))
         return result
