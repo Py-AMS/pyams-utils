@@ -54,6 +54,39 @@ def update_dict(input_dict, key, value):
         input_dict[key] = value
 
 
+def merge_dict(source, target):
+    """Deep merge of source mapping into target mapping
+
+    >>> from pyams_utils.dict import merge_dict
+    >>> trg = {}
+    >>> merge_dict({}, trg)
+    {}
+    >>> merge_dict({'key 1': 'value'}, trg)
+    {'key 1': 'value'}
+    >>> merge_dict({'key 1': 'value 1'}, trg)
+    {'key 1': 'value 1'}
+    >>> merge_dict({'key 2': {'subkey 1': 'subvalue 1'}}, trg)
+    {'key 1': 'value 1', 'key 2': {'subkey 1': 'subvalue 1'}}
+    >>> merge_dict({'key 2': {'subkey 1': 'subvalue 2', 'subkey 2': 'subvalue 3'}}, trg)
+    {'key 1': 'value 1', 'key 2': {'subkey 1': 'subvalue 2', 'subkey 2': 'subvalue 3'}}
+    >>> merge_dict({'key 3': ['Value 4']}, trg)
+    {'key 1': 'value 1', 'key 2': {'subkey 1': 'subvalue 2', 'subkey 2': 'subvalue 3'}, 'key 3': ['Value 4']}
+    >>> merge_dict({'key 3': ['Value 5']}, trg)
+    {'key 1': 'value 1', 'key 2': {'subkey 1': 'subvalue 2', 'subkey 2': 'subvalue 3'}, 'key 3': ['Value 4', 'Value 5']}
+    """
+    for key, value in source.items():
+        if key in target:
+            if isinstance(target[key], (list, tuple)):
+                target[key] += source[key]
+            elif isinstance(target[key], dict):
+                target[key].update(value)
+            else:
+                target[key] = value
+        else:
+            target[key] = value
+    return target
+
+
 def format_dict(input_dict):
     """Dict string formatter
 
