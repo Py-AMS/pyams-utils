@@ -30,6 +30,19 @@ from pyams_utils.adapter import ContextAdapter, adapter_config
 __docformat__ = 'restructuredtext'
 
 
+class SimpleContainerMixin:
+    """Simple container mixin class"""
+
+    next_id = 1
+
+    def append(self, obj):
+        """Append object to container"""
+        key = str(self.next_id)
+        self[key] = obj
+        self.next_id += 1
+        return obj.__name__
+
+
 class BTreeOrderedContainer(OrderedContainer):
     """BTree based ordered container
 

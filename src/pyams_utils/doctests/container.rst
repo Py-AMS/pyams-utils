@@ -14,6 +14,29 @@ This PyAMS_utils module can be used to handle containers management:
     >>> include_utils(config)
 
 
+Simple container mixin
+----------------------
+
+The simple container class is used to handle a simple sequence inside.
+
+    >>> from zope.container.contained import Contained
+    >>> from zope.container.folder import Folder
+    >>> from pyams_utils.container import SimpleContainerMixin
+
+    >>> class SimpleContainer(SimpleContainerMixin, Folder):
+    ...     """Simple container class"""
+
+    >>> container = SimpleContainer()
+    >>> container.next_id
+    1
+    >>> container.append(Contained())
+    '1'
+    >>> container.append(Contained())
+    '2'
+    >>> container.next_id
+    3
+
+
 BTree ordered containers
 ------------------------
 
