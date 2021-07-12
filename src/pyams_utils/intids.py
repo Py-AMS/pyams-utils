@@ -48,7 +48,7 @@ class UniqueIdAdapter(ContextAdapter):
         """Get context ID in hexadecimal form"""
         intids = query_utility(IIntIds)
         if intids is not None:
-            object_id = intids.queryId(self.context)
+            object_id = intids.register(self.context)
             if object_id is not None:
                 return hex(object_id)[2:]
         return None
