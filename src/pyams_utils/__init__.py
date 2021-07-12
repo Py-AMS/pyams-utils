@@ -15,6 +15,7 @@
 PyAMS generic modules
 """
 
+from fanstatic import Library
 from zope.schema.fieldproperty import FieldProperty
 
 
@@ -23,6 +24,9 @@ __docformat__ = 'restructuredtext'
 
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('pyams_utils')
+
+
+library = Library('pyams', '.')
 
 
 def get_field_doc(self):
