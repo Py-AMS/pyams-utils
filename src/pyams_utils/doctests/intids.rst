@@ -72,18 +72,7 @@ We may now simulate a request and activate local components registry:
      <zope.intid.IntIds object at 0x... oid 0x... in <Connection at ...>>
 
     >>> IUniqueID(content, None).oid is None
-    True
-
-Why None again? That's because the object must be registered by IntIds utility before being
-able to return an ID:
-
-    >>> from zope.lifecycleevent import ObjectAddedEvent
-
-    >>> event = ObjectAddedEvent(content, app, 'content')
-    >>> config.registry.notify(event)
-
-    >>> IUniqueID(content).oid
-    '...'
+    False
 
 A unique ID is purely unpredictable...
 
@@ -95,7 +84,7 @@ We can also handle objects removal:
     >>> event = ObjectRemovedEvent(content, app, 'content')
     >>> config.registry.notify(event)
 
-    >>> IUniqueID(content, None).oid is None
+    >>> query_utility(IIntIds).queryId(content) is None
     True
 
 
