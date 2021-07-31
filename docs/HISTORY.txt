@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.9.1
+-----
+ - locales and translations updates
+
 1.9.0
 -----
  - added simple container class to handle internal sequence
