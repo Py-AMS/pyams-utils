@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2021-05-01 03:15+0200\n"
+"POT-Creation-Date: 2021-07-22 20:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,17 +20,21 @@ msgstr ""
 msgid "Item value"
 msgstr ""
 
-#: ./src/pyams_utils/rest.py:69
+#: ./src/pyams_utils/rest.py:67
 msgid "Range beginning date"
 msgstr ""
 
-#: ./src/pyams_utils/rest.py:72
+#: ./src/pyams_utils/rest.py:70
 msgid "Range ending date (excluded)"
 msgstr ""
 
 #. pylint: disable=unused-argument
-#: ./src/pyams_utils/pygments.py:87
+#: ./src/pyams_utils/pygments.py:83
 msgid "Automatic detection"
+msgstr ""
+
+#: ./src/pyams_utils/pygments.py:142
+msgid "Source code"
 msgstr ""
 
 #: ./src/pyams_utils/size.py:42
