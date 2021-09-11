@@ -102,6 +102,8 @@ class ExternalResource(Resource):
 
 def get_resource_path(resource, signature='--static--', versioning=True):
     """Get path for given resource"""
+    if isinstance(resource, ExternalResource):
+        return resource.relpath
     res = NeededResources(publisher_signature=signature, versioning=versioning)
     return '{0}/{1}'.format(res.library_url(resource.library), resource.relpath)
 
