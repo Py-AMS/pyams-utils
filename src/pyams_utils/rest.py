@@ -78,10 +78,6 @@ class DateRangeTypeConverter(ArrayTypeConverter):
 class FileUploadType(String):
     """File upload type"""
 
-    def serialize(self, node, appstruct):
-        """File upload serializer"""
-        return super().serialize(node, appstruct)
-
     def deserialize(self, node, cstruct):
         """File upload deserializer"""
         if isinstance(cstruct, FieldStorage):
