@@ -70,14 +70,23 @@ def merge_dict(source, target):
     >>> merge_dict({'key 2': {'subkey 1': 'subvalue 2', 'subkey 2': 'subvalue 3'}}, trg)
     {'key 1': 'value 1', 'key 2': {'subkey 1': 'subvalue 2', 'subkey 2': 'subvalue 3'}}
     >>> merge_dict({'key 3': ['Value 4']}, trg)
-    {'key 1': 'value 1', 'key 2': {'subkey 1': 'subvalue 2', 'subkey 2': 'subvalue 3'}, 'key 3': ['Value 4']}
+    {'key 1': 'value 1', 'key 2': {'subkey 1': 'subvalue 2', 'subkey 2': 'subvalue 3'}, \
+     'key 3': ['Value 4']}
     >>> merge_dict({'key 3': ['Value 5']}, trg)
-    {'key 1': 'value 1', 'key 2': {'subkey 1': 'subvalue 2', 'subkey 2': 'subvalue 3'}, 'key 3': ['Value 4', 'Value 5']}
+    {'key 1': 'value 1', 'key 2': {'subkey 1': 'subvalue 2', 'subkey 2': 'subvalue 3'}, \
+     'key 3': ['Value 4', 'Value 5']}
+    >>> merge_dict({'key 4': {'Value 6'}}, trg)
+    {'key 1': 'value 1', 'key 2': {'subkey 1': 'subvalue 2', 'subkey 2': 'subvalue 3'}, \
+     'key 3': ['Value 4', 'Value 5'], 'key 4': {'Value 6'}}
+    >>> sorted(merge_dict({'key 4': {'Value 7'}}, trg)['key 4'])
+    ['Value 6', 'Value 7']
     """
     for key, value in source.items():
         if key in target:
             if isinstance(target[key], (list, tuple)):
                 target[key] += source[key]
+            elif isinstance(target[key], set):
+                target[key] |= source[key]
             elif isinstance(target[key], dict):
                 target[key].update(value)
             else:
