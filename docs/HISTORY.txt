@@ -2,6 +2,12 @@
 Changelog
 =========
 
+1.10.0
+------
+ - added 'transaction' module
+ - handler sets in dicts merging
+ - Pylint improvements
+
 1.9.2
 -----
  - updated path getter of external Fanstatic resources
