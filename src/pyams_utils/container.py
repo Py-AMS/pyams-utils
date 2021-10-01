@@ -83,7 +83,7 @@ class ParentSelector:
     phash = text
 
     def __call__(self, event):
-        if not IObjectMovedEvent.providedBy(event):
+        if not IObjectMovedEvent.providedBy(event):  # pylint: disable=no-value-for-parameter
             return False
         for intf in self.interfaces:
             try:

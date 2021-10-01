@@ -33,7 +33,7 @@ __docformat__ = 'restructuredtext'
 class BaseInheritInfo(Location):
     """Base inherit class
 
-    Subclasses may generaly override target_interface and adapted_interface to
+    Subclasses may generally override target_interface and adapted_interface to
     correctly handle inheritance (see example in doctests).
     Please note also that adapters to this interface must correctly 'locate'
     """
@@ -93,7 +93,7 @@ class InheritedFieldProperty:
         if name is None:
             name = field.__name__
 
-        self.__field = field
+        self.__field = field  # pylint: disable=unused-private-member
         self.__name = name
 
     def __get__(self, inst, klass):
