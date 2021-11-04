@@ -118,7 +118,8 @@ class ContainerSublocationsAdapter(ContextAdapter):
             yield from context.values()
 
 
-def find_objects_matching(root, condition, ignore_root=False):
+def find_objects_matching(root, condition, ignore_root=False,
+                          with_depth=False, initial_depth=0):
     """Find all objects in root that match the condition
 
     The condition is a Python callable object that takes an object as
@@ -129,21 +130,28 @@ def find_objects_matching(root, condition, ignore_root=False):
     :param object root: the parent object from which search is started
     :param callable condition: a callable object which may return true for a given
         object to be selected
-    :param boolean ignore_root: if *True*, the root object will not be returned, even if it matches
-        the given condition
+    :param boolean ignore_root: if *True*, the root object will not be returned, even if it
+        matches the given condition
+    :param boolean with_depth: if *True*, iterator elements will be made of tuples made of
+        found elements and their respective depth
+    :param int initial_depth: initial depth of the root element; this argument is mainly used
+        when function is called recursively
     :return: an iterator for all root's sub-objects matching condition
     """
     if (not ignore_root) and condition(root):
-        yield root
+        yield (root, initial_depth) if with_depth else root
     locations = ISublocations(root, None)
     if locations is not None:
         for location in locations.sublocations():  # pylint: disable=too-many-function-args
             if condition(location):
-                yield location
-            yield from find_objects_matching(location, condition, ignore_root=True)
+                yield (location, initial_depth+1) if with_depth else location
+            yield from find_objects_matching(location, condition,
+                                             ignore_root=True,
+                                             with_depth=with_depth,
+                                             initial_depth=initial_depth+1)
 
 
-def find_objects_providing(root, interface, ignore_root=False):
+def find_objects_providing(root, interface, ignore_root=False, with_depth=False):
     """Find all objects in root that provide the specified interface
 
     All sub-objects of the root will also be searched recursively.
@@ -152,6 +160,8 @@ def find_objects_providing(root, interface, ignore_root=False):
     :param Interface interface: interface; an interface that sub-objects should provide
     :param boolean ignore_root: if *True*, the root object will not be returned, even if it
         provides the given interface
+    :param boolean with_depth: if *True*, iterator elements will be made of tuples made of
+        found elements and their respective depth
     :return: an iterator for all root's sub-objects that provide the given interface
     """
-    yield from find_objects_matching(root, interface.providedBy, ignore_root)
+    yield from find_objects_matching(root, interface.providedBy, ignore_root, with_depth)

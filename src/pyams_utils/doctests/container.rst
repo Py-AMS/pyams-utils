@@ -130,11 +130,15 @@ The ISublocations interface allows to find all objects matching a given interfac
     >>> alsoProvides(content, IMyContent)
     >>> list(find_objects_providing(container, IMyContent))
     [<....MyContent object at 0x...>]
+    >>> list(find_objects_providing(container, IMyContent, with_depth=True))
+    [(<....MyContent object at 0x...>, 1)]
 
 You can also include root object in your results:
 
     >>> list(find_objects_providing(container, IMyContainer))
     [<...BTreeOrderedContainer object at 0x...>]
+    >>> list(find_objects_providing(container, IMyContainer, with_depth=True))
+    [(<...BTreeOrderedContainer object at 0x...>, 0)]
 
     >>> list(find_objects_providing(container, IMyContainer, ignore_root=True))
     []
