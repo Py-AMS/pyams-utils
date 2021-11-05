@@ -77,9 +77,12 @@ class adapter_config:    # pylint: disable=invalid-name
 
     :param str='' name: name of the adapter
     :param [Interface...] required: an interface, or a tuple of interfaces, that the component
-        adapts; 'adapts' and 'context' are synonyms for 'required' argument name
+        adapts; 'adapts' and 'context' are deprecated synonyms for 'required' argument name
     :param Interface provided: the interface that the adapter provides; 'provides' is a synonym
         for 'provided' argument name
+    :param boolean force_implements: if True (the default), the registered adapter class will
+        automatically implement the *provided* interface; otherwise, the implementation is not
+        forced
     :param registry: the registry into which adapter registration should be made
     """
 
@@ -112,7 +115,8 @@ class adapter_config:    # pylint: disable=invalid-name
                     provided = intfs[0]
                 if provided is None:
                     raise TypeError("Missing 'provides' argument")
-            if isclass(obj) and not provided.implementedBy(obj):
+            if isclass(obj) and not provided.implementedBy(obj) and \
+                    settings.get('force_implements', True):
                 classImplements(obj, provided)
 
             LOGGER.debug("Registering adapter %s for %s providing %s",
