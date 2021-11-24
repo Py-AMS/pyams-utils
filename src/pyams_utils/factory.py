@@ -128,7 +128,6 @@ def get_object_factory(interface, name=''):
     """Get registered factory for given interface
 
     :param interface: the interface for which a factory is requested
-    :param registry: the registry into which registered factory should be looked for
     :param name: name of requested factory
     :return: the requested object factory, or None if it can't be found
     """
