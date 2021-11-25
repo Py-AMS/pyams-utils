@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.11.0
+------
+ - added arguments to container module to be able to get depth of found objects inside a
+   container
+
 1.10.0
 ------
  - added 'transaction' module
