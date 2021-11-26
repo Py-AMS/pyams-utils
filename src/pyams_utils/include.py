@@ -18,9 +18,9 @@ This module is used for Pyramid integration
 import os.path
 
 from chameleon import PageTemplateFile
-from persistent import IPersistent
-from zope.annotation import IAnnotations, IAttributeAnnotatable
+from persistent.interfaces import IPersistent
 from zope.annotation.attribute import AttributeAnnotations
+from zope.annotation.interfaces import IAnnotations, IAttributeAnnotatable
 from zope.keyreference.interfaces import IKeyReference
 from zope.keyreference.persistent import KeyReferenceToPersistent
 
