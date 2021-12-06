@@ -56,6 +56,10 @@ class ObjectFactoryAdapter:
         return self.factory(*args, **kwargs)  # pylint: disable=not-callable
 
 
+_factories = {}
+"""Mapping of registered factories"""
+
+
 def register_factory(interface, klass, registry=None, name=''):
     """Register factory for a given interface
 
@@ -77,6 +81,7 @@ def register_factory(interface, klass, registry=None, name=''):
     if registry is None:
         registry = get_current_registry()
     registry.registerAdapter(Temp, name=if_name)
+    _factories.setdefault(interface, []).append((name, Temp))
 
 
 class factory_config:  # pylint: disable=invalid-name,no-member
@@ -135,3 +140,14 @@ def get_object_factory(interface, name=''):
     if name:
         if_name = '{0}::{1}'.format(if_name, name)
     return queryAdapter(interface, IObjectFactory, name=if_name)
+
+
+def get_all_factories(interface):
+    """Get all registered factories for given interface
+
+    :param interface: the interface for which factories are requested
+    :return: an iterator over registered factories, containing tuples
+        with name and factory class
+    """
+    for name, factory in _factories.get(interface, ()):
+        yield name, factory.factory

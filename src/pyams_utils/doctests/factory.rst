@@ -3,6 +3,9 @@
 PyAMS_utils factory module
 ==========================
 
+By registering their own objects factories, extension packages can easily provide their
+own implementation of any PyAMS interface handled by factories.
+
 Instead of directly using a class as an object factory, the object of this module is to
 let you create an object based on an interface. The first step is to create an object
 implementing this interface, and then to register it as a factory:
@@ -28,6 +31,7 @@ You can also register a named factory:
 Factory registry can also be handle by a decorator called "factory_config":
 
     >>> from pyams_utils.factory import factory_config
+
     >>> @factory_config(IMyInterface)
     ... class MyClass(object):
     ...     '''Class implementing my interface'''
@@ -52,8 +56,18 @@ Named factories are used in the same way:
     >>> factory
     <pyams_utils.factory.register_factory.<locals>.Temp object at 0x...>
 
-By registering their own objects factories, extension packages can easily provide their
-own implementation of any PyAMS interface handled by factories.
+
+Factories registry
+------------------
+
+It's sometimes required to get a list of all registered factories for a given interface:
+
+    >>> from pprint import pprint
+    >>> from pyams_utils.factory import get_all_factories
+
+    >>> pprint(list(get_all_factories(IMyInterface)))
+    [('', <class 'pyams_utils.tests.test_utilsdocs.MyClass'>),
+     ('my-factory', <class 'pyams_utils.tests.test_utilsdocs.MyClass'>)]
 
 
 Tests cleanup:
