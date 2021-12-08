@@ -44,9 +44,10 @@ class _ClassPropertyDescriptor:
         self.fset = fset
 
     def __get__(self, obj, owner):
-        if self in obj.__dict__.values():
+        try:
             return self.fget(obj)
-        return self.fget(owner)
+        except AttributeError:
+            return self.fget(owner)
 
     def __set__(self, obj, value):
         if not self.fset:

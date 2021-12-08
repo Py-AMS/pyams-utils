@@ -90,8 +90,8 @@ We can define a setter as usual:
     >>> OtherClassWithProperties.my_class_property
     2
 
-Please note that setting a property requires that you use the class, not an instance of this
-class:
+Please note that setting a class property from an instance of the class doesn't affect the
+class, but only the instance:
 
     >>> obj = OtherClassWithProperties()
     >>> obj.my_class_property
@@ -99,4 +99,16 @@ class:
 
     >>> obj.my_class_property = 3
     >>> obj.my_class_property
+    3
+
+    >>> obj2 = OtherClassWithProperties()
+    >>> obj2.my_class_property
     2
+
+    >>> OtherClassWithProperties.my_class_property = 4
+    >>> OtherClassWithProperties.my_class_property
+    4
+    >>> obj.my_class_property
+    3
+    >>> obj2.my_class_property
+    4
