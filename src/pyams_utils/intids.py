@@ -92,16 +92,20 @@ def handle_removed_object(event):
             registry.notify(ObjectRemovedEvent(location))
     utilities = tuple(get_all_utilities_registered_for(IIntIds))
     if utilities:
-        key = IKeyReference(event.object, None)
-        # Register only objects that adapt to key reference
-        if key is not None:
-            # Notify the catalogs that this object is about to be removed.
-            registry.notify(IntIdRemovedEvent(event.object, event))
-            for utility in utilities:
-                try:
-                    utility.unregister(key)
-                except KeyError:
-                    pass
+        try:
+            key = IKeyReference(event.object, None)
+        except NotYet:
+            pass
+        else:
+            # Register only objects that adapt to key reference
+            if key is not None:
+                # Notify the catalogs that this object is about to be removed.
+                registry.notify(IntIdRemovedEvent(event.object, event))
+                for utility in utilities:
+                    try:
+                        utility.unregister(key)
+                    except KeyError:
+                        pass
 
 
 @subscriber(IIntIdEvent)
