@@ -110,3 +110,15 @@ This function can also be used from a Chameleon template with a TALES extension:
     >>> expression = BooleanIterCheckerExpression(mylist, None, None)
     >>> expression.render()
     (True, <generator object ... at 0x...>)
+
+This helper also handles StopIteration; with Python starting from 3.7,
+please note that a StopIteration raised from inside an iterator is transformed
+into a RuntimeError:
+
+    >>> def custom(value):
+    ...     if not value:
+    ...         raise StopIteration
+    ...     yield value
+    >>> check, myiter = boolean_iter(custom([]))
+    >>> check
+    False

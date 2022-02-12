@@ -105,7 +105,7 @@ def boolean_iter(iterable):
         check, items = tee(iterable)
         try:
             next(check)
-        except StopIteration:
+        except (StopIteration, RuntimeError):
             yield False
         else:
             yield True
