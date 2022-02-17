@@ -22,7 +22,7 @@ from zope.interface import directlyProvides
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary, getVocabularyRegistry
 
-from pyams_utils.registry import get_utilities_for
+from pyams_utils.registry import get_utilities_for, get_utility
 
 
 __docformat__ = 'restructuredtext'
@@ -37,11 +37,15 @@ class LocalUtilitiesVocabulary(SimpleVocabulary):
     interface = None
 
     def __init__(self, context=None):  # pylint: disable=unused-argument
-        terms = [
+        terms = sorted([
             SimpleTerm(name, title=util.name)
             for name, util in get_utilities_for(self.interface)
-        ]
+        ], key=lambda x: x.title)
         super().__init__(terms)
+
+    def get_utility(self, value):
+        """Get utility matching provided value"""
+        return get_utility(self.interface, name=value)
 
 
 class vocabulary_config:  # pylint: disable=invalid-name
