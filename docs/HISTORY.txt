@@ -2,6 +2,18 @@
 Changelog
 =========
 
+1.11.2
+------
+ - added helper function in *factory* module to get all registered factories
+   for a given interface
+ - catch RuntimeError in boolean iterator checker to handle Python 3.7+ use case where
+   a StopIteration raised from inside a generator is transformed into a RuntimeError
+   (see PEP 479)
+ - catch NotYet exception in IIntIds object remove subscriber
+ - updated class properties management
+ - updated local utilities vocabulary
+ - updated Gitlab-CI configuration
+
 1.11.1
 ------
  - updated imports

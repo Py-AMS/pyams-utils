@@ -78,7 +78,7 @@ coverage:
 build-3.7:
     stage: build
     script:
-        - pip install pip==21.0.1 setuptools==50.3.2 zc.buildout zc.recipe.egg
+        - pip install pip==21.0.1 setuptools==50.3.2 zc.buildout==2.13.4 zc.recipe.egg==2.0.7
         - buildout setup setup.py clean --all sdist bdist_egg bdist_wheel
     artifacts:
         paths:
@@ -91,7 +91,7 @@ dist-3.7:
     stage: dist
     image: python:3.7
     script:
-        - pip install pip==21.0.1 setuptools==50.3.2 zc.buildout zc.recipe.egg
+        - pip install pip==21.0.1 setuptools==50.3.2 zc.buildout==2.13.4 zc.recipe.egg==2.0.7
         - buildout
         - ./bin/test
         - buildout setup setup.py bdist_egg
@@ -111,7 +111,7 @@ dist-3.8:
     stage: dist
     image: python:3.8
     script:
-        - pip install pip==21.0.1 setuptools==50.3.2 zc.buildout zc.recipe.egg
+        - pip install pip==21.0.1 setuptools==50.3.2 zc.buildout==2.13.4 zc.recipe.egg==2.0.7
         - buildout
         - ./bin/test
         - buildout setup setup.py bdist_egg
@@ -131,7 +131,7 @@ dist-3.9:
     stage: dist
     image: python:3.9
     script:
-        - pip install pip==21.0.1 setuptools==50.3.2 zc.buildout zc.recipe.egg
+        - pip install pip==21.0.1 setuptools==50.3.2 zc.buildout==2.13.4 zc.recipe.egg==2.0.7
         - buildout
         - ./bin/test
         - buildout setup setup.py bdist_egg
