@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PyAMS_utils 1.0.0\n"
-"POT-Creation-Date: 2021-07-22 20:07+0200\n"
+"POT-Creation-Date: 2022-02-17 17:41+0100\n"
 "PO-Revision-Date: 2019-12-04 20:42+0100\n"
 "Last-Translator: Thierry Florac <tflorac@ulthar.net>\n"
 "Language-Team: FRENCH <FR@li.org>\n"
@@ -13,63 +13,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Lingua 3.10.dev0\n"
-
-#: src/pyams_utils/rest.py:38
-msgid "Item value"
-msgstr "Contenu de l'élément."
-
-#: src/pyams_utils/rest.py:67
-msgid "Range beginning date"
-msgstr "Date de début"
-
-#: src/pyams_utils/rest.py:70
-msgid "Range ending date (excluded)"
-msgstr "Date de fin (exclue)"
-
-#. pylint: disable=unused-argument
-#: src/pyams_utils/pygments.py:83
-msgid "Automatic detection"
-msgstr "Détection automatique"
-
-#: src/pyams_utils/pygments.py:142
-msgid "Source code"
-msgstr "Code source"
-
-#: src/pyams_utils/size.py:42
-msgid "0 bytes"
-msgstr "0 octets"
-
-#: src/pyams_utils/size.py:45
-msgid "0.# Kb"
-msgstr "0.# Ko"
-
-#: src/pyams_utils/size.py:48
-msgid "0.0# Mb"
-msgstr "0.0# Mo"
-
-#: src/pyams_utils/size.py:50
-msgid "0.0## Gb"
-msgstr "0.0## Go"
-
-#: src/pyams_utils/schema.py:146
-msgid "Color length must be 3 or 6 characters"
-msgstr "La longueur du code couleur doit être de 3 ou 6 caractères."
-
-#: src/pyams_utils/schema.py:149
-msgid ""
-"Color value must contain only valid hexadecimal color codes (numbers or "
-"letters between 'A' end 'F')"
-msgstr ""
-"Le code couleur ne doit contenir que des caractères hexadécimaux (des "
-"chiffres, ou des lettres entre 'A' et 'F')"
-
-#: src/pyams_utils/schema.py:228
-msgid ""
-"Email address must be entered as « name@domain.name », without '<' and '>' "
-"characters"
-msgstr ""
-"L'adresse mail doit être saisie sous la forme « nom@domain.org », sans les "
-"caractères '<' et '>'."
 
 #: src/pyams_utils/date.py:103
 msgid "%d/%m/%Y"
@@ -162,6 +105,66 @@ msgstr "%d minutes"
 #, c-format
 msgid "%d seconds"
 msgstr "%d secondes"
+
+#: src/pyams_utils/rest.py:38
+msgid "Item value"
+msgstr "Contenu de l'élément."
+
+#: src/pyams_utils/rest.py:67
+msgid "Range beginning date"
+msgstr "Date de début"
+
+#: src/pyams_utils/rest.py:70
+msgid "Range ending date (excluded)"
+msgstr "Date de fin (exclue)"
+
+#: src/pyams_utils/text.py:118
+msgid "Simple text"
+msgstr "Texte simple"
+
+#: src/pyams_utils/text.py:142
+msgid "ReStructured text"
+msgstr "Texte formatté (ReStructuredText)"
+
+#: src/pyams_utils/text.py:167
+msgid "Markdown text"
+msgstr "Texte formatté (Markdown)"
+
+#: src/pyams_utils/size.py:42
+msgid "0 bytes"
+msgstr "0 octets"
+
+#: src/pyams_utils/size.py:45
+msgid "0.# Kb"
+msgstr "0.# Ko"
+
+#: src/pyams_utils/size.py:48
+msgid "0.0# Mb"
+msgstr "0.0# Mo"
+
+#: src/pyams_utils/size.py:50
+msgid "0.0## Gb"
+msgstr "0.0## Go"
+
+#: src/pyams_utils/schema.py:146
+msgid "Color length must be 3 or 6 characters"
+msgstr "La longueur du code couleur doit être de 3 ou 6 caractères."
+
+#: src/pyams_utils/schema.py:149
+msgid ""
+"Color value must contain only valid hexadecimal color codes (numbers or "
+"letters between 'A' end 'F')"
+msgstr ""
+"Le code couleur ne doit contenir que des caractères hexadécimaux (des "
+"chiffres, ou des lettres entre 'A' et 'F')"
+
+#: src/pyams_utils/schema.py:228
+msgid ""
+"Email address must be entered as « name@domain.name », without '<' and '>' "
+"characters"
+msgstr ""
+"L'adresse mail doit être saisie sous la forme « nom@domain.org », sans les "
+"caractères '<' et '>'."
 
 #: src/pyams_utils/encoding.py:31
 msgid "English (ASCII)"
@@ -533,25 +536,18 @@ msgstr "toutes les langues (utf_8)"
 msgid "all languages (utf_8_sig)"
 msgstr "toutes les langues (utf_8_sig)"
 
-#: src/pyams_utils/text.py:118
-msgid "Simple text"
-msgstr "Texte simple"
+#. pylint: disable=unused-argument
+#: src/pyams_utils/pygments.py:83
+msgid "Automatic detection"
+msgstr "Détection automatique"
 
-#: src/pyams_utils/text.py:142
-msgid "ReStructured text"
-msgstr "Texte formatté (ReStructuredText)"
+#: src/pyams_utils/pygments.py:142
+msgid "Source code"
+msgstr "Code source"
 
-#: src/pyams_utils/text.py:167
-msgid "Markdown text"
-msgstr "Texte formatté (Markdown)"
-
-#: src/pyams_utils/interfaces/inherit.py:40
-msgid "Inherit from parent?"
-msgstr "Hériter du parent ?"
-
-#: src/pyams_utils/interfaces/inherit.py:44
-msgid "Don't inherit from parent?"
-msgstr "Ne pas hériter du parent ?"
+#: src/pyams_utils/interfaces/intids.py:34
+msgid "Indexed elements count"
+msgstr "Nombre d'éléments indexés"
 
 #: src/pyams_utils/interfaces/pygments.py:34
 msgid "Selected lexer"
@@ -589,83 +585,13 @@ msgstr "Style de couleur"
 msgid "Selected color style"
 msgstr "Feuille de style utilisée pour la mise en forme de la syntaxe"
 
-#: src/pyams_utils/interfaces/intids.py:34
-msgid "Indexed elements count"
-msgstr "Nombre d'éléments indexés"
+#: src/pyams_utils/interfaces/inherit.py:40
+msgid "Inherit from parent"
+msgstr "Hériter du parent"
 
-#: src/pyams_utils/interfaces/__init__.py:34
-msgid "Wrong contained type"
-msgstr "Type de contenu incorrect."
-
-#: src/pyams_utils/interfaces/__init__.py:35
-msgid "One or more entries of sequence are not unique."
-msgstr "Toutes les entrées de la séquence ne sont pas uniques."
-
-#: src/pyams_utils/interfaces/__init__.py:36
-msgid "Schema not fully implemented"
-msgstr "Le schéma n'est pas complètement implémenté."
-
-#: src/pyams_utils/interfaces/__init__.py:37
-msgid "Schema not provided"
-msgstr "Le schéma n'est pas fourni."
-
-#: src/pyams_utils/interfaces/__init__.py:38
-msgid "The specified URI is not valid."
-msgstr ""
-"L'URL indiquée est invalide ; elle doit comprendre le protocole d'accès au "
-"site, comme « http:// » ou « https:// »."
-
-#: src/pyams_utils/interfaces/__init__.py:39
-msgid "The specified id is not valid."
-msgstr "L'identifiant indiqué est invalide."
-
-#: src/pyams_utils/interfaces/__init__.py:40
-msgid "The specified dotted name is not valid."
-msgstr "Le nom indiqué est invalide."
-
-#: src/pyams_utils/interfaces/__init__.py:41
-msgid "The field is not bound."
-msgstr "Le champ n'est pas lié."
-
-#: src/pyams_utils/interfaces/__init__.py:43
-msgid "Required input is missing."
-msgstr "Ce champ est obligatoire."
-
-#: src/pyams_utils/interfaces/__init__.py:44
-msgid "Object is of wrong type."
-msgstr "L'objet est d'un type incorrect."
-
-#: src/pyams_utils/interfaces/__init__.py:45
-msgid "Value is too big"
-msgstr "La valeur est trop grande."
-
-#: src/pyams_utils/interfaces/__init__.py:46
-msgid "Value is too small"
-msgstr "La valeur est trop petite."
-
-#: src/pyams_utils/interfaces/__init__.py:47
-msgid "Value is too long"
-msgstr "La valeur est trop longue."
-
-#: src/pyams_utils/interfaces/__init__.py:48
-msgid "Value is too short"
-msgstr "La valeur est trop courte."
-
-#: src/pyams_utils/interfaces/__init__.py:49
-msgid "Invalid value"
-msgstr "La valeur est incorrecte."
-
-#: src/pyams_utils/interfaces/__init__.py:50
-msgid "Constraint not satisfied"
-msgstr "La contrainte sur ce champ n'est pas satisfaite."
-
-#: src/pyams_utils/interfaces/__init__.py:51
-msgid "Not a container"
-msgstr "La valeur fournie n'est pas un conteneur."
-
-#: src/pyams_utils/interfaces/__init__.py:52
-msgid "Not an iterator"
-msgstr "La valeur fournie n'est pas un itérateur."
+#: src/pyams_utils/interfaces/inherit.py:44
+msgid "Don't inherit from parent"
+msgstr "Ne pas hériter du parent"
 
 #: src/pyams_utils/interfaces/zeo.py:30
 msgid "Connection name"
@@ -752,7 +678,81 @@ msgstr ""
 
 #: src/pyams_utils/interfaces/text.py:35
 msgid "Optional renderer label"
-msgstr "Libellé optionel du mode de rendu"
+msgstr "Libellé optionnel du mode de rendu"
+
+#: src/pyams_utils/interfaces/__init__.py:34
+msgid "Wrong contained type"
+msgstr "Type de contenu incorrect."
+
+#: src/pyams_utils/interfaces/__init__.py:35
+msgid "One or more entries of sequence are not unique."
+msgstr "Toutes les entrées de la séquence ne sont pas uniques."
+
+#: src/pyams_utils/interfaces/__init__.py:36
+msgid "Schema not fully implemented"
+msgstr "Le schéma n'est pas complètement implémenté."
+
+#: src/pyams_utils/interfaces/__init__.py:37
+msgid "Schema not provided"
+msgstr "Le schéma n'est pas fourni."
+
+#: src/pyams_utils/interfaces/__init__.py:38
+msgid "The specified URI is not valid."
+msgstr ""
+"L'URL indiquée est invalide ; elle doit comprendre le protocole d'accès au "
+"site, comme « http:// » ou « https:// »."
+
+#: src/pyams_utils/interfaces/__init__.py:39
+msgid "The specified id is not valid."
+msgstr "L'identifiant indiqué est invalide."
+
+#: src/pyams_utils/interfaces/__init__.py:40
+msgid "The specified dotted name is not valid."
+msgstr "Le nom indiqué est invalide."
+
+#: src/pyams_utils/interfaces/__init__.py:41
+msgid "The field is not bound."
+msgstr "Le champ n'est pas lié."
+
+#: src/pyams_utils/interfaces/__init__.py:43
+msgid "Required input is missing."
+msgstr "Ce champ est obligatoire."
+
+#: src/pyams_utils/interfaces/__init__.py:44
+msgid "Object is of wrong type."
+msgstr "L'objet est d'un type incorrect."
+
+#: src/pyams_utils/interfaces/__init__.py:45
+msgid "Value is too big"
+msgstr "La valeur est trop grande."
+
+#: src/pyams_utils/interfaces/__init__.py:46
+msgid "Value is too small"
+msgstr "La valeur est trop petite."
+
+#: src/pyams_utils/interfaces/__init__.py:47
+msgid "Value is too long"
+msgstr "La valeur est trop longue."
+
+#: src/pyams_utils/interfaces/__init__.py:48
+msgid "Value is too short"
+msgstr "La valeur est trop courte."
+
+#: src/pyams_utils/interfaces/__init__.py:49
+msgid "Invalid value"
+msgstr "La valeur est incorrecte."
+
+#: src/pyams_utils/interfaces/__init__.py:50
+msgid "Constraint not satisfied"
+msgstr "La contrainte sur ce champ n'est pas satisfaite."
+
+#: src/pyams_utils/interfaces/__init__.py:51
+msgid "Not a container"
+msgstr "La valeur fournie n'est pas un conteneur."
+
+#: src/pyams_utils/interfaces/__init__.py:52
+msgid "Not an iterator"
+msgstr "La valeur fournie n'est pas un itérateur."
 
 #: src/pyams_utils/interfaces/timezone.py:31
 msgid "Server timezone"

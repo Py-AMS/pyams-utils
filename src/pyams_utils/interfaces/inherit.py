@@ -37,11 +37,11 @@ class IInheritInfo(ILocation):
 
     can_inherit = Attribute("Can inherit from parent?")
 
-    inherit = Bool(title=_("Inherit from parent?"),
+    inherit = Bool(title=_("Inherit from parent"),
                    required=False,
                    default=True)
 
-    no_inherit = Bool(title=_("Don't inherit from parent?"),
+    no_inherit = Bool(title=_("Don't inherit from parent"),
                       required=False,
                       default=False)
 
