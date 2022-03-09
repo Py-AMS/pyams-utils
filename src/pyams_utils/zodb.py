@@ -289,7 +289,10 @@ class ZODBConnectionVocabulary(SimpleVocabulary):
 
     def __init__(self, context=None):  # pylint: disable=unused-argument
         settings = get_utility(ISettings)
-        terms = [SimpleTerm(name, title=name) for name, uri in get_uris(settings)]
+        terms = [
+            SimpleTerm(name, title=name)
+            for name, uri in get_uris(settings)
+        ]
         super().__init__(terms)
 
 
@@ -308,14 +311,20 @@ class volatile_property:  # pylint: disable=invalid-name
     def __get__(self, inst, cls):
         if inst is None:
             return self
-        attrname = '_v_{0}'.format(self.__name__)
+        attrname = f'_v_{self.__name__}'
         value = getattr(inst, attrname, VOLATILE_MARKER)
         if value is VOLATILE_MARKER:
             value = self.fget(inst)
             setattr(inst, attrname, value)
         return value
 
+    def __set__(self, inst, value):
+        if inst is None:
+            return
+        attrname = f'_v_{self.__name__}'
+        setattr(inst, attrname, value)
+
     def __delete__(self, inst):
-        attrname = '_v_{0}'.format(self.__name__)
+        attrname = f'_v_{self.__name__}'
         if hasattr(inst, attrname):
             delattr(inst, attrname)

@@ -114,6 +114,18 @@ If you delete a volatile property, it's matching attribute is removed:
     'Getting value...'
     1
 
+Note that you can also set a volatile property manually; this does not modify the way this
+property will be used of deleted afterwards:
+
+    >>> content.value = 'Another value'
+    >>> content.value
+    'Another value'
+
+    >>> del content.value
+    >>> content.value
+    'Getting value...'
+    1
+
 
 Managing ZEO connections
 ------------------------
