@@ -56,6 +56,15 @@ Named factories are used in the same way:
     >>> factory
     <pyams_utils.factory.register_factory.<locals>.Temp object at 0x...>
 
+Getting factory from anything which isn't an interface returns the original object:
+
+    >>> get_object_factory(None) is None
+    True
+    >>> get_object_factory(str) is str
+    True
+    >>> get_object_factory(1) == 1
+    True
+
 
 Factories registry
 ------------------

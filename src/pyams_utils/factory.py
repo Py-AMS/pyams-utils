@@ -136,6 +136,8 @@ def get_object_factory(interface, name=''):
     :param name: name of requested factory
     :return: the requested object factory, or None if it can't be found
     """
+    if not is_interface(interface):
+        return interface
     if_name = get_interface_name(interface)
     if name:
         if_name = '{0}::{1}'.format(if_name, name)
