@@ -176,7 +176,7 @@ pypy-3.9:
         - buildout
         - ./bin/test
         - buildout setup setup.py bdist_egg
-        - apt install rustc
+        - apt install -y rustc
         - pip install twine
         - twine upload --skip-existing dist/*
     variables:
