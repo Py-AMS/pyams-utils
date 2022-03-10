@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.11.3
+------
+ - check if provided argument is an interface in object factory getter
+ - added volatile property setter
+
 1.11.2
 ------
  - added helper function in *factory* module to get all registered factories
