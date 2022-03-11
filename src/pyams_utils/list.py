@@ -32,6 +32,23 @@ from pyams_utils.interfaces.tales import ITALESExtension
 __docformat__ = 'restructuredtext'
 
 
+def is_not_none(item):
+    """Simple filter for not None values
+
+    >>> from pyams_utils.list import is_not_none
+
+    >>> is_not_none(None)
+    False
+    >>> is_not_none(())
+    True
+    >>> is_not_none(0)
+    True
+    >>> is_not_none('')
+    True
+    """
+    return item is not None
+
+
 def unique(seq, key=None):
     """Extract unique values from list, preserving order
 
