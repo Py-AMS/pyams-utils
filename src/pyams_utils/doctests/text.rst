@@ -138,6 +138,58 @@ A vocabulary is available to make a selection between all available renderers:
     >>> from pyams_utils.text import RenderersVocabulary
     >>> vocabulary = RenderersVocabulary()
 
+You can also render properties values based on vocabularies:
+
+    >>> from zope.interface import Interface
+    >>> from zope.schema import List, Set, Choice
+    >>> from zope.schema.fieldproperty import FieldProperty
+
+    >>> class ITestInterface(Interface):
+    ...     value1 = List(value_type=Choice(vocabulary=vocabulary))
+    ...     value2 = Set(value_type=Choice(vocabulary=vocabulary))
+    ...     value3 = Choice(vocabulary=vocabulary)
+
+    >>> @implementer(ITestInterface)
+    ... class TestClass:
+    ...     value1 = FieldProperty(ITestInterface['value1'])
+    ...     value2 = FieldProperty(ITestInterface['value2'])
+    ...     value3 = FieldProperty(ITestInterface['value3'])
+
+Rendering choices and sequences require a *field* and a *context* arguments:
+
+    >>> item = TestClass()
+    >>> item.value1 = ['text']
+    >>> item.value2 = {'text'}
+    >>> item.value3 = 'text'
+
+    >>> text_to_html(item.value1, 'choice-list')
+    '--'
+    >>> text_to_html(item.value2, 'choice-set')
+    '--'
+    >>> text_to_html(item.value3, 'choice')
+    '--'
+
+    >>> text_to_html(item.value1, 'choice', context=item, field=ITestInterface['value1'])
+    '--'
+    >>> text_to_html(item.value1, 'choice-list', context=item, field=ITestInterface['value1'])
+    '<ul><li>Simple text</li></ul>'
+    >>> text_to_html(item.value1, 'choice-set', context=item, field=ITestInterface['value1'])
+    ['text']
+
+    >>> text_to_html(item.value2, 'choice', context=item, field=ITestInterface['value2'])
+    '--'
+    >>> text_to_html(item.value2, 'choice-list', context=item, field=ITestInterface['value2'])
+    {'text'}
+    >>> text_to_html(item.value2, 'choice-set', context=item, field=ITestInterface['value2'])
+    '<ul><li>Simple text</li></ul>'
+
+    >>> text_to_html(item.value3, 'choice', context=item, field=ITestInterface['value3'])
+    'Simple text'
+    >>> text_to_html(item.value3, 'choice-list', context=item, field=ITestInterface['value3'])
+    'text'
+    >>> text_to_html(item.value3, 'choice-set', context=item, field=ITestInterface['value3'])
+    'text'
+
 
 Breaking lines
 --------------

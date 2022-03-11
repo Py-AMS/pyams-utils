@@ -22,6 +22,7 @@ import docutils.core
 from markdown import markdown
 from pyramid.interfaces import IRequest
 from zope.interface import Interface
+from zope.schema.interfaces import IChoice, IList, ISequence, ISet
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
 from pyams_utils.adapter import ContextRequestAdapter, ContextRequestViewAdapter, adapter_config
@@ -96,7 +97,9 @@ class TruncateCharsTalesExtension(ContextRequestViewAdapter):
         return get_text_start(value, length, maxlen=maxlen)
 
 
-@adapter_config(name='raw', required=(str, IRequest), provides=IHTMLRenderer)
+@adapter_config(name='raw',
+                required=(str, IRequest),
+                provides=IHTMLRenderer)
 class BaseHTMLRenderer(ContextRequestAdapter):
     """Raw text HTML renderer
 
@@ -108,7 +111,9 @@ class BaseHTMLRenderer(ContextRequestAdapter):
         return self.context
 
 
-@adapter_config(name='text', required=(str, IRequest), provides=IHTMLRenderer)
+@adapter_config(name='text',
+                required=(str, IRequest),
+                provides=IHTMLRenderer)
 class TextRenderer(BaseHTMLRenderer):
     """Basic text HTML renderer
 
@@ -121,7 +126,9 @@ class TextRenderer(BaseHTMLRenderer):
         return html.escape(self.context).replace('\n', '<br />\n')
 
 
-@adapter_config(name='js', required=(str, IRequest), provides=IHTMLRenderer)
+@adapter_config(name='js',
+                required=(str, IRequest),
+                provides=IHTMLRenderer)
 class JsRenderer(BaseHTMLRenderer):
     """Custom Javascript HTML renderer
 
@@ -132,7 +139,9 @@ class JsRenderer(BaseHTMLRenderer):
         return self.context.replace("'", "\\'")
 
 
-@adapter_config(name='rest', required=(str, IRequest), provides=IHTMLRenderer)
+@adapter_config(name='rest',
+                required=(str, IRequest),
+                provides=IHTMLRenderer)
 class ReStructuredTextRenderer(BaseHTMLRenderer):
     """reStructuredText HTML renderer
 
@@ -157,7 +166,9 @@ class ReStructuredTextRenderer(BaseHTMLRenderer):
         return ''.join((parts['body_pre_docinfo'], parts['docinfo'], parts['body']))
 
 
-@adapter_config(name='markdown', required=(str, IRequest), provides=IHTMLRenderer)
+@adapter_config(name='markdown',
+                required=(str, IRequest),
+                provides=IHTMLRenderer)
 class MarkdownTextRenderer(BaseHTMLRenderer):
     """Markdown HTML renderer
 
@@ -169,6 +180,67 @@ class MarkdownTextRenderer(BaseHTMLRenderer):
     def render(self, **kwargs):
         """Render Markdown code to HTML"""
         return markdown(self.context)
+
+
+@adapter_config(name='choice',
+                required=(object, IRequest),
+                provides=IHTMLRenderer)
+class ChoiceTextRenderer(BaseHTMLRenderer):
+    """Choice text renderer"""
+
+    field_intf = IChoice
+
+    def render(self, **kwargs):
+        """Render choice field to HTML"""
+        field = kwargs.get('field')
+        if field is None:
+            return '--'
+        if not self.field_intf.providedBy(field):
+            return '--'
+        vocabulary = field.bind(kwargs.get('context', self.context)).vocabulary
+        try:
+            return vocabulary.getTerm(self.context).title
+        except LookupError:
+            return '##'
+
+
+class SequenceTextRenderer(BaseHTMLRenderer):
+    """Sequence text renderer"""
+
+    field_intf = ISequence
+
+    def render(self, **kwargs):
+        """Render choice field to HTML"""
+        if not self.context:
+            return '--'
+        field = kwargs.get('field')
+        if field is None:
+            return '--'
+        if not self.field_intf.providedBy(field):
+            return '--'
+        vocabulary = field.value_type.bind(kwargs.get('context', self.context)).vocabulary
+        return '<ul><li>{}</li></ul>'.format('</li><li>'.join((
+            vocabulary.getTerm(value).title
+            for value in self.context
+        )))
+
+
+@adapter_config(name='choice-list',
+                required=(list, IRequest),
+                provides=IHTMLRenderer)
+class ChoiceListTextRenderer(SequenceTextRenderer):
+    """Choice list HTML renderer"""
+
+    field_intf = IList
+
+
+@adapter_config(name='choice-set',
+                required=(set, IRequest),
+                provides=IHTMLRenderer)
+class ChoiceSetTextRenderer(SequenceTextRenderer):
+    """Choice set HTML renderer"""
+
+    field_intf = ISet
 
 
 def text_to_html(text, renderer='text', **kwargs):
