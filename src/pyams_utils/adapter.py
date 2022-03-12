@@ -19,9 +19,8 @@ See :ref:`zca` to see how PyAMS can help components management.
 """
 
 import logging
-from inspect import isclass
-
 import venusian
+from inspect import isclass
 from zope.annotation.interfaces import IAnnotations
 from zope.interface import alsoProvides, classImplements, implementedBy
 from zope.lifecycleevent import ObjectCreatedEvent
@@ -32,6 +31,7 @@ from pyams_utils.registry import get_current_registry
 
 
 __docformat__ = 'restructuredtext'
+
 
 LOGGER = logging.getLogger('PyAMS (utils)')
 
