@@ -18,7 +18,6 @@ It also provides two vocabularies of available lexers and styles.
 
 import datetime
 from http.client import NOT_MODIFIED
-
 from persistent import Persistent
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
@@ -31,10 +30,8 @@ from zope.container.contained import Contained
 from zope.schema.fieldproperty import FieldProperty
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
-from pyams_utils import library
 from pyams_utils.adapter import adapter_config
 from pyams_utils.factory import factory_config
-from pyams_utils.fanstatic import ExternalResource
 from pyams_utils.interfaces.pygments import IPygmentsCodeConfiguration, \
     PYGMENTS_LEXERS_VOCABULARY_NAME, PYGMENTS_STYLES_VOCABULARY_NAME
 from pyams_utils.interfaces.text import IHTMLRenderer
@@ -51,9 +48,6 @@ from pyams_utils import _
 #
 # Pygments CSS view
 #
-
-pygments_css = ExternalResource(library, 'get-pygments-style.css', resource_type='css')
-
 
 @view_config(name='get-pygments-style.css')
 def get_pygments_style_view(request):
