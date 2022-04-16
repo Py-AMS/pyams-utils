@@ -2,6 +2,13 @@
 Changelog
 =========
 
+1.12.0
+------
+ - removed Pypy3 support from Gitlab-CI because of build issues with Twine and Cryptography
+ - added small "is not None" filter helper
+ - added text renderers for vocabulary-based properties
+ - removed unused Pygments resource
+
 1.11.6
 ------
  - updated Pypy 3 support
