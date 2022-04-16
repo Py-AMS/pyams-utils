@@ -33,6 +33,9 @@ __docformat__ = 'restructuredtext'
 LOGGER = logging.getLogger('PyAMS (utils)')
 
 
+COMMITTED_STATUS = 'Committed'
+
+
 STATUS_ACTIVE = 'active'
 STATUS_CHANGED = 'changed'
 
