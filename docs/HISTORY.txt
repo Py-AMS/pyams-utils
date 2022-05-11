@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.12.1
+------
+ - added support helpers for CORS preflight OPTIONS verb used by REST services
+
 1.12.0
 ------
  - removed Pypy3 support from Gitlab-CI because of build issues with Twine and Cryptography
