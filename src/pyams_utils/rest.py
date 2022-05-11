@@ -32,6 +32,20 @@ __docformat__ = 'restructuredtext'
 from pyams_utils import _
 
 
+def handle_rest_options(request):
+    """Handle OPTIONS verb on REST service"""
+    req_headers = request.headers
+    resp_headers = request.response.headers
+    resp_headers['Access-Control-Allow-Credentials'] = 'true'
+    resp_headers['Access-Control-Allow-Origin'] = \
+        req_headers.get('Origin', request.host_url)
+    resp_headers['Access-Control-Allow-Headers'] = \
+        req_headers.get('Access-Control-Request-Headers', 'origin')
+    resp_headers['Access-Control-Allow-Methods'] = \
+        req_headers.get('Access-Control-Request-Method', 'GET') + ',OPTIONS'
+    return ''
+
+
 class StringListSchema(SequenceSchema):
     """Strings list list"""
     value = SchemaNode(String(),
@@ -102,6 +116,12 @@ CorniceSwagger.custom_type_converters.update({
 swagger = Service(name='OpenAPI',
                   path='/__api__',
                   description="OpenAPI documentation")
+
+
+@swagger.options()
+def openapi_options(request):
+    """OpenAPI OPTIONS verb handler"""
+    return handle_rest_options(request)
 
 
 @swagger.get()

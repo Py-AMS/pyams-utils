@@ -31,6 +31,16 @@ API:
      'swagger': '2.0'}
 
 
+The module also provides a custom handler for OPTIONS verb:
+
+    >>> from pyams_utils.rest import openapi_options
+
+    >>> request = DummyRequest('/__api__', method='OPTIONS')
+    >>> response = openapi_options(request)
+    >>> response
+    ''
+
+
 Tests cleanup:
 
     >>> tearDown()
