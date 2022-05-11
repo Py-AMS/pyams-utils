@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.12.2
+------
+ - updated Gitlab-CI configuration
+
 1.12.1
 ------
  - added support helpers for CORS preflight OPTIONS verb used by REST services
