@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.12.3
+------
+ - updated CORS headers support
+
 1.12.2
 ------
  - updated Gitlab-CI configuration
