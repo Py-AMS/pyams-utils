@@ -37,8 +37,8 @@ The module also provides a custom handler for OPTIONS verb:
 
     >>> request = DummyRequest('/__api__', method='OPTIONS')
     >>> response = openapi_options(request)
-    >>> response
-    ''
+    >>> response is None
+    True
 
 
 Tests cleanup:

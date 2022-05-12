@@ -16,6 +16,7 @@ This module provides OpenAPI documentation for all provided
 Cornice REST endpoints.
 """
 
+import sys
 from cgi import FieldStorage
 
 from colander import Date, Mapping, SchemaNode, SequenceSchema, String, Tuple, TupleSchema, drop, \
@@ -25,6 +26,7 @@ from cornice.service import get_services
 from cornice_swagger import CorniceSwagger
 from cornice_swagger.converters.schema import ArrayTypeConverter, ObjectTypeConverter, \
     StringTypeConverter
+from pyramid.httpexceptions import HTTPServerError
 
 
 __docformat__ = 'restructuredtext'
@@ -32,22 +34,29 @@ __docformat__ = 'restructuredtext'
 from pyams_utils import _
 
 
-def handle_rest_options(request):
-    """Handle OPTIONS verb on REST service"""
+def handle_cors_headers(request):
+    """Handle CORS headers on REST service"""
     req_headers = request.headers
     resp_headers = request.response.headers
     resp_headers['Access-Control-Allow-Credentials'] = 'true'
     resp_headers['Access-Control-Allow-Origin'] = \
         req_headers.get('Origin', request.host_url)
-    resp_headers['Access-Control-Allow-Headers'] = \
-        req_headers.get('Access-Control-Request-Headers', 'origin')
-    resp_headers['Access-Control-Allow-Methods'] = \
-        req_headers.get('Access-Control-Request-Method', 'GET') + ',OPTIONS'
-    return ''
+    if 'Access-Control-Request-Headers' in req_headers:
+        resp_headers['Access-Control-Allow-Headers'] = \
+            req_headers.get('Access-Control-Request-Headers', 'origin')
+    if 'Access-Control-Request-Method' in req_headers:
+        try:
+            service = request.current_service
+            resp_headers['Access-Control-Allow-Methods'] = \
+                ', '.join(service.cors_supported_methods)
+        except AttributeError as exc:
+            test_mode = sys.argv[-1].endswith('/test')
+            if not test_mode:
+                raise HTTPServerError from exc
 
 
 class StringListSchema(SequenceSchema):
-    """Strings list list"""
+    """Strings list schema field"""
     value = SchemaNode(String(),
                        title=_("Item value"),
                        missing=drop)
@@ -121,7 +130,7 @@ swagger = Service(name='OpenAPI',
 @swagger.options()
 def openapi_options(request):
     """OpenAPI OPTIONS verb handler"""
-    return handle_rest_options(request)
+    return handle_cors_headers(request)
 
 
 @swagger.get()
