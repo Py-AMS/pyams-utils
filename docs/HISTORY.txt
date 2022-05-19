@@ -2,6 +2,10 @@
 Changelog
 =========
 
+1.13.0
+------
+ - added custom interface and default adapter to handle CORS requests
+
 1.12.3
 ------
  - updated CORS headers support
