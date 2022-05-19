@@ -12,8 +12,8 @@
 
 """PyAMS_utils.rest module
 
-This module provides OpenAPI documentation for all provided
-Cornice REST endpoints.
+This module provides CORS requests handlers, as well as OpenAPI
+documentation for all defined Cornice REST endpoints.
 """
 
 import sys
@@ -27,6 +27,10 @@ from cornice_swagger import CorniceSwagger
 from cornice_swagger.converters.schema import ArrayTypeConverter, ObjectTypeConverter, \
     StringTypeConverter
 from pyramid.httpexceptions import HTTPServerError
+from pyramid.interfaces import IRequest
+
+from pyams_utils.adapter import adapter_config
+from pyams_utils.interfaces.rest import ICORSRequestHandler
 
 
 __docformat__ = 'restructuredtext'
@@ -34,25 +38,41 @@ __docformat__ = 'restructuredtext'
 from pyams_utils import _
 
 
+@adapter_config(required=IRequest,
+                provides=ICORSRequestHandler)
+class CORSRequestHandler:
+    """Base CORS request handler"""
+
+    def __init__(self, request):
+        self.request = request
+
+    def handle_request(self):
+        """Add requested headers to current request"""
+        request = self.request
+        req_headers = request.headers
+        resp_headers = request.response.headers
+        resp_headers['Access-Control-Allow-Credentials'] = 'true'
+        resp_headers['Access-Control-Allow-Origin'] = \
+            req_headers.get('Origin', request.host_url)
+        if 'Access-Control-Request-Headers' in req_headers:
+            resp_headers['Access-Control-Allow-Headers'] = \
+                req_headers.get('Access-Control-Request-Headers', 'origin')
+        if 'Access-Control-Request-Method' in req_headers:
+            try:
+                service = request.current_service
+                resp_headers['Access-Control-Allow-Methods'] = \
+                    ', '.join(service.cors_supported_methods)
+            except AttributeError as exc:
+                test_mode = sys.argv[-1].endswith('/test')
+                if not test_mode:
+                    raise HTTPServerError from exc
+
+
 def handle_cors_headers(request):
     """Handle CORS headers on REST service"""
-    req_headers = request.headers
-    resp_headers = request.response.headers
-    resp_headers['Access-Control-Allow-Credentials'] = 'true'
-    resp_headers['Access-Control-Allow-Origin'] = \
-        req_headers.get('Origin', request.host_url)
-    if 'Access-Control-Request-Headers' in req_headers:
-        resp_headers['Access-Control-Allow-Headers'] = \
-            req_headers.get('Access-Control-Request-Headers', 'origin')
-    if 'Access-Control-Request-Method' in req_headers:
-        try:
-            service = request.current_service
-            resp_headers['Access-Control-Allow-Methods'] = \
-                ', '.join(service.cors_supported_methods)
-        except AttributeError as exc:
-            test_mode = sys.argv[-1].endswith('/test')
-            if not test_mode:
-                raise HTTPServerError from exc
+    handler = ICORSRequestHandler(request, None)
+    if handler is not None:
+        handler.handle_request()
 
 
 class StringListSchema(SequenceSchema):
