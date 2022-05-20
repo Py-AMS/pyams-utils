@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.13.1
+------
+ - updated CORS request handler interface to be able to specify supported HTTP methods when
+   REST service is not based on Cornice
+
 1.13.0
 ------
  - added custom interface and default adapter to handle CORS requests
