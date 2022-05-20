@@ -24,5 +24,5 @@ from zope.interface import Interface
 class ICORSRequestHandler(Interface):
     """CORS request handler"""
 
-    def handle_request(self):
+    def handle_request(self, allowed_methods=None):
         """Handle adapted CORS request"""

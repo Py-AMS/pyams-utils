@@ -46,7 +46,7 @@ class CORSRequestHandler:
     def __init__(self, request):
         self.request = request
 
-    def handle_request(self):
+    def handle_request(self, allowed_methods=None):
         """Add requested headers to current request"""
         request = self.request
         req_headers = request.headers
@@ -56,23 +56,31 @@ class CORSRequestHandler:
             req_headers.get('Origin', request.host_url)
         if 'Access-Control-Request-Headers' in req_headers:
             resp_headers['Access-Control-Allow-Headers'] = \
-                req_headers.get('Access-Control-Request-Headers', 'origin')
+                req_headers.get('Access-Control-Request-Headers', 'Origin')
         if 'Access-Control-Request-Method' in req_headers:
             try:
                 service = request.current_service
                 resp_headers['Access-Control-Allow-Methods'] = \
                     ', '.join(service.cors_supported_methods)
             except AttributeError as exc:
-                test_mode = sys.argv[-1].endswith('/test')
-                if not test_mode:
-                    raise HTTPServerError from exc
+                if allowed_methods:
+                    resp_headers['Access-Control-Allow-Methods'] = ', '.join(allowed_methods)
+                else:
+                    test_mode = sys.argv[-1].endswith('/test')
+                    if not test_mode:
+                        raise HTTPServerError from exc
 
 
-def handle_cors_headers(request):
-    """Handle CORS headers on REST service"""
+def handle_cors_headers(request, allowed_methods=None):
+    """Handle CORS headers on REST service
+
+    :param request: original request
+    :param allowed_methods: list, tuple or set of allowed HTTP methods; if None, list of
+        allowed methods will be extracted from Cornice service handlers.
+    """
     handler = ICORSRequestHandler(request, None)
     if handler is not None:
-        handler.handle_request()
+        handler.handle_request(allowed_methods)
 
 
 class StringListSchema(SequenceSchema):

@@ -41,6 +41,36 @@ The module also provides a custom handler for OPTIONS verb:
     True
 
 
+CORS requests handler
+---------------------
+
+REST module provides a small handler for CORS requests; this handler relies on a request adapter
+to ICORSRequestHandler:
+
+    >>> from pyams_utils.rest import handle_cors_headers
+
+    >>> request = DummyRequest('/__api__',
+    ...                        method='OPTIONS',
+    ...                        headers={
+    ...                            'Access-Control-Request-Headers': 'Authorization',
+    ...                            'Access-Control-Request-Method': 'GET'
+    ...                        })
+    >>> handle_cors_headers(request)
+    >>> sorted(request.response.headers)
+    ['Access-Control-Allow-Credentials', 'Access-Control-Allow-Headers',
+     'Access-Control-Allow-Origin', 'Content-Length', 'Content-Type']
+
+If you service is not based on Cornice, you can provide the list of supported methods:
+
+    >>> handle_cors_headers(request, allowed_methods=('GET', 'OPTIONS'))
+    >>> sorted(request.response.headers)
+    ['Access-Control-Allow-Credentials', 'Access-Control-Allow-Headers',
+     'Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
+     'Content-Length', 'Content-Type']
+    >>> request.response.headers['Access-Control-Allow-Methods']
+    'GET, OPTIONS'
+
+
 Tests cleanup:
 
     >>> tearDown()
