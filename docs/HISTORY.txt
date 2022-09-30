@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.14.0
+------
+ - added RPC protocols helper module
+ - added object factory helper function
+
 1.13.1
 ------
  - updated CORS request handler interface to be able to specify supported HTTP methods when
