@@ -153,3 +153,21 @@ def get_all_factories(interface):
     """
     for name, factory in _factories.get(interface, ()):
         yield name, factory.factory
+
+
+def create_object(interface, name='', **kwargs):
+    """Create an object for a given interface for which a factory has been registered
+
+    :param interface: the interface for which a factory is requested
+    :param name: name of requested factory
+    :param kwargs: optional keywords arguments
+    :return: an object implementing the provided interface, or None if no factory was registered
+      for this interface
+    """
+    if is_interface(interface):
+        factory = get_object_factory(interface, name)
+    else:
+        factory = interface
+    if factory is None:
+        return None
+    return factory(**kwargs)

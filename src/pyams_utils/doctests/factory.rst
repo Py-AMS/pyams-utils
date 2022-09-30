@@ -65,6 +65,22 @@ Getting factory from anything which isn't an interface returns the original obje
     >>> get_object_factory(1) == 1
     True
 
+You can also use the *create_object* helper to create an object implementing an interface for
+which a factory was registered:
+
+    >>> from pyams_utils.factory import create_object
+    >>> myobject2 = create_object(IMyInterface)
+    >>> myobject2 is None
+    False
+
+If there is no registered factory for the provided interface and name, result is None:
+
+    >>> class IAnotherInterface(Interface):
+    ...     """Another interface"""
+
+    >>> create_object(IAnotherInterface) is None
+    True
+
 
 Factories registry
 ------------------
