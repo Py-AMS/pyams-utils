@@ -2,6 +2,13 @@
 Changelog
 =========
 
+1.15.0
+------
+ - added new text renderers interfaces and support; the goal of these interfaces is to be able
+   to include dynamic fragments into a static string which will be evaluated at runtime; this
+   string can be, for example, an SQL query or a JSON object which could be used to provide
+   arguments to a REST service, and is actually usable by PyAMS tasks scheduler
+
 1.14.0
 ------
  - added RPC protocols helper module
