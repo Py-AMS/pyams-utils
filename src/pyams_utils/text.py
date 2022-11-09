@@ -17,6 +17,7 @@ extensions (see :py:class:`ITALESExtension <pyams_utils.interfaces.tales.ITALESE
 """
 
 import html
+import re
 
 import docutils.core
 from markdown import markdown
@@ -27,7 +28,7 @@ from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
 from pyams_utils.adapter import ContextRequestAdapter, ContextRequestViewAdapter, adapter_config
 from pyams_utils.interfaces.tales import ITALESExtension
-from pyams_utils.interfaces.text import IHTMLRenderer
+from pyams_utils.interfaces.text import IHTMLRenderer, ITextRenderer
 from pyams_utils.request import check_request
 from pyams_utils.vocabulary import vocabulary_config
 
@@ -343,3 +344,43 @@ class BrTalesExtension(ContextRequestViewAdapter):
         if end_tag:
             elements[-1] = '<{0}>{1}</{0}>'.format(end_tag, elements[-1])
         return br_tag.join(elements)
+
+
+#
+# Text rendering
+#
+
+TEXT_FRAGMENTS = re.compile(r'(\${{([^{}]*)}})')
+
+
+def render_text(value, request=None):
+    """Render provided text using registered renderers
+
+    Dynamic parts of provided input string are set using "${{renderer}}" syntax, where
+    'renderer' should be the name of a registered named multi-adapter for (str, request) providing
+    ITextRenderer interface.
+
+    If renderer is needing arguments, they can be provided using ${{renderer:arg1,arg2}} syntax;
+    all arguments will be given to adapter's 'render' method as strings.
+
+    If named renderer can't be found, the result is an empty string.
+    """
+
+    def convert_fragment(match):
+        """Convert given fragment using text renderer"""
+        renderer_name = match.group(2)
+        args = ()
+        if ':' in renderer_name:
+            renderer_name, args = renderer_name.split(':', 1)
+            args = args.split(',')
+        renderer = request.registry.queryMultiAdapter((value, request), ITextRenderer,
+                                                      name=renderer_name)
+        if renderer is None:
+            return ''
+        return renderer.render(*args)
+
+    if not value:
+        return value
+    if request is None:
+        request = check_request()
+    return TEXT_FRAGMENTS.sub(convert_fragment, value)

@@ -123,6 +123,84 @@ My current default user's timezone is set to 'Europe/Paris'; you should probably
     datetime.datetime(2008, 3, 8, 18, 13, 20, tzinfo=<StaticTzInfo 'GMT'>)
 
 
+Text renderers
+--------------
+
+It's sometimes required to include dynamic contents into an otherwise "static" string. For example,
+how could we provide the current execution date in a JSON string which must be provided to a
+REST web service?
+
+You can use *text renderers* for this purpose; these renderers have to be registered as named
+multi-adapters providing *ITextRenderer* interface to string and request. These renderers are
+then called using a simple *${{renderer}}* syntax, where *renderer* is the name of the registered
+adapter; if this renderer require arguments, the syntax is *${{renderer:args1,arg2}}* and
+arguments will be provided as strings to the adapter's *render* method. If the provided renderer
+can't be found, the result is an empty string:
+
+    >>> from pyams_utils.text import render_text
+
+    >>> render_text(None) is None
+    True
+    >>> render_text('')
+    ''
+    >>> render_text("String without renderer")
+    'String without renderer'
+
+    >>> render_text("String with a ${{missing}} renderer")
+    'String with a  renderer'
+
+Let's try to create a sample renderer, which will render itself as a static value:
+
+    >>> from pyams_utils.adapter import ContextRequestAdapter
+
+    >>> class StaticTextRenderer(ContextRequestAdapter):
+    ...     def render(self, *args):
+    ...         return 'STATIC'
+
+    >>> from pyramid.interfaces import IRequest
+    >>> from pyams_utils.interfaces.text import ITextRenderer
+
+    >>> config.registry.registerAdapter(StaticTextRenderer, (str, IRequest),
+    ...                                 ITextRenderer, name='static')
+
+    >>> render_text("String with a ${{static}} renderer")
+    'String with a STATIC renderer'
+
+Another renderer will use provided arguments:
+
+    >>> class DynamicTextRenderer(ContextRequestAdapter):
+    ...     def render(self, *args):
+    ...         return ' '.join(args)
+
+    >>> config.registry.registerAdapter(DynamicTextRenderer, (str, IRequest),
+    ...                                 ITextRenderer, name='dynamic')
+
+    >>> render_text("String with a ${{dynamic}} renderer")
+    'String with a  renderer'
+
+    >>> render_text("String with a ${{dynamic:value}} renderer")
+    'String with a value renderer'
+
+    >>> render_text("String with a ${{dynamic:multiple,values}} renderer")
+    'String with a multiple values renderer'
+
+We can, of course, include several renderers in the same input string:
+
+    >>> render_text("String with a ${{static}} and ${{dynamic:multiple,values,dynamic}} renderers")
+    'String with a STATIC and multiple values dynamic renderers'
+
+A simple text renderer is provided by PyAMS; it allows to include current server datetime
+into generated text in standard localized format:
+
+    >>> render_text("Current date: ${{now}}")
+    'Current date: ...'
+
+This renderer can also receive arguments to define formatting string:
+
+    >>> render_text("Current date: ${{now:%Y-%m-%d}}")
+    'Current date: ...-...-...'
+
+
 Tests cleanup:
 
     >>> tearDown()

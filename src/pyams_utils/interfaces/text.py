@@ -12,8 +12,12 @@
 
 """PyAMS_utils.interfaces.text module
 
-This module provides a single interface used by HTML rendering adapters, which are used to convert
-any object to an HTML representation.
+This module defines interfaces provided by adapters which can be used to handle
+objects to their HTML representation.
+
+The ITextFragmentRenderer is an adapter interface which can be used to include dynamic
+parts into a static string, which can be an SQL query or a JSON object used, for example,
+as a request body or an Elasticsearch query.
 """
 
 from zope.interface import Attribute, Interface
@@ -25,7 +29,7 @@ from pyams_utils import _
 
 
 class IHTMLRenderer(Interface):
-    """Text renderer interface
+    """HTML renderer interface
 
     HTML renderers are implemented as adapters for a source object (which can
     be a string) and a request, so that you can easily implement custom renderers
@@ -36,3 +40,15 @@ class IHTMLRenderer(Interface):
 
     def render(self, **kwargs):
         """Render adapted text"""
+
+
+class ITextRenderer(Interface):
+    """Text renderer interface
+
+    Text renderers are implemented as adapters which can be used to include dynamic values
+    into a "static" string. This value can be as simple as the current datetime, or based on
+    any contextual result returned, for example, by a web service.
+    """
+
+    def render(self, **kwargs):
+        """Renderer adapter as text"""
