@@ -18,12 +18,15 @@ dates and datetimes.
 
 from datetime import datetime, timedelta
 
+from pyramid.interfaces import IRequest
 from zope.datetime import parseDatetimetz
 from zope.dublincore.interfaces import IZopeDublinCore
 from zope.interface import Interface
 
-from pyams_utils.adapter import ContextRequestViewAdapter, adapter_config
+from pyams_utils.adapter import ContextRequestAdapter, ContextRequestViewAdapter, \
+    adapter_config
 from pyams_utils.interfaces.tales import ITALESExtension
+from pyams_utils.interfaces.text import ITextRenderer
 from pyams_utils.request import check_request
 from pyams_utils.timezone import gmtime, tztime
 
@@ -334,3 +337,18 @@ class TimestampTalesAdapter(ContextRequestViewAdapter):
         if context is None:
             context = self.request.context
         return get_timestamp(context, formatting)
+
+
+@adapter_config(name='now',
+                required=(str, IRequest),
+                provides=ITextRenderer)
+class NowTextRenderer(ContextRequestAdapter):
+    """Text renderer for current server datetime"""
+
+    @staticmethod
+    def render(format_string=None):
+        """Render current server datetime using provided format string"""
+        if not format_string:
+            format_string = '%c'
+        now = tztime(datetime.utcnow())
+        return now.strftime(format_string)
