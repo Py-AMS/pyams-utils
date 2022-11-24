@@ -121,7 +121,7 @@ def absolute_url(context, request, view_name=None, query=None):
                 required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
 class AbsoluteUrlTalesExtension(ContextRequestViewAdapter):
-    """extension:absolute_url(context, view_name) TALES extension
+    """tales:absolute_url(context, view_name) TALES extension
 
     A PyAMS TALES extension used to get access to an object URL from a page template.
     """
@@ -163,7 +163,7 @@ def canonical_url(context, request, view_name=None, query=None):
                 required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
 class CanonicalUrlTalesExtension(ContextRequestViewAdapter):
-    """extension:canonical_url(context, view_name) TALES extension
+    """tales:canonical_url(context, view_name) TALES extension
 
     A PyAMS TALES extension used to get access to an object's canonical URL from a page template.
     """
@@ -203,14 +203,14 @@ def relative_url(context, request, display_context=None, view_name=None, query=N
                 required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
 class RelativeUrlTalesExtension(ContextRequestViewAdapter):
-    """extension:relative_url(context, view_name, query) TALES extension
+    """tales:relative_url(context, view_name, query) TALES extension
 
     A PyAMS TALES extension used to get an object's relative URL based on current request display
     context.
     """
 
     def render(self, context=None, view_name=None, query=None):
-        """Rander TALES extension;
+        """Render TALES extension;
         see :py:class:`ITALESExtension <pyams_utils.interfaces.tales.ITALESExtension>`
         """
         if context is None:

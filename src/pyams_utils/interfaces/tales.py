@@ -24,7 +24,7 @@ __docformat__ = 'restructuredtext'
 class ITALESExtension(Interface):
     """Custom TALES extension
 
-    These extensions will be registered throught adapters for
+    These extensions will be registered through adapters for
     (context, request, view) or (context, request).
     """
 
