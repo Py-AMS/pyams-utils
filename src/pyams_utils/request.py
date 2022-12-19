@@ -114,8 +114,8 @@ def request_property(key=None, prefix=None):
                         data = data(obj, *args, **kwargs)
                     set_request_data(request, key, data)
                 else:
-                    LOGGER.debug("<<< cached value found!")
-                    LOGGER.debug("  < {0!r}".format(data))
+                    LOGGER.debug("  < cached value found!")
+                    LOGGER.debug("<<< {0!r}".format(data))
             else:
                 data = func
                 if callable(data):

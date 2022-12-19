@@ -19,8 +19,9 @@ See :ref:`zca` to see how PyAMS can help components management.
 """
 
 import logging
-import venusian
 from inspect import isclass
+
+import venusian
 from zope.annotation.interfaces import IAnnotations
 from zope.interface import alsoProvides, classImplements, implementedBy
 from zope.lifecycleevent import ObjectCreatedEvent

@@ -79,27 +79,27 @@ class DataManager:
         if client in _CLIENT_STATE:
             del _CLIENT_STATE[client]
 
-    def abort(self, transaction):  # pylint: disable=unused-argument
+    def abort(self, trans):  # pylint: disable=unused-argument
         """Transaction abort"""
         LOGGER.debug(f'abort({self})')
         self._reset()
         self._finish()
 
-    def tpc_begin(self, transaction):  # pylint: disable=unused-argument
+    def tpc_begin(self, trans):  # pylint: disable=unused-argument
         """Begin two-phases commit"""
         LOGGER.debug(f'tpc_begin({self})')
 
-    def commit(self, transaction):  # pylint: disable=unused-argument
+    def commit(self, trans):  # pylint: disable=unused-argument
         """Transaction commit"""
         LOGGER.debug(f'commit({self})')
 
-    def tpc_vote(self, transaction):  # pylint: disable=unused-argument
+    def tpc_vote(self, trans):  # pylint: disable=unused-argument
         """Two-phases commit vote"""
         LOGGER.debug(f'tpc_vote({self})')
         # XXX: Ideally, we'd try to check the uncommitted queue and make sure
         # everything looked ok. Not sure how we can do that, though.
 
-    def tpc_finish(self, transaction):  # pylint: disable=unused-argument
+    def tpc_finish(self, trans):  # pylint: disable=unused-argument
         """Two-phases commit finish"""
         # Actually persist the uncommitted queue.
         LOGGER.debug(f'tpc_finish({self})')
@@ -110,7 +110,7 @@ class DataManager:
         self._reset()
         self._finish()
 
-    def tpc_abort(self, transaction):  # pylint: disable=unused-argument
+    def tpc_abort(self, trans):  # pylint: disable=unused-argument
         """Two-phases commit abort"""
         LOGGER.debug('tpc_abort()')
         self._reset()

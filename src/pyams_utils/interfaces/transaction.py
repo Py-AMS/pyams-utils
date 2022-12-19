@@ -21,7 +21,7 @@ from zope.interface import Attribute, Interface
 
 
 class ITransactionClient(Interface):
-    """transaction client interface"""
+    """Transaction client interface"""
 
     use_transaction = Attribute("Use transactions?")
 

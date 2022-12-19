@@ -16,13 +16,17 @@
 This module provides several classes, adapters and functions about containers.
 """
 
+from typing import Callable, Iterable
+
 from BTrees.OOBTree import OOBTree  # pylint: disable=import-error
+from persistent.interfaces import IPersistent
 from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_registry
-from zope.container.interfaces import IContained, IContainer
+from zope.container.interfaces import IContainer
 from zope.container.ordered import OrderedContainer
+from zope.interface import Interface
 from zope.lifecycleevent.interfaces import IObjectMovedEvent
-from zope.location.interfaces import ISublocations
+from zope.location.interfaces import IContained, ISublocations
 
 from pyams_utils.adapter import ContextAdapter, adapter_config
 
@@ -35,7 +39,7 @@ class SimpleContainerMixin:
 
     next_id = 1
 
-    def append(self, obj):
+    def append(self, obj: IPersistent):
         """Append object to container"""
         key = str(self.next_id)
         self[key] = obj
@@ -70,11 +74,10 @@ class ParentSelector:
             '''This is an event handler for an ISiteRoot object added event'''
     """
 
-    def __init__(self, ifaces, config):
-        # pylint: disable=unused-argument
-        if not isinstance(ifaces, (list, tuple, set)):
-            ifaces = (ifaces,)
-        self.interfaces = ifaces
+    def __init__(self, interfaces: Iterable[Interface], config):  # pylint: disable=unused-argument
+        if not isinstance(interfaces, (list, tuple, set)):
+            interfaces = (interfaces,)
+        self.interfaces = interfaces
 
     def text(self):
         """Predicate string output"""
@@ -82,7 +85,7 @@ class ParentSelector:
 
     phash = text
 
-    def __call__(self, event):
+    def __call__(self, event: IObjectMovedEvent):
         if not IObjectMovedEvent.providedBy(event):  # pylint: disable=no-value-for-parameter
             return False
         for intf in self.interfaces:
@@ -95,7 +98,8 @@ class ParentSelector:
         return False
 
 
-@adapter_config(required=IContained, provides=ISublocations)
+@adapter_config(required=IContained,
+                provides=ISublocations)
 class ContainerSublocationsAdapter(ContextAdapter):
     """Contained object sub-locations adapter
 
@@ -118,8 +122,11 @@ class ContainerSublocationsAdapter(ContextAdapter):
             yield from context.values()
 
 
-def find_objects_matching(root, condition, ignore_root=False,
-                          with_depth=False, initial_depth=0):
+def find_objects_matching(root: IPersistent,
+                          condition: Callable,
+                          ignore_root: bool = False,
+                          with_depth: bool = False,
+                          initial_depth: int = 0):
     """Find all objects in root that match the condition
 
     The condition is a Python callable object that takes an object as
@@ -151,7 +158,10 @@ def find_objects_matching(root, condition, ignore_root=False,
                                              initial_depth=initial_depth+1)
 
 
-def find_objects_providing(root, interface, ignore_root=False, with_depth=False):
+def find_objects_providing(root: IPersistent,
+                           interface: Interface,
+                           ignore_root: bool = False,
+                           with_depth: bool = False):
     """Find all objects in root that provide the specified interface
 
     All sub-objects of the root will also be searched recursively.

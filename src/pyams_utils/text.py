@@ -196,7 +196,7 @@ class ChoiceTextRenderer(BaseHTMLRenderer):
         field = kwargs.get('field')
         if field is None:
             return '--'
-        if not self.field_intf.providedBy(field):
+        if not self.field_intf.providedBy(field):  # pylint: disable=no-value-for-parameter
             return '--'
         vocabulary = field.bind(kwargs.get('context', self.context)).vocabulary
         try:
@@ -217,7 +217,7 @@ class SequenceTextRenderer(BaseHTMLRenderer):
         field = kwargs.get('field')
         if field is None:
             return '--'
-        if not self.field_intf.providedBy(field):
+        if not self.field_intf.providedBy(field):  # pylint: disable=no-value-for-parameter
             return '--'
         vocabulary = field.value_type.bind(kwargs.get('context', self.context)).vocabulary
         return '<ul><li>{}</li></ul>'.format('</li><li>'.join((

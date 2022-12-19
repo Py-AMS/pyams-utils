@@ -18,6 +18,7 @@ standard JSON-RPC and XML-RPC exceptions.
 
 from enum import Enum
 
+from pyramid.interfaces import IRequest
 from pyramid_rpc.jsonrpc import JsonRpcError
 from pyramid_rpc.xmlrpc import XmlRpcError
 
@@ -74,7 +75,7 @@ class JsonRpcErrors(Enum):
 class XmlRpcCustomError(XmlRpcError):
     """XML-RPC custom error"""
 
-    def __init__(self, message=None, data=None):
+    def __init__(self, message: str = None, data=None):  # pylint: disable=unused-argument
         if message is not None:
             self.faultString = message
         super().__init__()
@@ -105,7 +106,10 @@ class XmlRpcErrors(Enum):
     RPC_FORBIDDEN = XmlRpcForbidden
 
 
-def raise_rpc_exception(request, exception_name, message=None, data=None):
+def raise_rpc_exception(request: IRequest,
+                        exception_name: str,
+                        message: str = None,
+                        data=None):
     """Raise exception based on provided request and exception name
 
     This helper will check incoming request to raise appropriate exception.
