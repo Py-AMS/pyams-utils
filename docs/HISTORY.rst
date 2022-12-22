@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.15.1
+------
+ - added support for Python 3.11
+ - added a few types hints
+
 1.15.0
 ------
  - added new text renderers interfaces and support; the goal of these interfaces is to be able
