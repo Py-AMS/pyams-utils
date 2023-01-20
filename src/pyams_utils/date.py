@@ -16,7 +16,7 @@ This module provides several functions concerning conversion, parsing and format
 dates and datetimes.
 """
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 from pyramid.interfaces import IRequest
 from zope.datetime import parseDatetimetz
@@ -311,12 +311,20 @@ def get_duration(first, last=None, request=None):  # pylint: disable=too-many-br
     return result
 
 
+#
+# Timestamp TALES extension
+#
+
+TS_FORMATTERS = {
+    'iso': datetime.isoformat,
+    'isodate': date.isoformat,
+    'datetime': date_to_datetime
+}
+
+
 def get_timestamp(context, formatting=None):
     """Get timestamp matching context modification date"""
-    if formatting == 'iso':
-        format_func = datetime.isoformat
-    else:
-        format_func = datetime.timestamp
+    format_func = TS_FORMATTERS.get(formatting, datetime.timestamp)
     zdc = IZopeDublinCore(context, None)
     if zdc is not None:
         return format_func(tztime(zdc.modified))
@@ -338,6 +346,10 @@ class TimestampTalesAdapter(ContextRequestViewAdapter):
             context = self.request.context
         return get_timestamp(context, formatting)
 
+
+#
+# 'now' text renderer
+#
 
 @adapter_config(name='now',
                 required=(str, IRequest),
