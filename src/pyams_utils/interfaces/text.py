@@ -48,6 +48,12 @@ class ITextRenderer(Interface):
     Text renderers are implemented as adapters which can be used to include dynamic values
     into a "static" string. This value can be as simple as the current datetime, or based on
     any contextual result returned, for example, by a web service.
+
+    This kind of component can be used, for example, to include a dynamic value into a SQL
+    or Elasticsearch query. The source text is transformed using the *render_text* function,
+    which is looking for strings using the *{{renderer}}* syntax, where *renderer* should be
+    the name of a registered text renderer adapter. Some renderers can accept arguments, which
+    are then provided using *{{renderer:param1,param2}}* syntax.
     """
 
     def render(self, **kwargs):
