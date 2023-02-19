@@ -2,6 +2,13 @@
 Changelog
 =========
 
+1.16.0
+------
+ - added new "isodate" formatter to *timestamp* TALES extension, to only get date instead of
+   datetime in ISO format
+ - added "boolean_dict" helper to check that a mapping has at least one key which doesn't
+   have an empty value
+
 1.15.1
 ------
  - added support for Python 3.11
