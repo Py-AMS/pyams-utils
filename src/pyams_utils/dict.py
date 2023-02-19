@@ -20,7 +20,7 @@ or updated, otherwise dictionary is left unchanged.
 __docformat__ = 'restructuredtext'
 
 
-def update_dict(input_dict, key, value):
+def update_dict(input_dict: dict, key, value):
     """Update given mapping if input value is a boolean 'True' value
 
     :param dict input_dict: input dictionary
@@ -54,7 +54,7 @@ def update_dict(input_dict, key, value):
         input_dict[key] = value
 
 
-def merge_dict(source, target):
+def merge_dict(source: dict, target: dict):
     """Deep merge of source mapping into target mapping
 
     >>> from pyams_utils.dict import merge_dict
@@ -96,7 +96,7 @@ def merge_dict(source, target):
     return target
 
 
-def format_dict(input_dict):
+def format_dict(input_dict: dict):
     """Dict string formatter
 
     >>> from collections import OrderedDict
@@ -115,3 +115,48 @@ def format_dict(input_dict):
         return '{}'
     return "{{\n{}\n}}".format('\n'.join(('    {}: {}'.format(key, value)
                                          for key, value in input_dict.items())))
+
+
+def boolean_dict(input_dict: dict):
+    """Dict values checker
+
+    Returns a true value if at least one dict value is true.
+
+    >>> from pyams_utils.dict import boolean_dict
+    >>> input = {}
+    >>> boolean_dict(input)
+    False
+    >>> input = {'key1': 0}
+    >>> boolean_dict(input)
+    False
+    >>> input = {'key1': ''}
+    >>> boolean_dict(input)
+    False
+    >>> input = {'key1': None}
+    >>> boolean_dict(input)
+    False
+    >>> input = {'key1': []}
+    >>> boolean_dict(input)
+    False
+    >>> input = {'key1': {}}
+    >>> boolean_dict(input)
+    False
+    >>> input = {'key1': set()}
+    >>> boolean_dict(input)
+    False
+    >>> input = {'key1': 1}
+    >>> boolean_dict(input)
+    True
+    >>> input = {'key1': 'value1'}
+    >>> boolean_dict(input)
+    True
+    >>> input = {'key1': 1, 'key2': ''}
+    >>> boolean_dict(input)
+    True
+    """
+    if not input_dict:
+        return False
+    for value in input_dict.values():
+        if value:
+            return True
+    return False
