@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.16.1
+------
+ - added constant for "missing" string
+ - updated date and datetime range schema fields interfaces
+
 1.16.0
 ------
  - added new "isodate" formatter to *timestamp* TALES extension, to only get date instead of
