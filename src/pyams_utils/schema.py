@@ -168,7 +168,15 @@ class DottedDecimalField(Decimal):
 # Dates range field
 #
 
-class IDatesRangeField(ITuple):
+class IBaseRangeField(ITuple):
+    """Base range field"""
+
+    from_label = TextLine(title=_("First date label"))
+
+    to_label = TextLine(title=_("To date label"))
+
+
+class IDatesRangeField(IBaseRangeField):
     """Marker interface for dates range fields"""
 
 
@@ -176,12 +184,15 @@ class IDatesRangeField(ITuple):
 class DatesRangeField(Tuple):
     """Dates range field"""
 
-    def __init__(self, value_type=None, unique=False, **kw):
+    def __init__(self, value_type=None, unique=False,
+                 from_label=None, to_label=None, **kw):
         super().__init__(value_type=Date(required=False),
                          unique=False, min_length=2, max_length=2, **kw)
+        self.from_label = from_label or _("from")
+        self.to_label = to_label or _("to")
 
 
-class IDatetimesRangeField(ITuple):
+class IDatetimesRangeField(IBaseRangeField):
     """Marker interface for datetimes range fields"""
 
 
@@ -189,9 +200,12 @@ class IDatetimesRangeField(ITuple):
 class DatetimesRangeField(Tuple):
     """Datetimes range field"""
 
-    def __init__(self, value_type=None, unique=False, **kw):
+    def __init__(self, value_type=None, unique=False,
+                 from_label=None, to_label=None, **kw):
         super().__init__(value_type=Datetime(required=False),
                          unique=False, min_length=2, max_length=2, **kw)
+        self.from_label = from_label or _("from")
+        self.to_label = to_label or _("to")
 
 
 #
