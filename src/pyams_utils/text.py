@@ -27,6 +27,7 @@ from zope.schema.interfaces import IChoice, IList, ISequence, ISet
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
 from pyams_utils.adapter import ContextRequestAdapter, ContextRequestViewAdapter, adapter_config
+from pyams_utils.interfaces import MISSING_INFO
 from pyams_utils.interfaces.tales import ITALESExtension
 from pyams_utils.interfaces.text import IHTMLRenderer, ITextRenderer
 from pyams_utils.request import check_request
@@ -195,9 +196,9 @@ class ChoiceTextRenderer(BaseHTMLRenderer):
         """Render choice field to HTML"""
         field = kwargs.get('field')
         if field is None:
-            return '--'
+            return MISSING_INFO
         if not self.field_intf.providedBy(field):  # pylint: disable=no-value-for-parameter
-            return '--'
+            return MISSING_INFO
         vocabulary = field.bind(kwargs.get('context', self.context)).vocabulary
         try:
             return vocabulary.getTerm(self.context).title
@@ -213,12 +214,12 @@ class SequenceTextRenderer(BaseHTMLRenderer):
     def render(self, **kwargs):
         """Render choice field to HTML"""
         if not self.context:
-            return '--'
+            return MISSING_INFO
         field = kwargs.get('field')
         if field is None:
-            return '--'
+            return MISSING_INFO
         if not self.field_intf.providedBy(field):  # pylint: disable=no-value-for-parameter
-            return '--'
+            return MISSING_INFO
         vocabulary = field.value_type.bind(kwargs.get('context', self.context)).vocabulary
         return '<ul><li>{}</li></ul>'.format('</li><li>'.join((
             vocabulary.getTerm(value).title

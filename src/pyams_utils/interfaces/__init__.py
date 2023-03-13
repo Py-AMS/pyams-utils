@@ -51,10 +51,10 @@ ConstraintNotSatisfied.__doc__ = _("""Constraint not satisfied""")
 NotAContainer.__doc__ = _("""Not a container""")
 NotAnIterator.__doc__ = _("""Not an iterator""")
 
+
 #
 # Custom interfaces
 #
-
 
 TIMEZONES_VOCABULARY_NAME = 'pyams_utils.timezones'
 ENCODINGS_VOCABULARY_NAME = 'pyams_utils.encodings'
@@ -90,3 +90,7 @@ class ICacheKeyValue(Interface):
 
 class IOptionalUtility(Interface):
     """Marker interface for utilities that can be removed"""
+
+
+MISSING_INFO = '--'
+"""Default string used to display missing information"""

@@ -25,6 +25,7 @@ from zope.interface import Interface
 
 from pyams_utils.adapter import ContextRequestAdapter, ContextRequestViewAdapter, \
     adapter_config
+from pyams_utils.interfaces import MISSING_INFO
 from pyams_utils.interfaces.tales import ITALESExtension
 from pyams_utils.interfaces.text import ITextRenderer
 from pyams_utils.request import check_request
@@ -104,9 +105,11 @@ def date_to_datetime(value):
 
 
 SH_DATE_FORMAT = _("%d/%m/%Y")
+SH_TIME_FORMAT = _("%H:%M")
 SH_DATETIME_FORMAT = _("%d/%m/%Y - %H:%M")
 
 EXT_DATE_FORMAT = _("on %d/%m/%Y")
+EXT_TIME_FORMAT = _("at %H:%M")
 EXT_DATETIME_FORMAT = _("on %d/%m/%Y at %H:%M")
 
 
@@ -129,7 +132,7 @@ def format_date(value, format_string=EXT_DATE_FORMAT, request=None):
     '--'
     """
     if not value:
-        return '--'
+        return MISSING_INFO
     if request is None:
         request = check_request()
     localizer = request.localizer
@@ -187,7 +190,7 @@ def get_age(value, request=None):
     '--'
     """
     if not value:
-        return '--'
+        return MISSING_INFO
     if request is None:
         request = check_request()
     translate = request.localizer.translate
