@@ -16,17 +16,17 @@ This module provides CORS requests handlers, as well as OpenAPI
 documentation for all defined Cornice REST endpoints.
 """
 
-import sys
+import enum
 from cgi import FieldStorage
 
-from colander import Date, Mapping, SchemaNode, SequenceSchema, String, Tuple, TupleSchema, drop, \
+import sys
+from colander import Date, Enum, Mapping, MappingSchema, SchemaNode, SequenceSchema, String, Tuple, TupleSchema, drop, \
     null
-from cornice import Service
-from cornice.service import get_services
 from cornice_swagger import CorniceSwagger
 from cornice_swagger.converters.schema import ArrayTypeConverter, ObjectTypeConverter, \
-    StringTypeConverter
-from pyramid.httpexceptions import HTTPServerError
+    StringTypeConverter, TypeConverter
+from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPNotFound, HTTPServerError, HTTPServiceUnavailable, \
+    HTTPUnauthorized
 from pyramid.interfaces import IRequest
 
 from pyams_utils.adapter import adapter_config
@@ -35,8 +35,10 @@ from pyams_utils.interfaces.rest import ICORSRequestHandler
 
 __docformat__ = 'restructuredtext'
 
-from pyams_utils import _
 
+#
+# CORS handlers
+#
 
 @adapter_config(required=IRequest,
                 provides=ICORSRequestHandler)
@@ -83,10 +85,52 @@ def handle_cors_headers(request, allowed_methods=None):
         handler.handle_request(allowed_methods)
 
 
+#
+# Colander schemas and converters
+#
+
+class STATUS(enum.Enum):
+    """Base response status enumeration"""
+    SUCCESS = 'success'
+    ERROR = 'error'
+
+
+class BaseStatusSchema(MappingSchema):
+    """Base status schema"""
+    status = SchemaNode(Enum(STATUS),
+                        description="Response status",
+                        missing=drop)
+
+
+class BaseResponseSchema(BaseStatusSchema):
+    """Base response schema"""
+    message = SchemaNode(String(),
+                         description="Error or status message",
+                         missing=drop)
+
+
+class BaseResponse(MappingSchema):
+    """Base response"""
+    body = BaseResponseSchema()
+
+
+class EnumTypeConverter(TypeConverter):
+    """Enum type converter"""
+
+    type = 'string'
+
+    def convert_type(self, schema_node):
+        """Enum type converter"""
+        converted = super().convert_type(schema_node)
+        converted['enum'] = list(map(lambda x: x.value,
+                                     schema_node.typ.values.values()))
+        return converted
+
+
 class StringListSchema(SequenceSchema):
     """Strings list schema field"""
     value = SchemaNode(String(),
-                       title=_("Item value"),
+                       description="String item value",
                        missing=drop)
 
 
@@ -115,10 +159,10 @@ class PropertiesMappingTypeConverter(ObjectTypeConverter):
 class DateRangeSchema(TupleSchema):
     """Dates range schema type"""
     after = SchemaNode(Date(),
-                       title=_("Range beginning date"),
+                       description="Range beginning date",
                        missing=null)
     before = SchemaNode(Date(),
-                        title=_("Range ending date (excluded)"),
+                        description="Range ending date (excluded)",
                         missing=null)
 
 
@@ -142,6 +186,7 @@ class FileUploadTypeConverter(StringTypeConverter):
 
 # update Cornice-Swagger types converters
 CorniceSwagger.custom_type_converters.update({
+    Enum: EnumTypeConverter,
     Tuple: ArrayTypeConverter,
     StringListSchema: StringListTypeConverter,
     PropertiesMapping: PropertiesMappingTypeConverter,
@@ -150,10 +195,13 @@ CorniceSwagger.custom_type_converters.update({
 })
 
 
-swagger = Service(name='OpenAPI',
-                  path='/__api__',
-                  description="OpenAPI documentation")
-
+rest_responses = {
+    HTTPNotFound.code: BaseResponse(description=HTTPNotFound.title),
+    HTTPUnauthorized.code: BaseResponse(description=HTTPUnauthorized.title),
+    HTTPForbidden.code: BaseResponse(description=HTTPForbidden.title),
+    HTTPBadRequest.code: BaseResponse(description=HTTPBadRequest.title),
+    HTTPServiceUnavailable.code: BaseResponse(description=HTTPServiceUnavailable.title)
+}
 
 
 def http_error(request, error, message=None):

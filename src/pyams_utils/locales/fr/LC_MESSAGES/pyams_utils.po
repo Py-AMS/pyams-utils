@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PyAMS_utils 1.0.0\n"
-"POT-Creation-Date: 2022-02-17 17:41+0100\n"
+"POT-Creation-Date: 2023-04-12 16:07+0200\n"
 "PO-Revision-Date: 2019-12-04 20:42+0100\n"
 "Last-Translator: Thierry Florac <tflorac@ulthar.net>\n"
 "Language-Team: FRENCH <FR@li.org>\n"
@@ -14,119 +14,135 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Lingua 3.10.dev0\n"
 
-#: src/pyams_utils/date.py:103
+#: src/pyams_utils/date.py:107
 msgid "%d/%m/%Y"
 msgstr "%d/%m/%Y"
 
-#: src/pyams_utils/date.py:104
+#: src/pyams_utils/date.py:108
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: src/pyams_utils/date.py:109
 msgid "%d/%m/%Y - %H:%M"
 msgstr "%d/%m/%Y - %H:%M"
 
-#: src/pyams_utils/date.py:106
+#: src/pyams_utils/date.py:111
 msgid "on %d/%m/%Y"
 msgstr "le %d/%m/%Y"
 
-#: src/pyams_utils/date.py:107
+#: src/pyams_utils/date.py:112
+msgid "at %H:%M"
+msgstr "à %H:%M"
+
+#: src/pyams_utils/date.py:113
 msgid "on %d/%m/%Y at %H:%M"
 msgstr "le %d/%m/%Y à %H:%M"
 
-#: src/pyams_utils/date.py:194
+#: src/pyams_utils/date.py:200
 #, c-format
 msgid "%d months ago"
 msgstr "il y a %d mois"
 
-#: src/pyams_utils/date.py:196
+#: src/pyams_utils/date.py:202
 #, c-format
 msgid "%d weeks ago"
 msgstr "il y a %d semaines"
 
-#: src/pyams_utils/date.py:198
+#: src/pyams_utils/date.py:204
 #, c-format
 msgid "%d days ago"
 msgstr "il y a %d jours"
 
-#: src/pyams_utils/date.py:200
+#: src/pyams_utils/date.py:206
 msgid "the day before yesterday"
 msgstr "avant-avant-hier"
 
-#: src/pyams_utils/date.py:202
+#: src/pyams_utils/date.py:208
 msgid "yesterday"
 msgstr "hier"
 
-#: src/pyams_utils/date.py:206
+#: src/pyams_utils/date.py:212
 #, c-format
 msgid "%d hours ago"
 msgstr "il y a %d heures"
 
-#: src/pyams_utils/date.py:208
+#: src/pyams_utils/date.py:214
 #, c-format
 msgid "%d minutes ago"
 msgstr "il y a %d minutes"
 
-#: src/pyams_utils/date.py:210
+#: src/pyams_utils/date.py:216
 msgid "less than 5 minutes ago"
 msgstr "il y a moins de 5 minutes"
 
-#: src/pyams_utils/date.py:287
+#: src/pyams_utils/date.py:293
 #, c-format
 msgid "%d months"
 msgstr "%d mois"
 
-#: src/pyams_utils/date.py:289
+#: src/pyams_utils/date.py:295
 #, c-format
 msgid "%d weeks"
 msgstr "%d semaines"
 
-#: src/pyams_utils/date.py:291
+#: src/pyams_utils/date.py:297
 #, c-format
 msgid "%d days"
 msgstr "%d jours"
 
-#: src/pyams_utils/date.py:296
+#: src/pyams_utils/date.py:302
 msgid "24 hours"
 msgstr "24 heures"
 
-#: src/pyams_utils/date.py:298
+#: src/pyams_utils/date.py:304
 #, c-format
 msgid "%d day and %d hours"
 msgstr "%d jours et %d heures"
 
-#: src/pyams_utils/date.py:301
+#: src/pyams_utils/date.py:307
 #, c-format
 msgid "%d hours"
 msgstr "%d heures"
 
-#: src/pyams_utils/date.py:305
+#: src/pyams_utils/date.py:311
 #, c-format
 msgid "%d minutes"
 msgstr "%d minutes"
 
-#: src/pyams_utils/date.py:307
+#: src/pyams_utils/date.py:313
 #, c-format
 msgid "%d seconds"
 msgstr "%d secondes"
 
-#: src/pyams_utils/rest.py:38
+#: src/pyams_utils/rest.py:103
+msgid "Response status"
+msgstr "Statut de la réponse"
+
+#: src/pyams_utils/rest.py:110
+msgid "Error or status message"
+msgstr ""
+
+#: src/pyams_utils/rest.py:135
 msgid "Item value"
 msgstr "Contenu de l'élément."
 
-#: src/pyams_utils/rest.py:67
+#: src/pyams_utils/rest.py:164
 msgid "Range beginning date"
 msgstr "Date de début"
 
-#: src/pyams_utils/rest.py:70
+#: src/pyams_utils/rest.py:167
 msgid "Range ending date (excluded)"
 msgstr "Date de fin (exclue)"
 
-#: src/pyams_utils/text.py:118
+#: src/pyams_utils/text.py:125
 msgid "Simple text"
 msgstr "Texte simple"
 
-#: src/pyams_utils/text.py:142
+#: src/pyams_utils/text.py:153
 msgid "ReStructured text"
 msgstr "Texte formatté (ReStructuredText)"
 
-#: src/pyams_utils/text.py:167
+#: src/pyams_utils/text.py:180
 msgid "Markdown text"
 msgstr "Texte formatté (Markdown)"
 
@@ -158,7 +174,23 @@ msgstr ""
 "Le code couleur ne doit contenir que des caractères hexadécimaux (des "
 "chiffres, ou des lettres entre 'A' et 'F')"
 
-#: src/pyams_utils/schema.py:228
+#: src/pyams_utils/schema.py:174
+msgid "First date label"
+msgstr ""
+
+#: src/pyams_utils/schema.py:176
+msgid "To date label"
+msgstr ""
+
+#: src/pyams_utils/schema.py:191 src/pyams_utils/schema.py:207
+msgid "from"
+msgstr ""
+
+#: src/pyams_utils/schema.py:192 src/pyams_utils/schema.py:208
+msgid "to"
+msgstr ""
+
+#: src/pyams_utils/schema.py:242
 msgid ""
 "Email address must be entered as « name@domain.name », without '<' and '>' "
 "characters"
@@ -537,11 +569,11 @@ msgid "all languages (utf_8_sig)"
 msgstr "toutes les langues (utf_8_sig)"
 
 #. pylint: disable=unused-argument
-#: src/pyams_utils/pygments.py:83
+#: src/pyams_utils/pygments.py:77
 msgid "Automatic detection"
 msgstr "Détection automatique"
 
-#: src/pyams_utils/pygments.py:142
+#: src/pyams_utils/pygments.py:136
 msgid "Source code"
 msgstr "Code source"
 
@@ -676,7 +708,7 @@ msgstr ""
 "partagé avec le serveur ou non ; dans ce cas, les fichiers seront accédés "
 "directement au lieu d'être chargés via ZRPC."
 
-#: src/pyams_utils/interfaces/text.py:35
+#: src/pyams_utils/interfaces/text.py:39
 msgid "Optional renderer label"
 msgstr "Libellé optionnel du mode de rendu"
 
