@@ -24,7 +24,7 @@ DOCS = os.path.join(os.path.dirname(__file__),
 README = os.path.join(DOCS, 'README.rst')
 HISTORY = os.path.join(DOCS, 'HISTORY.rst')
 
-version = '1.16.1'
+version = '1.16.2'
 long_description = open(README).read() + '\n\n' + open(HISTORY).read()
 
 tests_require = [

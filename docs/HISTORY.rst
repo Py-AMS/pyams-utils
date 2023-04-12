@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.16.2
+------
+ - added REST API helpers, types converters and base responses
+ - moved Swagger/OpenAPI specifications to *PyAMS_zmi* package
+
 1.16.1
 ------
  - added constant for "missing" string
