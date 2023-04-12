@@ -155,15 +155,11 @@ swagger = Service(name='OpenAPI',
                   description="OpenAPI documentation")
 
 
-@swagger.options()
-def openapi_options(request):
-    """OpenAPI OPTIONS verb handler"""
-    return handle_cors_headers(request)
 
-
-@swagger.get()
-def openapi_specification(request):  # pylint: disable=unused-argument
-    """OpenAPI specification"""
-    doc = CorniceSwagger(get_services())
-    doc.summary_docstrings = True
-    return doc.generate('PyAMS', '1.0')
+def http_error(request, error, message=None):
+    """HTTP error response"""
+    request.response.status_code = error.code
+    return {
+        'status': STATUS.ERROR.value,
+        'message': f'{error.title}: {message}' if message else error.title
+    }

@@ -17,29 +17,6 @@ API:
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)
 
-    >>> request = DummyRequest('/__api__')
-    >>> from pyams_utils.rest import openapi_specification
-
-    >>> from pprint import pprint
-    >>> pprint(openapi_specification(request))
-    {'basePath': '/',
-     'info': {'title': 'PyAMS', 'version': '1.0'},
-     'paths': {'/__api__': {'get': {'produces': ['application/json'],
-                                    'responses': {'default': {'description': 'UNDOCUMENTED '
-                                                                             'RESPONSE'}},
-                                    'summary': 'OpenAPI specification'}}},
-     'swagger': '2.0'}
-
-
-The module also provides a custom handler for OPTIONS verb:
-
-    >>> from pyams_utils.rest import openapi_options
-
-    >>> request = DummyRequest('/__api__', method='OPTIONS')
-    >>> response = openapi_options(request)
-    >>> response is None
-    True
-
 
 CORS requests handler
 ---------------------
