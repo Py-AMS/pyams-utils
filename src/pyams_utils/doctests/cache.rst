@@ -27,7 +27,7 @@ interface is used to get a cache key value for any object:
     >>> from pyams_utils.interfaces import ICacheKeyValue
     >>> ICacheKeyValue(content)
     '...'
-    >>> int(ICacheKeyValue(content)) > 1
+    >>> int(ICacheKeyValue(content), 16) > 1
     True
 
     >>> with conn as root:
