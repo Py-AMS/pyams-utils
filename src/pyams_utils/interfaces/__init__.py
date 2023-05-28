@@ -63,6 +63,7 @@ ZODB_CONNECTIONS_VOCABULARY_NAME = 'pyams_utils.zodb.connections'
 ZEO_CONNECTIONS_VOCABULARY_NAME = 'pyams_utils.zeo.connections'
 
 DISPLAY_CONTEXT_KEY_NAME = 'pyams_utils.request.display_context'
+"""Request annotations key name used to set display context"""
 
 
 class MissingRequestError(Exception):
