@@ -75,12 +75,12 @@ def object_cache_key_adapter(obj):
 
     >>> value = object()
     >>> key = ICacheKeyValue(value)
-    >>> key == str(id(value))
+    >>> key == hex(id(value))[2:]
     True
 
     >>> tearDown()
     """
-    return str(id(obj))
+    return hex(id(obj))[2:]
 
 
 @adapter_config(required=str, provides=ICacheKeyValue)
@@ -109,8 +109,8 @@ def persistent_cache_key_adapter(obj):
     """Cache key adapter for persistent object"""
     # pylint: disable=protected-access
     if obj._p_oid:
-        return str(int.from_bytes(obj._p_oid, byteorder='big'))
-    return str(id(obj))
+        return hex(int.from_bytes(obj._p_oid, byteorder='big'))[2:]
+    return hex(id(obj))[2:]
 
 
 @adapter_config(name='cache_key', required=(Interface, Interface, Interface),
