@@ -38,6 +38,8 @@ class NO_VALUE:  # pylint: disable=invalid-name
 
 NO_VALUE = NO_VALUE()
 
+NO_VALUE_STRING = '--NOVALUE--'
+
 
 class TO_BE_DELETED:  # pylint: disable=invalid-name
     """Marker value for properties to be deleted"""
