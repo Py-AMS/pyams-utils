@@ -209,6 +209,8 @@ def get_annotation_adapter(context, key, factory=None, markers=None, notify=True
             get_current_registry().notify(ObjectCreatedEvent(adapter))
         if locate:
             zope_locate(adapter, context if parent is None else parent, name)
+            if context._p_jar is not None:
+                context._p_jar.add(adapter)
         if callback:
             callback(adapter)
     return adapter
