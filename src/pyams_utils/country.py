@@ -50,7 +50,7 @@ ISO_COUNTRIES = {
     'BM': _("Bermuda"),
     'BT': _("Bhutan"),
     'BO': _("Bolivia (Plurinational State of)"),
-    'BQ': _("Bonaire: Sint Eustatius and Saba"),
+    'BQ': _("Bonaire, Sint Eustatius and Saba"),
     'BA': _("Bosnia and Herzegovina"),
     'BW': _("Botswana"),
     'BV': _("Bouvet Island"),
