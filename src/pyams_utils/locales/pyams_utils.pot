@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2023-05-27 11:21+0200\n"
+"POT-Creation-Date: 2023-06-14 10:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,36 +16,132 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Lingua 4.15.0\n"
 
-#: ./src/pyams_utils/schema.py:146
-msgid "Color length must be 3 or 6 characters"
+#: ./src/pyams_utils/date.py:130
+msgid "%d/%m/%Y"
 msgstr ""
 
-#: ./src/pyams_utils/schema.py:149
-msgid ""
-"Color value must contain only valid hexadecimal color codes (numbers or "
-"letters between 'A' end 'F')"
+#: ./src/pyams_utils/date.py:131
+msgid "%H:%M"
 msgstr ""
 
-#: ./src/pyams_utils/schema.py:174
-msgid "First date label"
+#: ./src/pyams_utils/date.py:132
+msgid "%d/%m/%Y - %H:%M"
 msgstr ""
 
-#: ./src/pyams_utils/schema.py:176
-msgid "To date label"
+#: ./src/pyams_utils/date.py:134
+msgid "on %d/%m/%Y"
 msgstr ""
 
-#: ./src/pyams_utils/schema.py:191 ./src/pyams_utils/schema.py:207
-msgid "from"
+#: ./src/pyams_utils/date.py:135
+msgid "at %H:%M"
 msgstr ""
 
-#: ./src/pyams_utils/schema.py:192 ./src/pyams_utils/schema.py:208
-msgid "to"
+#: ./src/pyams_utils/date.py:136
+msgid "on %d/%m/%Y at %H:%M"
 msgstr ""
 
-#: ./src/pyams_utils/schema.py:242
-msgid ""
-"Email address must be entered as « name@domain.name », without '<' and '>' "
-"characters"
+#: ./src/pyams_utils/date.py:223
+#, c-format
+msgid "%d months ago"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:225
+#, c-format
+msgid "%d weeks ago"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:227
+#, c-format
+msgid "%d days ago"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:229
+msgid "the day before yesterday"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:231
+msgid "yesterday"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:235
+#, c-format
+msgid "%d hours ago"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:237
+#, c-format
+msgid "%d minutes ago"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:239
+msgid "less than 5 minutes ago"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:316
+#, c-format
+msgid "%d months"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:318
+#, c-format
+msgid "%d weeks"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:320
+#, c-format
+msgid "%d days"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:325
+msgid "24 hours"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:327
+#, c-format
+msgid "%d day and %d hours"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:330
+#, c-format
+msgid "%d hours"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:334
+#, c-format
+msgid "%d minutes"
+msgstr ""
+
+#: ./src/pyams_utils/date.py:336
+#, c-format
+msgid "%d seconds"
+msgstr ""
+
+#: ./src/pyams_utils/text.py:125
+msgid "Simple text"
+msgstr ""
+
+#: ./src/pyams_utils/text.py:153
+msgid "ReStructured text"
+msgstr ""
+
+#: ./src/pyams_utils/text.py:180
+msgid "Markdown text"
+msgstr ""
+
+#: ./src/pyams_utils/size.py:42
+msgid "0 bytes"
+msgstr ""
+
+#: ./src/pyams_utils/size.py:45
+msgid "0.# Kb"
+msgstr ""
+
+#: ./src/pyams_utils/size.py:48
+msgid "0.0# Mb"
+msgstr ""
+
+#: ./src/pyams_utils/size.py:50
+msgid "0.0## Gb"
 msgstr ""
 
 #: ./src/pyams_utils/country.py:26
@@ -1044,129 +1140,36 @@ msgstr ""
 msgid "Zimbabwe"
 msgstr ""
 
-#. pylint: disable=unused-argument
-#: ./src/pyams_utils/pygments.py:77
-msgid "Automatic detection"
+#: ./src/pyams_utils/schema.py:146
+msgid "Color length must be 3 or 6 characters"
 msgstr ""
 
-#: ./src/pyams_utils/pygments.py:136
-msgid "Source code"
+#: ./src/pyams_utils/schema.py:149
+msgid ""
+"Color value must contain only valid hexadecimal color codes (numbers or "
+"letters between 'A' end 'F')"
 msgstr ""
 
-#: ./src/pyams_utils/size.py:42
-msgid "0 bytes"
+#: ./src/pyams_utils/schema.py:174
+msgid "First date label"
 msgstr ""
 
-#: ./src/pyams_utils/size.py:45
-msgid "0.# Kb"
+#: ./src/pyams_utils/schema.py:176
+msgid "To date label"
 msgstr ""
 
-#: ./src/pyams_utils/size.py:48
-msgid "0.0# Mb"
+#: ./src/pyams_utils/schema.py:191 ./src/pyams_utils/schema.py:207
+msgid "from"
 msgstr ""
 
-#: ./src/pyams_utils/size.py:50
-msgid "0.0## Gb"
+#: ./src/pyams_utils/schema.py:192 ./src/pyams_utils/schema.py:208
+msgid "to"
 msgstr ""
 
-#: ./src/pyams_utils/date.py:107
-msgid "%d/%m/%Y"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:108
-msgid "%H:%M"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:109
-msgid "%d/%m/%Y - %H:%M"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:111
-msgid "on %d/%m/%Y"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:112
-msgid "at %H:%M"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:113
-msgid "on %d/%m/%Y at %H:%M"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:200
-#, c-format
-msgid "%d months ago"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:202
-#, c-format
-msgid "%d weeks ago"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:204
-#, c-format
-msgid "%d days ago"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:206
-msgid "the day before yesterday"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:208
-msgid "yesterday"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:212
-#, c-format
-msgid "%d hours ago"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:214
-#, c-format
-msgid "%d minutes ago"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:216
-msgid "less than 5 minutes ago"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:293
-#, c-format
-msgid "%d months"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:295
-#, c-format
-msgid "%d weeks"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:297
-#, c-format
-msgid "%d days"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:302
-msgid "24 hours"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:304
-#, c-format
-msgid "%d day and %d hours"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:307
-#, c-format
-msgid "%d hours"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:311
-#, c-format
-msgid "%d minutes"
-msgstr ""
-
-#: ./src/pyams_utils/date.py:313
-#, c-format
-msgid "%d seconds"
+#: ./src/pyams_utils/schema.py:242
+msgid ""
+"Email address must be entered as « name@domain.name », without '<' and '>' "
+"characters"
 msgstr ""
 
 #: ./src/pyams_utils/encoding.py:31
@@ -1538,24 +1541,17 @@ msgstr ""
 msgid "all languages (utf_8_sig)"
 msgstr ""
 
-#: ./src/pyams_utils/text.py:125
-msgid "Simple text"
+#. pylint: disable=unused-argument
+#: ./src/pyams_utils/pygments.py:77
+msgid "Automatic detection"
 msgstr ""
 
-#: ./src/pyams_utils/text.py:153
-msgid "ReStructured text"
+#: ./src/pyams_utils/pygments.py:136
+msgid "Source code"
 msgstr ""
 
-#: ./src/pyams_utils/text.py:180
-msgid "Markdown text"
-msgstr ""
-
-#: ./src/pyams_utils/interfaces/inherit.py:40
-msgid "Inherit from parent"
-msgstr ""
-
-#: ./src/pyams_utils/interfaces/inherit.py:44
-msgid "Don't inherit from parent"
+#: ./src/pyams_utils/interfaces/intids.py:34
+msgid "Indexed elements count"
 msgstr ""
 
 #: ./src/pyams_utils/interfaces/pygments.py:34
@@ -1590,6 +1586,14 @@ msgstr ""
 
 #: ./src/pyams_utils/interfaces/pygments.py:52
 msgid "Selected color style"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/inherit.py:40
+msgid "Inherit from parent"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/inherit.py:44
+msgid "Don't inherit from parent"
 msgstr ""
 
 #: ./src/pyams_utils/interfaces/zeo.py:30
@@ -1666,12 +1670,8 @@ msgid ""
 "instead of transferring blob data over zrpc."
 msgstr ""
 
-#: ./src/pyams_utils/interfaces/timezone.py:31
-msgid "Server timezone"
-msgstr ""
-
-#: ./src/pyams_utils/interfaces/timezone.py:32
-msgid "Default server timezone"
+#: ./src/pyams_utils/interfaces/text.py:39
+msgid "Optional renderer label"
 msgstr ""
 
 #: ./src/pyams_utils/interfaces/__init__.py:34
@@ -1746,10 +1746,60 @@ msgstr ""
 msgid "Not an iterator"
 msgstr ""
 
-#: ./src/pyams_utils/interfaces/intids.py:34
-msgid "Indexed elements count"
+#: ./src/pyams_utils/interfaces/timezone.py:31
+msgid "Server timezone"
 msgstr ""
 
-#: ./src/pyams_utils/interfaces/text.py:39
-msgid "Optional renderer label"
+#: ./src/pyams_utils/interfaces/timezone.py:32
+msgid "Default server timezone"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/proxy.py:31
+msgid "HTTP protocol"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/proxy.py:32
+msgid "Protocol used to access HTTP proxy"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/proxy.py:37
+msgid "Proxy hostname"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/proxy.py:38
+msgid "Host name of the proxy server"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/proxy.py:41
+msgid "Proxy port"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/proxy.py:42
+msgid "Port number used by the proxy server"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/proxy.py:46
+msgid "Proxy username"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/proxy.py:47
+msgid "If the proxy server is requiring authentication, set the user name"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/proxy.py:50
+msgid "Proxy password"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/proxy.py:51
+msgid "If the proxy server is requiring authentication, set the user password"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/proxy.py:55
+msgid "Selected origins"
+msgstr ""
+
+#: ./src/pyams_utils/interfaces/proxy.py:56
+msgid ""
+"If proxy usage is restricted to several domains names, you can set them here,"
+" separated by comas"
 msgstr ""

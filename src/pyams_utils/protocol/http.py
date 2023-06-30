@@ -17,11 +17,56 @@ authentication headers.
 """
 
 import urllib.parse
-
 import httplib2
+
+from persistent import Persistent
+from zope.interface import Interface
+from zope.schema.fieldproperty import FieldProperty
+
+from pyams_form.interfaces import IObjectFactory
+from pyams_form.interfaces.form import IForm
+from pyams_form.interfaces.widget import IObjectWidget
+from pyams_layer.interfaces import IFormLayer
+from pyams_utils.adapter import adapter_config
+from pyams_utils.factory import factory_config, get_interface_name, get_object_factory
+from pyams_utils.interfaces.proxy import IProxyInfo
 
 
 __docformat__ = 'restructuredtext'
+
+
+@factory_config(IProxyInfo)
+class ProxyInfo(Persistent):
+    """Proxy persistent information"""
+
+    protocol = FieldProperty(IProxyInfo['protocol'])
+    host = FieldProperty(IProxyInfo['host'])
+    port = FieldProperty(IProxyInfo['port'])
+    username = FieldProperty(IProxyInfo['username'])
+    password = FieldProperty(IProxyInfo['password'])
+    selected_origins = FieldProperty(IProxyInfo['selected_origins'])
+
+    def get_proxy_url(self, request):
+        """Proxy URL getter"""
+        if self.selected_origins:
+            domains = map(str.strip, self.selected_origins.split(','))
+            if request.host not in domains:
+                return None
+        return '{}://{}{}:{}/'.format(self.protocol,
+                                      '{}{}{}@'.format(self.username or '',
+                                                       ':' if self.password else '',
+                                                       self.password or '')
+                                      if self.username else '',
+                                      self.host,
+                                      self.port)
+
+
+@adapter_config(name=get_interface_name(IProxyInfo),
+                required=(Interface, IFormLayer, IForm, IObjectWidget),
+                provides=IObjectFactory)
+def proxy_info_factory(*args, **kwargs):
+    """Proxy information object widget factory"""
+    return get_object_factory(IProxyInfo)
 
 
 class HTTPClient:

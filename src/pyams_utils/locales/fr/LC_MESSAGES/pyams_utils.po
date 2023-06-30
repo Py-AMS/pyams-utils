@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PyAMS_utils 1.0.0\n"
-"POT-Creation-Date: 2023-05-27 11:21+0200\n"
+"POT-Creation-Date: 2023-06-14 10:22+0200\n"
 "PO-Revision-Date: 2019-12-04 20:42+0100\n"
 "Last-Translator: Thierry Florac <tflorac@ulthar.net>\n"
 "Language-Team: FRENCH <FR@li.org>\n"
@@ -14,41 +14,133 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Lingua 3.10.dev0\n"
 
-#: src/pyams_utils/schema.py:146
-msgid "Color length must be 3 or 6 characters"
-msgstr "La longueur du code couleur doit être de 3 ou 6 caractères."
+#: src/pyams_utils/date.py:130
+msgid "%d/%m/%Y"
+msgstr "%d/%m/%Y"
 
-#: src/pyams_utils/schema.py:149
-msgid ""
-"Color value must contain only valid hexadecimal color codes (numbers or "
-"letters between 'A' end 'F')"
-msgstr ""
-"Le code couleur ne doit contenir que des caractères hexadécimaux (des "
-"chiffres, ou des lettres entre 'A' et 'F')"
+#: src/pyams_utils/date.py:131
+msgid "%H:%M"
+msgstr "%H:%M"
 
-#: src/pyams_utils/schema.py:174
-msgid "First date label"
-msgstr "Libellé de la date de début"
+#: src/pyams_utils/date.py:132
+msgid "%d/%m/%Y - %H:%M"
+msgstr "%d/%m/%Y - %H:%M"
 
-#: src/pyams_utils/schema.py:176
-msgid "To date label"
-msgstr "LIbellé de la date de fin"
+#: src/pyams_utils/date.py:134
+msgid "on %d/%m/%Y"
+msgstr "le %d/%m/%Y"
 
-#: src/pyams_utils/schema.py:191 src/pyams_utils/schema.py:207
-msgid "from"
-msgstr "du"
+#: src/pyams_utils/date.py:135
+msgid "at %H:%M"
+msgstr "à %H:%M"
 
-#: src/pyams_utils/schema.py:192 src/pyams_utils/schema.py:208
-msgid "to"
-msgstr "au"
+#: src/pyams_utils/date.py:136
+msgid "on %d/%m/%Y at %H:%M"
+msgstr "le %d/%m/%Y à %H:%M"
 
-#: src/pyams_utils/schema.py:242
-msgid ""
-"Email address must be entered as « name@domain.name », without '<' and '>' "
-"characters"
-msgstr ""
-"L'adresse mail doit être saisie sous la forme « nom@domain.org », sans les "
-"caractères '<' et '>'."
+#: src/pyams_utils/date.py:223
+#, c-format
+msgid "%d months ago"
+msgstr "il y a %d mois"
+
+#: src/pyams_utils/date.py:225
+#, c-format
+msgid "%d weeks ago"
+msgstr "il y a %d semaines"
+
+#: src/pyams_utils/date.py:227
+#, c-format
+msgid "%d days ago"
+msgstr "il y a %d jours"
+
+#: src/pyams_utils/date.py:229
+msgid "the day before yesterday"
+msgstr "avant-avant-hier"
+
+#: src/pyams_utils/date.py:231
+msgid "yesterday"
+msgstr "hier"
+
+#: src/pyams_utils/date.py:235
+#, c-format
+msgid "%d hours ago"
+msgstr "il y a %d heures"
+
+#: src/pyams_utils/date.py:237
+#, c-format
+msgid "%d minutes ago"
+msgstr "il y a %d minutes"
+
+#: src/pyams_utils/date.py:239
+msgid "less than 5 minutes ago"
+msgstr "il y a moins de 5 minutes"
+
+#: src/pyams_utils/date.py:316
+#, c-format
+msgid "%d months"
+msgstr "%d mois"
+
+#: src/pyams_utils/date.py:318
+#, c-format
+msgid "%d weeks"
+msgstr "%d semaines"
+
+#: src/pyams_utils/date.py:320
+#, c-format
+msgid "%d days"
+msgstr "%d jours"
+
+#: src/pyams_utils/date.py:325
+msgid "24 hours"
+msgstr "24 heures"
+
+#: src/pyams_utils/date.py:327
+#, c-format
+msgid "%d day and %d hours"
+msgstr "%d jours et %d heures"
+
+#: src/pyams_utils/date.py:330
+#, c-format
+msgid "%d hours"
+msgstr "%d heures"
+
+#: src/pyams_utils/date.py:334
+#, c-format
+msgid "%d minutes"
+msgstr "%d minutes"
+
+#: src/pyams_utils/date.py:336
+#, c-format
+msgid "%d seconds"
+msgstr "%d secondes"
+
+#: src/pyams_utils/text.py:125
+msgid "Simple text"
+msgstr "Texte simple"
+
+#: src/pyams_utils/text.py:153
+msgid "ReStructured text"
+msgstr "Texte formatté (ReStructuredText)"
+
+#: src/pyams_utils/text.py:180
+msgid "Markdown text"
+msgstr "Texte formatté (Markdown)"
+
+#: src/pyams_utils/size.py:42
+msgid "0 bytes"
+msgstr "0 octets"
+
+#: src/pyams_utils/size.py:45
+msgid "0.# Kb"
+msgstr "0.# Ko"
+
+#: src/pyams_utils/size.py:48
+msgid "0.0# Mb"
+msgstr "0.0# Mo"
+
+#: src/pyams_utils/size.py:50
+msgid "0.0## Gb"
+msgstr "0.0## Go"
 
 #: src/pyams_utils/country.py:26
 msgid "Afghanistan"
@@ -159,7 +251,8 @@ msgid "Bolivia (Plurinational State of)"
 msgstr "Bolivie"
 
 #: src/pyams_utils/country.py:53
-msgid "Bonaire, Sint Eustatius and Saba"
+#, fuzzy
+msgid "Bonaire: Sint Eustatius and Saba"
 msgstr "Pays-Bas caribéens (Bonaire, Saint-Eustache et Saba)"
 
 #: src/pyams_utils/country.py:54
@@ -1046,130 +1139,41 @@ msgstr "Zambie"
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
 
-#. pylint: disable=unused-argument
-#: src/pyams_utils/pygments.py:77
-msgid "Automatic detection"
-msgstr "Détection automatique"
+#: src/pyams_utils/schema.py:146
+msgid "Color length must be 3 or 6 characters"
+msgstr "La longueur du code couleur doit être de 3 ou 6 caractères."
 
-#: src/pyams_utils/pygments.py:136
-msgid "Source code"
-msgstr "Code source"
+#: src/pyams_utils/schema.py:149
+msgid ""
+"Color value must contain only valid hexadecimal color codes (numbers or "
+"letters between 'A' end 'F')"
+msgstr ""
+"Le code couleur ne doit contenir que des caractères hexadécimaux (des "
+"chiffres, ou des lettres entre 'A' et 'F')"
 
-#: src/pyams_utils/size.py:42
-msgid "0 bytes"
-msgstr "0 octets"
+#: src/pyams_utils/schema.py:174
+msgid "First date label"
+msgstr "Libellé de la date de début"
 
-#: src/pyams_utils/size.py:45
-msgid "0.# Kb"
-msgstr "0.# Ko"
+#: src/pyams_utils/schema.py:176
+msgid "To date label"
+msgstr "LIbellé de la date de fin"
 
-#: src/pyams_utils/size.py:48
-msgid "0.0# Mb"
-msgstr "0.0# Mo"
+#: src/pyams_utils/schema.py:191 src/pyams_utils/schema.py:207
+msgid "from"
+msgstr "du"
 
-#: src/pyams_utils/size.py:50
-msgid "0.0## Gb"
-msgstr "0.0## Go"
+#: src/pyams_utils/schema.py:192 src/pyams_utils/schema.py:208
+msgid "to"
+msgstr "au"
 
-#: src/pyams_utils/date.py:107
-msgid "%d/%m/%Y"
-msgstr "%d/%m/%Y"
-
-#: src/pyams_utils/date.py:108
-msgid "%H:%M"
-msgstr "%H:%M"
-
-#: src/pyams_utils/date.py:109
-msgid "%d/%m/%Y - %H:%M"
-msgstr "%d/%m/%Y - %H:%M"
-
-#: src/pyams_utils/date.py:111
-msgid "on %d/%m/%Y"
-msgstr "le %d/%m/%Y"
-
-#: src/pyams_utils/date.py:112
-msgid "at %H:%M"
-msgstr "à %H:%M"
-
-#: src/pyams_utils/date.py:113
-msgid "on %d/%m/%Y at %H:%M"
-msgstr "le %d/%m/%Y à %H:%M"
-
-#: src/pyams_utils/date.py:200
-#, c-format
-msgid "%d months ago"
-msgstr "il y a %d mois"
-
-#: src/pyams_utils/date.py:202
-#, c-format
-msgid "%d weeks ago"
-msgstr "il y a %d semaines"
-
-#: src/pyams_utils/date.py:204
-#, c-format
-msgid "%d days ago"
-msgstr "il y a %d jours"
-
-#: src/pyams_utils/date.py:206
-msgid "the day before yesterday"
-msgstr "avant-avant-hier"
-
-#: src/pyams_utils/date.py:208
-msgid "yesterday"
-msgstr "hier"
-
-#: src/pyams_utils/date.py:212
-#, c-format
-msgid "%d hours ago"
-msgstr "il y a %d heures"
-
-#: src/pyams_utils/date.py:214
-#, c-format
-msgid "%d minutes ago"
-msgstr "il y a %d minutes"
-
-#: src/pyams_utils/date.py:216
-msgid "less than 5 minutes ago"
-msgstr "il y a moins de 5 minutes"
-
-#: src/pyams_utils/date.py:293
-#, c-format
-msgid "%d months"
-msgstr "%d mois"
-
-#: src/pyams_utils/date.py:295
-#, c-format
-msgid "%d weeks"
-msgstr "%d semaines"
-
-#: src/pyams_utils/date.py:297
-#, c-format
-msgid "%d days"
-msgstr "%d jours"
-
-#: src/pyams_utils/date.py:302
-msgid "24 hours"
-msgstr "24 heures"
-
-#: src/pyams_utils/date.py:304
-#, c-format
-msgid "%d day and %d hours"
-msgstr "%d jours et %d heures"
-
-#: src/pyams_utils/date.py:307
-#, c-format
-msgid "%d hours"
-msgstr "%d heures"
-
-#: src/pyams_utils/date.py:311
-#, c-format
-msgid "%d minutes"
-msgstr "%d minutes"
-
-#: src/pyams_utils/date.py:313
-#, c-format
-msgid "%d seconds"
-msgstr "%d secondes"
+#: src/pyams_utils/schema.py:242
+msgid ""
+"Email address must be entered as « name@domain.name », without '<' and '>' "
+"characters"
+msgstr ""
+"L'adresse mail doit être saisie sous la forme « nom@domain.org », sans les "
+"caractères '<' et '>'."
 
 #: src/pyams_utils/encoding.py:31
 msgid "English (ASCII)"
@@ -1541,25 +1545,18 @@ msgstr "toutes les langues (utf_8)"
 msgid "all languages (utf_8_sig)"
 msgstr "toutes les langues (utf_8_sig)"
 
-#: src/pyams_utils/text.py:125
-msgid "Simple text"
-msgstr "Texte simple"
+#. pylint: disable=unused-argument
+#: src/pyams_utils/pygments.py:77
+msgid "Automatic detection"
+msgstr "Détection automatique"
 
-#: src/pyams_utils/text.py:153
-msgid "ReStructured text"
-msgstr "Texte formatté (ReStructuredText)"
+#: src/pyams_utils/pygments.py:136
+msgid "Source code"
+msgstr "Code source"
 
-#: src/pyams_utils/text.py:180
-msgid "Markdown text"
-msgstr "Texte formatté (Markdown)"
-
-#: src/pyams_utils/interfaces/inherit.py:40
-msgid "Inherit from parent"
-msgstr "Hériter du parent"
-
-#: src/pyams_utils/interfaces/inherit.py:44
-msgid "Don't inherit from parent"
-msgstr "Ne pas hériter du parent"
+#: src/pyams_utils/interfaces/intids.py:34
+msgid "Indexed elements count"
+msgstr "Nombre d'éléments indexés"
 
 #: src/pyams_utils/interfaces/pygments.py:34
 msgid "Selected lexer"
@@ -1596,6 +1593,14 @@ msgstr "Style de couleur"
 #: src/pyams_utils/interfaces/pygments.py:52
 msgid "Selected color style"
 msgstr "Feuille de style utilisée pour la mise en forme de la syntaxe"
+
+#: src/pyams_utils/interfaces/inherit.py:40
+msgid "Inherit from parent"
+msgstr "Hériter du parent"
+
+#: src/pyams_utils/interfaces/inherit.py:44
+msgid "Don't inherit from parent"
+msgstr "Ne pas hériter du parent"
 
 #: src/pyams_utils/interfaces/zeo.py:30
 msgid "Connection name"
@@ -1680,13 +1685,9 @@ msgstr ""
 "partagé avec le serveur ou non ; dans ce cas, les fichiers seront accédés "
 "directement au lieu d'être chargés via ZRPC."
 
-#: src/pyams_utils/interfaces/timezone.py:31
-msgid "Server timezone"
-msgstr "Fuseau horaire du serveur"
-
-#: src/pyams_utils/interfaces/timezone.py:32
-msgid "Default server timezone"
-msgstr "Fuseau horaire par défaut associé au serveur"
+#: src/pyams_utils/interfaces/text.py:39
+msgid "Optional renderer label"
+msgstr "Libellé optionnel du mode de rendu"
 
 #: src/pyams_utils/interfaces/__init__.py:34
 msgid "Wrong contained type"
@@ -1762,13 +1763,67 @@ msgstr "La valeur fournie n'est pas un conteneur."
 msgid "Not an iterator"
 msgstr "La valeur fournie n'est pas un itérateur."
 
-#: src/pyams_utils/interfaces/intids.py:34
-msgid "Indexed elements count"
-msgstr "Nombre d'éléments indexés"
+#: src/pyams_utils/interfaces/timezone.py:31
+msgid "Server timezone"
+msgstr "Fuseau horaire du serveur"
 
-#: src/pyams_utils/interfaces/text.py:39
-msgid "Optional renderer label"
-msgstr "Libellé optionnel du mode de rendu"
+#: src/pyams_utils/interfaces/timezone.py:32
+msgid "Default server timezone"
+msgstr "Fuseau horaire par défaut associé au serveur"
+
+#: src/pyams_utils/interfaces/proxy.py:31
+msgid "HTTP protocol"
+msgstr "Protocole HTTP"
+
+#: src/pyams_utils/interfaces/proxy.py:32
+msgid "Protocol used to access HTTP proxy"
+msgstr "Protocole d'accès au proxy HTTP"
+
+#: src/pyams_utils/interfaces/proxy.py:37
+msgid "Proxy hostname"
+msgstr "Nom d'hôte"
+
+#: src/pyams_utils/interfaces/proxy.py:38
+msgid "Host name of the proxy server"
+msgstr "Nom DNS (ou adresse IP) du serveur proxy"
+
+#: src/pyams_utils/interfaces/proxy.py:41
+msgid "Proxy port"
+msgstr "Numéro de port"
+
+#: src/pyams_utils/interfaces/proxy.py:42
+msgid "Port number used by the proxy server"
+msgstr "Numéro du port d'écoute du proxy"
+
+#: src/pyams_utils/interfaces/proxy.py:46
+msgid "Proxy username"
+msgstr "Code utilisateur"
+
+#: src/pyams_utils/interfaces/proxy.py:47
+msgid "If the proxy server is requiring authentication, set the user name"
+msgstr ""
+"Si le proxy nécessite une authentification, indiquer ici le code utilisateur"
+
+#: src/pyams_utils/interfaces/proxy.py:50
+msgid "Proxy password"
+msgstr "Mot de passe"
+
+#: src/pyams_utils/interfaces/proxy.py:51
+msgid "If the proxy server is requiring authentication, set the user password"
+msgstr ""
+"Si le proxy nécessite une authentification, indiquer ici le mot de passe"
+
+#: src/pyams_utils/interfaces/proxy.py:55
+msgid "Selected origins"
+msgstr "Origines spécifiques"
+
+#: src/pyams_utils/interfaces/proxy.py:56
+msgid ""
+"If proxy usage is restricted to several domains names, you can set them "
+"here, separated by comas"
+msgstr ""
+"Si l'utilisation du proxy est restreinte à certains noms de domaines, vous "
+"pouvez indiquer ces noms ici, séparés par des virgules"
 
 #~ msgid "Response status"
 #~ msgstr "Statut de la réponse"
