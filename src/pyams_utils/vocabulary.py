@@ -35,13 +35,23 @@ class LocalUtilitiesVocabulary(SimpleVocabulary):
     """Local utilities vocabulary"""
 
     interface = None
+    title_factory = None
 
     def __init__(self, context=None):  # pylint: disable=unused-argument
+        if self.title_factory is None:
+            factory = self.get_title
+        else:
+            factory = self.title_factory
         terms = sorted([
-            SimpleTerm(name, title=util.name)
+            SimpleTerm(name, title=factory(util))
             for name, util in get_utilities_for(self.interface)
         ], key=lambda x: x.title)
         super().__init__(terms)
+
+    @staticmethod
+    def get_title(util):
+        """Utility title getter"""
+        return util.name
 
     def get_utility(self, value):
         """Get utility matching provided value"""
