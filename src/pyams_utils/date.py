@@ -16,10 +16,9 @@ This module provides several functions concerning conversion, parsing and format
 dates and datetimes.
 """
 
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
 
 from pyramid.interfaces import IRequest
-from zope.datetime import parseDatetimetz
 from zope.dublincore.interfaces import IZopeDublinCore
 from zope.interface import Interface
 
@@ -74,7 +73,31 @@ def parse_date(value):
     True
     """
     if value is not None:
-        return gmtime(parseDatetimetz(value))
+        return gmtime(datetime.fromisoformat(value))
+    return None
+
+
+def parse_time(value):
+    """Get time specified in unicode ISO format to Python time object
+
+    Times are always assumed to be stored without timezone
+
+    :param str value: unicode time to be parsed
+    :return: time; the specified value, converted to time
+
+    >>> from pyams_utils.date import parse_time
+    >>> parse_time('2016-11-15T10:13:12+00:00')
+    datetime.time(10, 13, 12)
+    >>> parse_time('10:13')
+    datetime.time(10, 13)
+    >>> parse_time(None) is None
+    True
+    """
+    if value is not None:
+        try:
+            return time.fromisoformat(value)
+        except ValueError:
+            return datetime.fromisoformat(value).time()
     return None
 
 
