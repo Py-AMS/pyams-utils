@@ -80,6 +80,8 @@ class MyHTMLParser(HTMLParser):
                 253: 'y', 255: 'ÿ'}
 
     def handle_data(self, data):
+        if not data:
+            return
         try:
             self.data += data
         except TypeError:
