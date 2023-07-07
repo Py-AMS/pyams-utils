@@ -127,6 +127,23 @@ def date_to_datetime(value):
     return datetime(value.year, value.month, value.day)
 
 
+@adapter_config(name='isoformat',
+                context=(Interface, Interface, Interface),
+                provides=ITALESExtension)
+class ISOFormatTalesAdapter(ContextRequestViewAdapter):
+    """tales:isoformat(context) TALES adapter
+
+    A PyAMS TALES extension to get provided date or datetime in ISO format
+    """
+
+    def render(self, context=None):
+        """Render TALES extension"""
+        if context is None:
+            context = self.request.context
+        datetime = date_to_datetime(context)
+        return datetime.isoformat()
+
+
 SH_DATE_FORMAT = _("%d/%m/%Y")
 SH_TIME_FORMAT = _("%H:%M")
 SH_DATETIME_FORMAT = _("%d/%m/%Y - %H:%M")
@@ -162,6 +179,48 @@ def format_date(value, format_string=EXT_DATE_FORMAT, request=None):
     return datetime.strftime(tztime(value), localizer.translate(format_string))
 
 
+@adapter_config(name='format_date',
+                context=(Interface, Interface, Interface),
+                provides=ITALESExtension)
+class DateTalesAdapter(ContextRequestViewAdapter):
+    """Date formatter TALES extension"""
+
+    def render(self, context=None, put_prefix=True, format_string=SH_DATE_FORMAT):
+        if context is None:
+            dc = IZopeDublinCore(self.context, None)
+            if dc is not None:
+                context = dc.modified
+        if put_prefix:
+            return format_date(context, request=self.request)
+        return format_date(context, format_string=format_string, request=self.request)
+
+
+def format_time(value, format_string=EXT_TIME_FORMAT, request=None):
+    """Format given datetime with given format string"""
+    if not value:
+        return MISSING_INFO
+    if request is None:
+        request = check_request()
+    localizer = request.localizer
+    return time.strftime(tztime(value).time(), localizer.translate(format_string))
+
+
+@adapter_config(name='format_time',
+                context=(Interface, Interface, Interface),
+                provides=ITALESExtension)
+class TimeTalesAdapter(ContextRequestViewAdapter):
+    """Time formatter TALES extension"""
+
+    def render(self, context=None, put_prefix=True, format_string=SH_TIME_FORMAT):
+        if context is None:
+            dc = IZopeDublinCore(self.context, None)
+            if dc is not None:
+                context = dc.modified
+        if put_prefix:
+            return format_time(context, request=self.request)
+        return format_time(context, format_string=format_string, request=self.request)
+
+
 def format_datetime(value, format_string=EXT_DATETIME_FORMAT, request=None):
     """Format given datetime with the given format including time
 
@@ -181,6 +240,22 @@ def format_datetime(value, format_string=EXT_DATETIME_FORMAT, request=None):
     '--'
     """
     return format_date(value, format_string, request)
+
+
+@adapter_config(name='format_datetime',
+                context=(Interface, Interface, Interface),
+                provides=ITALESExtension)
+class DatetimeTalesAdapter(ContextRequestViewAdapter):
+    """Datetime format TALES extension"""
+
+    def render(self, context=None, put_prefix=True, format_string=SH_DATETIME_FORMAT):
+        if context is None:
+            dc = IZopeDublinCore(self.context, None)
+            if dc is not None:
+                context = dc.modified
+        if put_prefix:
+            return format_datetime(context, request=self.request)
+        return format_datetime(context, format_string=format_string, request=self.request)
 
 
 def get_age(value, request=None):

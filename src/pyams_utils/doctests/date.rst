@@ -123,6 +123,46 @@ My current default user's timezone is set to 'Europe/Paris'; you should probably
     datetime.datetime(2008, 3, 8, 18, 13, 20, tzinfo=<StaticTzInfo 'GMT'>)
 
 
+TALES extensions
+----------------
+
+Several TALES extensions are provided to handle date, time and datetime rendering.
+
+    >>> from pyams_utils.date import ISOFormatTalesAdapter
+
+    >>> request = DummyRequest(context=my_content)
+    >>> renderer = ISOFormatTalesAdapter(None, request, None)
+    >>> renderer.render(now)
+    '2008-03-08T18:13:20+00:00'
+
+    >>> from pyams_utils.date import DateTalesAdapter
+    >>> renderer = DateTalesAdapter(None, request, None)
+    >>> renderer.render()
+    '--'
+    >>> renderer.render(now)
+    'on 08/03/2008'
+    >>> renderer.render(now, put_prefix=False)
+    '08/03/2008'
+
+    >>> from pyams_utils.date import TimeTalesAdapter
+    >>> renderer = TimeTalesAdapter(None, request, None)
+    >>> renderer.render()
+    '--'
+    >>> renderer.render(now)
+    'at 18:13'
+    >>> renderer.render(now, put_prefix=False)
+    '18:13'
+
+    >>> from pyams_utils.date import DatetimeTalesAdapter
+    >>> renderer = DatetimeTalesAdapter(None, request, None)
+    >>> renderer.render()
+    '--'
+    >>> renderer.render(now)
+    'on 08/03/2008 at 18:13'
+    >>> renderer.render(now, put_prefix=False)
+    '08/03/2008 - 18:13'
+
+
 Text renderers
 --------------
 
