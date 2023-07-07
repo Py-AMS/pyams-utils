@@ -17,16 +17,16 @@ documentation for all defined Cornice REST endpoints.
 """
 
 import enum
+import sys
 from cgi import FieldStorage
 
-import sys
-from colander import Date, Enum, Mapping, MappingSchema, SchemaNode, SequenceSchema, String, Tuple, TupleSchema, drop, \
-    null
+from colander import Date, Enum, Invalid, Mapping, MappingSchema, SchemaNode, SchemaType, SequenceSchema, \
+    String, Tuple, TupleSchema, drop, null
 from cornice_swagger import CorniceSwagger
 from cornice_swagger.converters.schema import ArrayTypeConverter, ObjectTypeConverter, \
     StringTypeConverter, TypeConverter
-from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPNotFound, HTTPServerError, HTTPServiceUnavailable, \
-    HTTPUnauthorized
+from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPNotFound, HTTPServerError, \
+    HTTPServiceUnavailable, HTTPUnauthorized
 from pyramid.interfaces import IRequest
 
 from pyams_utils.adapter import adapter_config
@@ -34,6 +34,8 @@ from pyams_utils.interfaces.rest import ICORSRequestHandler
 
 
 __docformat__ = 'restructuredtext'
+
+from pyams_utils import _
 
 
 #
@@ -57,8 +59,11 @@ class CORSRequestHandler:
         resp_headers['Access-Control-Allow-Origin'] = \
             req_headers.get('Origin', request.host_url)
         if 'Access-Control-Request-Headers' in req_headers:
-            resp_headers['Access-Control-Allow-Headers'] = \
-                req_headers.get('Access-Control-Request-Headers', 'Origin')
+            headers = set(map(str.lower,
+                              filter(str.__len__,
+                                     map(str.strip, req_headers['Access-Control-Request-Headers'].split(','))))) \
+                      | {'origin'}
+            resp_headers['Access-Control-Allow-Headers'] = ', '.join(headers)
         if 'Access-Control-Request-Method' in req_headers:
             try:
                 service = request.current_service
