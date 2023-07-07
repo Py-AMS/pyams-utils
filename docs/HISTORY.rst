@@ -2,6 +2,19 @@
 Changelog
 =========
 
+1.17.0
+------
+ - added TALES extensions for date formatting
+ - added ISO countries mapping and vocabulary
+ - added support for HTTP proxy schema field
+ - added Colander "StringArraySchema" type to handle inputs which can be provided as strings using a
+   given separator, or as arrays
+ - added support for parameters in absolute and canonical URL adapters
+ - updated base CORS requests handler
+ - add result to current connection when creating annotation adapter
+ - updated local utilities vocabulary terms title factory
+ - converted cache key adapters to use hexadecimal values
+
 1.16.2
 ------
  - added REST API helpers, types converters and base responses
