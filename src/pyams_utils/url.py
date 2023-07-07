@@ -126,13 +126,13 @@ class AbsoluteUrlTalesExtension(ContextRequestViewAdapter):
     A PyAMS TALES extension used to get access to an object URL from a page template.
     """
 
-    def render(self, context=None, view_name=None):
+    def render(self, context=None, view_name=None, **params):
         """Extension rendering; see
         :py:class:`ITALESExtension <pyams_utils.interfaces.tales.ITALESExtension>`
         """
         if context is None:
             context = self.context
-        return absolute_url(context, self.request, view_name)
+        return absolute_url(context, self.request, view_name, params)
 
 
 #
@@ -168,13 +168,13 @@ class CanonicalUrlTalesExtension(ContextRequestViewAdapter):
     A PyAMS TALES extension used to get access to an object's canonical URL from a page template.
     """
 
-    def render(self, context=None, view_name=None):
+    def render(self, context=None, view_name=None, **params):
         """Render TALES extension; see
         :py:class:`ITALESExtension <pyams_utils.interfaces.tales.ITALESExtension>`
         """
         if context is None:
             context = self.context
-        return canonical_url(context, self.request, view_name)
+        return canonical_url(context, self.request, view_name, params)
 
 
 #
