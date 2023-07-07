@@ -127,6 +127,33 @@ class EnumTypeConverter(TypeConverter):
         return converted
 
 
+class StringArraySchema(SchemaType):
+    """Array or comma separated string schema field"""
+
+    def __init__(self, separator=','):
+        self.separator = separator
+
+    @staticmethod
+    def serialize(node, appstruct):
+        """String array serializer"""
+        return appstruct
+
+    def deserialize(self, node, cstruct):
+        """String array deserializer"""
+        if cstruct is null:
+            return null
+        if isinstance(cstruct, str):
+            return cstruct.split(self.separator)
+        if isinstance(cstruct, list):
+            return list(filter(str.__len__, cstruct))
+        raise Invalid(node, _("${node} must be a string or an array of strings",
+                              mapping={'node': node.name}))
+
+
+class StringArrayTypeConverter(StringTypeConverter):
+    """String array type converter"""
+
+
 class StringListSchema(SequenceSchema):
     """Strings list schema field"""
     value = SchemaNode(String(),
@@ -188,6 +215,7 @@ class FileUploadTypeConverter(StringTypeConverter):
 CorniceSwagger.custom_type_converters.update({
     Enum: EnumTypeConverter,
     Tuple: ArrayTypeConverter,
+    StringArraySchema: StringArrayTypeConverter,
     StringListSchema: StringListTypeConverter,
     PropertiesMapping: PropertiesMappingTypeConverter,
     DateRangeSchema: DateRangeTypeConverter,
