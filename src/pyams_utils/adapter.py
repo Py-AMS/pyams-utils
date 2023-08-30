@@ -200,19 +200,20 @@ def get_annotation_adapter(context, key, factory=None, markers=None, notify=True
             factory = get_object_factory(factory)
             assert factory is not None, "Missing object factory"
         adapter = annotations[key] = factory()
-        if markers:
-            if not isinstance(markers, (list, tuple, set)):
-                markers = {markers}
-            for marker in markers:
-                alsoProvides(adapter, marker)
-        if notify:
-            get_current_registry().notify(ObjectCreatedEvent(adapter))
-        if locate:
-            zope_locate(adapter, context if parent is None else parent, name)
-            if getattr(context, '_p_jar', None) is not None:
-                context._p_jar.add(adapter)
-        if callback:
-            callback(adapter)
+        if adapter is not None:
+            if markers:
+                if not isinstance(markers, (list, tuple, set)):
+                    markers = {markers}
+                for marker in markers:
+                    alsoProvides(adapter, marker)
+            if notify:
+                get_current_registry().notify(ObjectCreatedEvent(adapter))
+            if locate:
+                zope_locate(adapter, context if parent is None else parent, name)
+                if getattr(context, '_p_jar', None) is not None:
+                    context._p_jar.add(adapter)
+            if callback:
+                callback(adapter)
     return adapter
 
 
