@@ -39,6 +39,12 @@ __docformat__ = 'restructuredtext'
 def include_package(config):
     """Pyramid package include"""
 
+    # include ZCML configuration from external packages
+    if hasattr(config, 'load_zcml'):
+        zcml_name = os.path.join(pyams_utils.__path__[0], 'configure.zcml')
+        if os.path.exists(zcml_name):
+            config.load_zcml(zcml_name)
+
     # add translations
     config.add_translation_dirs('pyams_utils:locales')
 
@@ -63,10 +69,5 @@ def include_package(config):
     config.registry.registerAdapter(KeyReferenceToPersistent, (IPersistent, ), IKeyReference)
 
     config.scan()
-
-    if hasattr(config, 'load_zcml'):
-        zcml_name = os.path.join(pyams_utils.__path__[0], 'configure.zcml')
-        if os.path.exists(zcml_name):
-            config.load_zcml(zcml_name)
 
     PageTemplateFile.expression_types['tales'] = ExtensionExpr
