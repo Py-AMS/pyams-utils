@@ -56,6 +56,8 @@ class LocalRegistry(threading.local):
 
     def set_registry(self, registry):
         """Define local registry"""
+        if ISite.providedBy(registry):
+            registry = registry.getSiteManager()
         self._registry = registry
 
 
