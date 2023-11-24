@@ -61,7 +61,7 @@ class _ClassPropertyDescriptor:
 
 
 def _create_type(meta, name, attrs):
-    type_name = '{}Type'.format(name)
+    type_name = f'{name}Type'
     type_attrs = {}
     for key, value in attrs.items():
         if isinstance(value, _ClassPropertyDescriptor):

@@ -80,9 +80,8 @@ class PygmentsLexersVocabulary(SimpleVocabulary):
                                                                       key=lambda x: x[0].lower()),
                                                           key=lambda x: x[0].lower()):
             terms.append(SimpleTerm(aliases[0] if len(aliases) > 0 else name,
-                                    title='{0}{1}'.format(name,
-                                                          ' ({})'.format(', '.join(filetypes))
-                                                          if filetypes else '')))
+                                    title=f'{name} '
+                                          f"({', '.join(filetypes) if filetypes else ''})"))
         super().__init__(terms)
 
 

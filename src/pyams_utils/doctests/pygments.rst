@@ -51,9 +51,9 @@ A vocabulary provides all Pygments lexers:
     'ABAP (*.abap, *.ABAP)'
 
     >>> vocabulary._terms[-1].value
-    'zig'
+    'zone'
     >>> vocabulary._terms[-1].title
-    'Zig (*.zig)'
+    'Zone (*.zone)'
 
 
 Pygments styles vocabulary
@@ -81,7 +81,7 @@ Source code rendering
     ...     return value + 1
     ... '''
     >>> render_source(src, settings)
-    '<div class="source"><pre><span></span><span class="linenos">1</span><span class="nv">def</span><span class="w"> </span><span class="nv">test</span><span class="ss">(</span><span class="nv">value</span><span class="ss">)</span>:<span class="w"></span>\n<span class="linenos">2</span><span class="w">    </span><span class="nv">print</span><span class="ss">(</span><span class="s1">&#39;Getting value...&#39;</span><span class="ss">)</span><span class="w"></span>\n<span class="linenos">3</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>\n</pre></div>\n'
+    '<div class="source"><pre><span></span><span class="linenos">1</span><span class="nv">def</span><span class="w"> </span><span class="nv">test</span><span class="ss">(</span><span class="nv">value</span><span class="ss">)</span>:\n<span class="linenos">2</span><span class="w">    </span><span class="nv">print</span><span class="ss">(</span><span class="s1">&#39;Getting value...&#39;</span><span class="ss">)</span>\n<span class="linenos">3</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>\n</pre></div>\n'
 
     >>> settings.lexer = 'python'
     >>> render_source(src, settings)
@@ -93,7 +93,7 @@ Source code rendering
     >>> from pyams_utils.interfaces.text import IHTMLRenderer
     >>> renderer = queryMultiAdapter((src, request), IHTMLRenderer, name='source-code')
     >>> renderer.render()
-    '<div class="source"><pre><span></span><span class="linenos">1</span><span class="nv">def</span><span class="w"> </span><span class="nv">test</span><span class="ss">(</span><span class="nv">value</span><span class="ss">)</span>:<span class="w"></span>\n<span class="linenos">2</span><span class="w">    </span><span class="nv">print</span><span class="ss">(</span><span class="s1">&#39;Getting value...&#39;</span><span class="ss">)</span><span class="w"></span>\n<span class="linenos">3</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>\n</pre></div>\n'
+    '<div class="source"><pre><span></span><span class="linenos">1</span><span class="nv">def</span><span class="w"> </span><span class="nv">test</span><span class="ss">(</span><span class="nv">value</span><span class="ss">)</span>:\n<span class="linenos">2</span><span class="w">    </span><span class="nv">print</span><span class="ss">(</span><span class="s1">&#39;Getting value...&#39;</span><span class="ss">)</span>\n<span class="linenos">3</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>\n</pre></div>\n'
 
 
 Tests cleanup:

@@ -32,18 +32,22 @@ def wsgi_environ_cache(*names, store_none=True):
             scalar = len(names) == 1
             args_key = ''
             if kwargs:
-                args_key += ':' + ':'.join(('{}={}'.format(key, value)
-                                            for key, value in kwargs.items()))
+                args_key += ':' + ':'.join((
+                    f'{key}={value}'
+                    for key, value in kwargs.items()
+                ))
             try:
-                env = [request.environ['{}{}'.format(cached_key, args_key)]
-                       for cached_key in names]
+                env = [
+                    request.environ[f'{cached_key}{args_key}']
+                    for cached_key in names
+                ]
             except KeyError:
                 env = func(self, request, **kwargs)
                 if scalar:
                     env = [env, ]
                 for idx, cached_key in enumerate(names):
                     if store_none or (env[idx] is not None):
-                        request.environ['{}{}'.format(cached_key, args_key)] = env[idx]
+                        request.environ[f'{cached_key}{args_key}'] = env[idx]
             return env[0] if scalar else env
 
         return function_wrapper

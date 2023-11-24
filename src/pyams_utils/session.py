@@ -42,7 +42,7 @@ def get_session_data(request, app, key, default=None):
             return get_session_data(request, APPLICATION_KEY, SESSION_KEY)
     """
     session = request.session
-    return session.get('{0}::{1}'.format(app, key), default)
+    return session.get(f'{app}::{key}', default)
 
 
 def set_session_data(request, app, key, value):
@@ -63,7 +63,7 @@ def set_session_data(request, app, key, value):
             set_session_data(request, APPLICATION_KEY, SESSION_KEY, value)
     """
     session = request.session
-    session['{0}::{1}'.format(app, key)] = value
+    session[f'{app}::{key}'] = value
 
 
 _MARKER = object()
@@ -88,7 +88,7 @@ def session_property(app, key=None, prefix=None):
             if callable(key):
                 key = key(obj, *args, **kwargs)
             if not key:
-                key = '{1}::{0!r}'.format(obj, prefix or func.__name__)
+                key = f'{prefix or func.__name__}::{obj!r}'
             data = get_session_data(request, app, key, _MARKER)
             if data is _MARKER:
                 data = func

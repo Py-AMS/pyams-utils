@@ -34,7 +34,7 @@ def get_field_doc(self):
     field = self._FieldProperty__field  # pylint: disable=protected-access
     if field.title:
         if field.description:
-            return '{0}: {1}'.format(field.title, field.description)
+            return f'{field.title}: {field.description}'
         return field.title
     return super(self.__class__, self).__doc__
 

@@ -77,7 +77,7 @@ def register_factory(interface, klass, registry=None, name=''):
 
     if_name = get_interface_name(interface)
     if name:
-        if_name = '{0}::{1}'.format(if_name, name)
+        if_name = f'{if_name}::{name}'
     if registry is None:
         registry = get_current_registry()
     registry.registerAdapter(Temp, name=if_name)
@@ -140,7 +140,7 @@ def get_object_factory(interface, name=''):
         return interface
     if_name = get_interface_name(interface)
     if name:
-        if_name = '{0}::{1}'.format(if_name, name)
+        if_name = f'{if_name}::{name}'
     return queryAdapter(interface, IObjectFactory, name=if_name)
 
 

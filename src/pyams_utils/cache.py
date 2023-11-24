@@ -40,8 +40,9 @@ _CACHES = local()
 
 
 BEAKER_CACHES_VOCABULARY = SimpleVocabulary([
-    SimpleTerm(key, title='{} ({} sec.)'.format(key, str(val.get('expire'))))
-    for key, val in sorted(cache_regions.items(), key=lambda x: x[1].get('expire'))
+    SimpleTerm(key, title=f"{key} ({val.get('expire')} sec.)")
+    for key, val in sorted(cache_regions.items(),
+                           key=lambda x: x[1].get('expire'))
 ])
 
 

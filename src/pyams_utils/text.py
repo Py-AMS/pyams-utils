@@ -336,7 +336,7 @@ class BrTalesExtension(ContextRequestViewAdapter):
         """
         if not value:
             return ''
-        br_tag = '<br {0} />'.format('class="{0}"'.format(css_class) if css_class else '')
+        br_tag = '<br {0} />'.format(f'class="{css_class}"' if css_class else '')
         if character == '\\n':
             character = '\n'
         elements = value.split(character)

@@ -58,7 +58,7 @@ def format_data(mapping):
 
     "-data" prefix is not required for given mapping keys
     """
-    return ' '.join(('data-{}="{}"'.format(k, v) for k, v in mapping.items()))
+    return ' '.join((f'data-{k}="{v}"' for k, v in mapping.items()))
 
 
 @implementer(IObjectData)

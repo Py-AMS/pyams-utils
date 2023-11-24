@@ -66,7 +66,8 @@ class ResourceWithData(Resource):
         else:
             result = ''
         if self.data:
-            result = result.replace(" type=", " {} type=".format(self.get_data_str()))
+            result = result.replace(" type=",
+                                    f" {self.get_data_str()} type=")
         return result
 
 
@@ -105,7 +106,7 @@ def get_resource_path(resource, signature='--static--', versioning=True):
     if isinstance(resource, ExternalResource):
         return resource.relpath
     res = NeededResources(publisher_signature=signature, versioning=versioning)
-    return '{0}/{1}'.format(res.library_url(resource.library), resource.relpath)
+    return f'{res.library_url(resource.library)}/{resource.relpath}'
 
 
 @adapter_config(name='resource_path',

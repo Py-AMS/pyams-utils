@@ -103,9 +103,9 @@ class InheritedFieldProperty:
         if inherit_info.inherit and (inherit_info.parent is not None):
             # pylint: disable=not-callable
             return getattr(inherit_info.adapted_interface(inherit_info.parent), self.__name)
-        return getattr(inst, '_{0}'.format(self.__name))
+        return getattr(inst, f'_{self.__name}')
 
     def __set__(self, inst, value):
         inherit_info = IInheritInfo(inst)
         if not (inherit_info.can_inherit and inherit_info.inherit):
-            setattr(inst, '_{0}'.format(self.__name), value)
+            setattr(inst, f'_{self.__name}', value)

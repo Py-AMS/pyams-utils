@@ -109,8 +109,7 @@ class vocabulary_config:  # pylint: disable=invalid-name
         depth = settings.pop('_depth', 0)
 
         def callback(context, name, obj):  # pylint: disable=unused-argument
-            LOGGER.debug('Registering class {0} as vocabulary with name "{1}"'.format(
-                str(obj), self.name))
+            LOGGER.debug(f'Registering class {obj!s} as vocabulary with name "{self.name}"')
             directlyProvides(obj, IVocabularyFactory)
             getVocabularyRegistry().register(self.name, obj)
 

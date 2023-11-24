@@ -19,11 +19,11 @@ It also provides a "get_parent" function, which returns a parent object of given
 a given interface.
 """
 
-from pyramid.compat import decode_path_info, is_nonstr_iter
 from pyramid.exceptions import NotFound, URLDecodeError
 from pyramid.interfaces import VH_ROOT_KEY
 from pyramid.location import lineage
-from pyramid.traversal import ResourceTreeTraverser, empty, slash, split_path_info
+from pyramid.traversal import ResourceTreeTraverser, split_path_info, decode_path_info
+from pyramid.util import is_nonstr_iter
 from zope.component import queryAdapter, queryMultiAdapter
 from zope.interface import Interface
 from zope.intid.interfaces import IIntIds
@@ -57,12 +57,12 @@ class NamespaceTraverser(ResourceTreeTraverser):
         matchdict = request.matchdict
 
         if matchdict is not None:
-            path = matchdict.get('traverse', slash) or slash
+            path = matchdict.get('traverse', '/') or '/'
             if is_nonstr_iter(path):
                 # this is a *traverse stararg (not a {traverse})
                 # routing has already decoded these elements, so we just
                 # need to join them
-                path = '/' + slash.join(path) or slash
+                path = '/' + '/'.join(path) or '/'
 
             subpath = matchdict.get('subpath', ())
             if not is_nonstr_iter(subpath):
@@ -75,10 +75,10 @@ class NamespaceTraverser(ResourceTreeTraverser):
             subpath = ()
             try:
                 # empty if mounted under a path in mod_wsgi, for example
-                path = request.path_info or slash
+                path = request.path_info or '/'
             except KeyError:
                 # if environ['PATH_INFO'] is just not there
-                path = slash
+                path = '/'
             except UnicodeDecodeError as exc:
                 raise URLDecodeError(exc.encoding, exc.object, exc.start, exc.end, exc.reason) \
                     from exc
@@ -99,7 +99,7 @@ class NamespaceTraverser(ResourceTreeTraverser):
 
         request.registry.notify(BeforeTraverseEvent(root, request))
 
-        if vpath == slash:
+        if vpath == '/':
             # invariant: vpath must not be empty
             # prevent a call to traversal_path if we know it's going
             # to return the empty tuple
@@ -208,7 +208,7 @@ class NamespaceTraverser(ResourceTreeTraverser):
 
         return {
             'context': obj,
-            'view_name': empty,
+            'view_name': '',
             'subpath': subpath,
             'traversed': vpath_tuple,
             'virtual_root': vroot,

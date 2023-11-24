@@ -99,6 +99,6 @@ def set_locales(settings):
     :param settings: Pyramid's settings object
     """
     for attr in ('LC_CTYPE', 'LC_COLLATE', 'LC_TIME', 'LC_MONETARY', 'LC_NUMERIC', 'LC_ALL'):
-        value = settings.get('pyams.locale.{0}'.format(attr.lower()))
+        value = settings.get(f'pyams.locale.{attr.lower()}')
         if value:
             locale.setlocale(getattr(locale, attr), value)

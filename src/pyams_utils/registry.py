@@ -220,10 +220,9 @@ class utility_config:  # pylint: disable=invalid-name
             if isclass(obj) and not provided.implementedBy(obj):
                 classImplements(obj, provided)
 
-            LOGGER.debug("Registering utility {0} named '{1}' providing {2}".format(
-                str(component) if component else str(factory),
-                settings.get('name', ''),
-                str(provided)))
+            LOGGER.debug(f"Registering utility {str(component) if component else str(factory)} "
+                         f"named '{settings.get('name', '')}' "
+                         f"providing {str(provided)}")
             registry = settings.get('registry')
             if registry is None:
                 config = context.config.with_package(info.module)  # pylint: disable=no-member

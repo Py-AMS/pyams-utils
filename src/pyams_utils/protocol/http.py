@@ -62,7 +62,7 @@ class HTTPClient:
     def __init__(self, method, protocol, servername, url, params=None, credentials=(),
                  proxy=(), rdns=True, proxy_auth=(), timeout=None, headers=None):
         # pylint: disable=too-many-arguments
-        """Intialize HTTP connection"""
+        """Initialize HTTP connection"""
         self.connection = None
         self.method = method
         self.protocol = protocol

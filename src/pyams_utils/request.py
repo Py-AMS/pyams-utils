@@ -17,10 +17,8 @@
 
 import logging
 
-from pyramid.interfaces import IAuthenticationPolicy, IAuthorizationPolicy, IRequest, \
-    IRequestFactory
+from pyramid.interfaces import IRequest, IRequestFactory
 from pyramid.request import Request
-from pyramid.security import Allowed
 from pyramid.threadlocal import get_current_registry, get_current_request
 from zope.annotation.interfaces import IAnnotations, IAttributeAnnotatable
 from zope.interface import Interface, alsoProvides
@@ -28,7 +26,6 @@ from zope.interface import Interface, alsoProvides
 from pyams_utils.adapter import ContextRequestViewAdapter, adapter_config
 from pyams_utils.interfaces import DISPLAY_CONTEXT_KEY_NAME, ICacheKeyValue, MissingRequestError
 from pyams_utils.interfaces.tales import ITALESExtension
-
 
 __docformat__ = 'restructuredtext'
 
@@ -75,7 +72,22 @@ class RequestSelector:
         return False
 
 
-def request_property(key=None, prefix=None):
+def get_cache_key(prefix, func, obj, request, *args, **kwargs) -> str:
+    """Request cache key getter"""
+    key = prefix or func.__name__
+    if obj is not request:
+        key += f'::{ICacheKeyValue(obj)}'
+    key_args = tuple(filter(lambda x: x is not request, args))
+    if key_args:
+        key += '::' + '::'.join((ICacheKeyValue(arg) for arg in key_args))
+    if kwargs:
+        key += '::' + \
+               '::'.join((f'{key}={ICacheKeyValue(val)}'
+                          for key, val in kwargs.items()))
+    return key
+
+
+def request_property(key=None, prefix=None, log=False):
     """Define a method decorator used to store result into current request's annotations
 
     If no request is currently running, a new one is created.
@@ -85,6 +97,7 @@ def request_property(key=None, prefix=None):
         *key* is a callable object, it will be called to get the actual session key
     :param str prefix: prefix to use for session key; if *None*, the prefix will be the property
         name
+    :param bool log: if True, request cache activity is logged
     """
 
     def request_decorator(func):
@@ -95,27 +108,23 @@ def request_property(key=None, prefix=None):
                 if callable(key):
                     key = key(obj, request, *args, **kwargs)
                 if not key:
-                    key = prefix or func.__name__
-                    if obj is not request:
-                        key += '::{0}'.format(ICacheKeyValue(obj))
-                    key_args = tuple(filter(lambda x: x is not request, args))
-                    if key_args:
-                        key += '::' + '::'.join((ICacheKeyValue(arg) for arg in key_args))
-                    if kwargs:
-                        key += '::' + \
-                               '::'.join(('{0}={1}'.format(key, ICacheKeyValue(val))
-                                          for key, val in kwargs.items()))
-                LOGGER.debug(">>> Looking for request cache key {0}".format(key))
+                    key = get_cache_key(prefix, func, obj, request, *args, **kwargs)
+                if log:
+                    LOGGER.debug(f">>> Looking for request cache key {key}")
                 data = get_request_data(request, key, _MARKER)
                 if data is _MARKER:
-                    LOGGER.debug("<<< no cached value!")
+                    if log:
+                        LOGGER.debug(f"  < no cached value!")
                     data = func
                     if callable(data):
                         data = data(obj, *args, **kwargs)
                     set_request_data(request, key, data)
+                    if log:
+                        LOGGER.debug(f"<<< storing value to cache: {data!r}")
                 else:
-                    LOGGER.debug("  < cached value found!")
-                    LOGGER.debug("<<< {0!r}".format(data))
+                    if log:
+                        LOGGER.debug(f"  < cached value found!")
+                        LOGGER.debug(f"<<< {data!r}")
             else:
                 data = func
                 if callable(data):
@@ -136,24 +145,7 @@ class PyAMSRequest(Request):
 
     @request_property(key=None)
     def has_permission(self, permission, context=None):
-        if context is None:
-            context = self.context  # pylint: disable=no-member
-        try:
-            reg = self.registry
-        except AttributeError:
-            reg = get_current_registry()
-        authn_policy = reg.queryUtility(IAuthenticationPolicy)
-        if authn_policy is None:
-            return Allowed('No authentication policy in use.')
-        authz_policy = reg.queryUtility(IAuthorizationPolicy)
-        if authz_policy is None:
-            raise ValueError('Authentication policy registered without '
-                             'authorization policy')  # should never happen
-        try:
-            principals = authn_policy.effective_principals(self, context=context)
-        except TypeError:
-            principals = authn_policy.effective_principals(self)
-        return authz_policy.permits(context, principals, permission)
+        return super().has_permission(permission, context)
 
 
 def get_request(raise_exception=True):

@@ -35,7 +35,7 @@ from pyams_utils.interfaces.rest import ICORSRequestHandler
 
 __docformat__ = 'restructuredtext'
 
-from pyams_utils import _
+from pyams_utils import _, json
 
 
 #
@@ -203,7 +203,10 @@ class DateRangeTypeConverter(ArrayTypeConverter):
 
 
 class FileUploadType(String):
-    """File upload type"""
+    """File upload type
+
+    This type accepts FieldStorage from form-data post, or base64 encoded JSON.
+    """
 
     def deserialize(self, node, cstruct):
         """File upload deserializer"""
@@ -216,6 +219,26 @@ class FileUploadTypeConverter(StringTypeConverter):
     """File upload type converter"""
 
 
+class ObjectUploadType(String):
+    """Object upload type
+
+    This type accepts FieldStorage value from form-data post, a base64 encoded JSON value,
+    or raw JSON content provided as dict
+    """
+
+    def deserialize(self, node, cstruct):
+        """Object data deserializer"""
+        if isinstance(cstruct, FieldStorage):
+            return cstruct
+        if isinstance(cstruct, dict):
+            return cstruct
+        return super().deserialize(node, cstruct)
+
+
+class ObjectUploadTypeConverter(StringTypeConverter):
+    """Object upload type converter"""
+
+
 # update Cornice-Swagger types converters
 CorniceSwagger.custom_type_converters.update({
     Enum: EnumTypeConverter,
@@ -224,7 +247,8 @@ CorniceSwagger.custom_type_converters.update({
     StringListSchema: StringListTypeConverter,
     PropertiesMapping: PropertiesMappingTypeConverter,
     DateRangeSchema: DateRangeTypeConverter,
-    FileUploadType: FileUploadTypeConverter
+    FileUploadType: FileUploadTypeConverter,
+    ObjectUploadType: ObjectUploadTypeConverter
 })
 
 

@@ -34,8 +34,8 @@ This adapter provides an adapter to any persistent object:
     >>> with conn as root:
     ...     pprint.pprint((root, IConnection(root), conn.connection, conn.db, conn.storage))
     ({},
-     <Connection at ...>,
-     <Connection at ...>,
+     <ZODB.Connection.Connection object at 0x...>,
+     <ZODB.Connection.Connection object at 0x...>,
      <ZODB.DB.DB object at 0x...>,
      <ZODB.MappingStorage.MappingStorage object at 0x...>)
 
@@ -76,7 +76,7 @@ You can also get a connection from settings:
 
     >>> from pyams_utils.zodb import get_connection_from_settings
     >>> get_connection_from_settings()
-    <Connection at ...>
+    <ZODB.Connection.Connection object at ...>
 
 A vocabulary is available to list registered ZEO connections:
 

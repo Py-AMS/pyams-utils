@@ -170,11 +170,11 @@ def get_client(uri, credentials=(), verbose=False, allow_none=0,
     """Get an XML-RPC client which supports basic authentication"""
     if uri.startswith('https:'):
         transport = SecureXMLRPCCookieAuthTransport(
-            'Python XML-RPC Client/{} (PyAMS secure transport)'.format(CLIENT_VERSION),
+            f'Python XML-RPC Client/{CLIENT_VERSION} (PyAMS secure transport)',
             credentials, timeout=timeout, headers=headers)
     else:
         transport = XMLRPCCookieAuthTransport(
-            'Python XML-RPC Client/{} (PyAMS basic transport)'.format(CLIENT_VERSION),
+            f'Python XML-RPC Client/{CLIENT_VERSION} (PyAMS basic transport)',
             credentials, timeout=timeout, headers=headers)
     return xmlrpc.client.Server(uri, transport=transport,
                                 verbose=verbose, allow_none=allow_none)
@@ -188,11 +188,11 @@ def get_client_with_cookies(uri, credentials=(), verbose=False, allow_none=0,
         cookies = http.cookiejar.CookieJar()
     if uri.startswith('https:'):
         transport = SecureXMLRPCCookieAuthTransport(
-            'Python XML-RPC Client/{} (PyAMS secure cookie transport)'.format(CLIENT_VERSION),
+            f'Python XML-RPC Client/{CLIENT_VERSION} (PyAMS secure cookie transport)',
             credentials, cookies, timeout, headers)
     else:
         transport = XMLRPCCookieAuthTransport(
-            'Python XML-RPC Client/{} (PyAMS basic cookie transport)'.format(CLIENT_VERSION),
+            f'Python XML-RPC Client/{CLIENT_VERSION} (PyAMS basic cookie transport)',
             credentials, cookies, timeout, headers)
     return xmlrpc.client.Server(uri, transport=transport,
                                 verbose=verbose, allow_none=allow_none)

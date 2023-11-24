@@ -56,7 +56,7 @@ class CacheLock:
     """
 
     def __init__(self, name, wait=True):
-        self.key = 'PyAMS::lock::{0}'.format(name)
+        self.key = f'PyAMS::lock::{name}'
         self.wait = wait
         self.has_lock = False
 

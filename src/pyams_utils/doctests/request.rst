@@ -205,17 +205,18 @@ can be used to check roles on it's context:
 
     >>> request.context = object()
     >>> request.has_permission('View')
-    <Allowed instance at ... with msg 'No authentication policy in use.'>
+    <Allowed instance at ... with msg 'No security policy in use.'>
 
-So let's define an authentication policy:
+We need to define a security policy to get other ACLs:
 
-    >>> from pyramid.authorization import ACLAuthorizationPolicy
-    >>> from pyramid.authentication import BasicAuthAuthenticationPolicy
-    >>> config.set_authorization_policy(ACLAuthorizationPolicy())
-    >>> config.set_authentication_policy(BasicAuthAuthenticationPolicy(lambda a, b, c: True))
-
-    >>> request.has_permission('View')
-    <ACLDenied instance at ... with msg "ACLDenied permission 'View' via ACE '<default deny>' in ACL '<No ACL found on any object in resource lineage>' on context <object object at 0x...> for principals ['system.Everyone']">
+    >>> try:
+    ...     from pyams_security.policy import PyAMSSecurityPolicy
+    ... except ImportError:
+    ...     print('''ACLDenied permission 'View' via ACE '<default deny>' in ACL '<No ACL found on any object in resource lineage>' on context <object object at 0x...> for principals {'system.Everyone'}''')
+    ... else:
+    ...     config.set_security_policy(PyAMSSecurityPolicy('PyAMS secret', secure=False))
+    ...     print(request.has_permission('View'))
+    ACLDenied permission 'View' via ACE '<default deny>' in ACL '<No ACL found on any object in resource lineage>' on context <object object at 0x...> for principals {'system.Everyone'}
 
 
 Debugging request

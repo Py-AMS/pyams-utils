@@ -69,7 +69,7 @@ We may now simulate a request and activate local components registry:
 
     >>> from pyams_utils.registry import query_utility
     >>> query_utility(IIntIds)
-     <zope.intid.IntIds object at 0x... oid 0x... in <Connection at ...>>
+    <zope.intid.IntIds object at 0x... oid 0x... in <ZODB.Connection.Connection object at ...>>
 
     >>> IUniqueID(content, None).oid is None
     False
