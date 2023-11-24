@@ -24,13 +24,13 @@ DOCS = os.path.join(os.path.dirname(__file__),
 README = os.path.join(DOCS, 'README.rst')
 HISTORY = os.path.join(DOCS, 'HISTORY.rst')
 
-version = '1.17.0'
+version = '2.0.0'
 long_description = open(README).read() + '\n\n' + open(HISTORY).read()
 
 tests_require = [
-    'zope.site',
     'pyramid_chameleon',
-    'pyramid_zcml'
+    'pyramid_zcml',
+    'zope.site'
 ]
 
 setup(name='pyams_utils',
@@ -55,7 +55,7 @@ setup(name='pyams_utils',
       include_package_data=True,
       package_data={'': ['*.zcml', '*.txt', '*.pt', '*.pot', '*.po', '*.mo',
                          '*.png', '*.gif', '*.jpeg', '*.jpg', '*.css', '*.js']},
-      python_requires='>=3.5',
+      python_requires='>=3.7',
       zip_safe=False,
       # uncomment this to be able to run tests with setup.py
       test_suite="pyams_utils.tests.test_utilsdocs.test_suite",
@@ -64,14 +64,12 @@ setup(name='pyams_utils',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
-          'BTrees',
           'ZEO',
           'ZODB',
           'babel',
           'beaker',
           'chameleon',
           'colander',
-          'cornice',
           'cornice_swagger',
           'docutils',
           'fanstatic',
@@ -80,7 +78,7 @@ setup(name='pyams_utils',
           'markdown',
           'persistent',
           'pygments',
-          'pyramid',
+          'pyramid >= 2.0.0',
           'pyramid_rpc',
           'pyramid_zodbconn',
           'pytz',
@@ -91,7 +89,6 @@ setup(name='pyams_utils',
           'zope.container',
           'zope.contentprovider',
           'zope.copy',
-          'zope.datetime',
           'zope.dublincore',
           'zope.interface',
           'zope.intid',
