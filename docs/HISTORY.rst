@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.0.1
+-----
+ - updated Buildout configuration
+
 2.0.0
 -----
  - migrated to Pyramid 2.0
