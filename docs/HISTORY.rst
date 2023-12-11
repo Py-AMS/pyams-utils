@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.0.2
+-----
+ - updated local utilities title getter
+
 2.0.1
 -----
  - updated Buildout configuration
