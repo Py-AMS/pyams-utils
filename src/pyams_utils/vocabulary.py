@@ -51,7 +51,7 @@ class LocalUtilitiesVocabulary(SimpleVocabulary):
     @staticmethod
     def get_title(util):
         """Utility title getter"""
-        return util.name
+        return util.name or ''
 
     def get_utility(self, value):
         """Get utility matching provided value"""
