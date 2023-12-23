@@ -76,6 +76,13 @@ We may now simulate a request and activate local components registry:
 
 A unique ID is purely unpredictable...
 
+A function is also available to convert a unique ID into an object key which can be used
+as a key in a folder or BTree as object name:
+
+    >>> from pyams_utils.intids import get_object_uid
+    >>> get_object_uid(content) == IUniqueID(content).oid
+    True
+
 We can also handle objects removal:
 
     >>> from zope.lifecycleevent import ObjectRemovedEvent

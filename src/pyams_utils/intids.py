@@ -54,6 +54,14 @@ class UniqueIdAdapter(ContextAdapter):
         return None
 
 
+def get_object_uid(obj):
+    """Get object key name for given object"""
+    unique_id = IUniqueID(obj, None)
+    if unique_id is not None:
+        return unique_id.oid
+    return None
+
+
 @subscriber(IObjectAddedEvent, context_selector=IPersistent)
 def handle_added_object(event):
     """Notify IntId utility for added objects
