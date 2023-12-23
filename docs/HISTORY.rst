@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.0.3
+-----
+ - added helper to IUniqueID interface getter
+
 2.0.2
 -----
  - updated local utilities title getter
