@@ -43,6 +43,48 @@ This adapter provides an adapter to any persistent object:
     ...     pprint.pprint(ITransactionManager(root))
     <transaction._manager.TransactionManager object at 0x...>
 
+Given an OID, you can load the matching object from ZODB:
+
+    >>> from ZODB.utils import u64
+    >>> from pyams_utils.zodb import load_object
+    >>> oid = root._p_oid
+    >>> oid
+    b'\x00\x00\x00\x00\x00\x00\x00\x00'
+    >>> u64(oid)
+    0
+    >>> hex_oid = hex(u64(oid))[2:]
+    >>> hex_oid
+    '0'
+    >>> load_object(hex_oid)._p_oid == oid
+    True
+
+You can provide a persistent object as second argument to get connection from it:
+
+    >>> load_object(hex_oid, root)._p_oid == oid
+    Traceback (most recent call last):
+    ...
+    ZODB.POSException.ConnectionStateError: The database connection is closed
+
+The database connection has to be opened:
+
+    >>> with conn as root:
+    ...     load_object(hex_oid, root)._p_oid == oid
+    True
+
+Providing a bad OID will raise a ValueError:
+
+    >>> load_object('zodb_utils')
+    Traceback (most recent call last):
+    ...
+    ValueError: invalid literal for int() with base 16: 'zodb_utils'
+
+A missing object OID will raise a POSKeyError:
+
+    >>> load_object('128') is None
+    Traceback (most recent call last):
+    ...
+    ZODB.POSException.POSKeyError: 0x0128
+
 
 ZODB connections vocabulary
 ---------------------------
@@ -59,6 +101,7 @@ A vocabulary of available ZODB connections is available:
 
     >>> from persistent import Persistent
     >>> from zope.schema.fieldproperty import FieldProperty
+
     >>> @implementer(IMyContent)
     ... class MyContent(Persistent):
     ...     zodb = FieldProperty(IMyContent['zodb'])

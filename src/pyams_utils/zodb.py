@@ -10,13 +10,14 @@
 # FOR A PARTICULAR PURPOSE.
 #
 
-""""PyAMS_utils.zodb module
+"""PyAMS_utils.zodb module
 
-This modules provides several utilities used to manage ZODB connections and persistent objects
+This module provides several utilities used to manage ZODB connections and persistent objects
 """
 
 from ZEO import DB
-from ZODB.interfaces import IConnection
+from ZODB.interfaces import IConnection, IDatabase
+from ZODB.utils import p64
 from persistent import Persistent
 from persistent.interfaces import IPersistent
 from pyramid.events import subscriber
@@ -35,14 +36,15 @@ from pyams_utils.adapter import adapter_config
 from pyams_utils.interfaces import IOptionalUtility, ZEO_CONNECTIONS_VOCABULARY_NAME, \
     ZODB_CONNECTIONS_VOCABULARY_NAME
 from pyams_utils.interfaces.zeo import IZEOConnection
-from pyams_utils.registry import get_utility
+from pyams_utils.registry import get_utility, query_utility
 from pyams_utils.vocabulary import LocalUtilitiesVocabulary, vocabulary_config
 
 
 __docformat__ = 'restructuredtext'
 
 
-@adapter_config(required=IPersistent, provides=IConnection)
+@adapter_config(required=IPersistent,
+                provides=IConnection)
 def persistent_connection(obj):
     """An adapter which gets a ZODB connection from a persistent object
 
@@ -61,7 +63,8 @@ def persistent_connection(obj):
 
 # IPersistent adapters copied from zc.twist package
 # also register this for adapting from IConnection
-@adapter_config(required=IPersistent, provides=ITransactionManager)
+@adapter_config(required=IPersistent,
+                provides=ITransactionManager)
 def persistent_transaction_manager(obj):
     """Transaction manager adapter for persistent objects"""
     conn = IConnection(obj)  # typically this will be
@@ -72,6 +75,18 @@ def persistent_transaction_manager(obj):
         return conn._txn_mgr  # pylint: disable=protected-access
         # or else we give up; who knows.  transaction_manager is the more
         # recent spelling.
+
+
+def load_object(oid, persistent=None):
+    """Load object from ZODB"""
+    connection = None
+    if persistent is not None:
+        connection = IConnection(persistent, None)
+    if connection is None:
+        connection = get_connection_from_settings()
+    if isinstance(oid, str):
+        oid = p64(int(oid, 16))
+    return connection.get(oid)
 
 
 #
