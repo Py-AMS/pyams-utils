@@ -78,6 +78,41 @@ def get_text_start(text, length, maxlen=0):
     return text
 
 
+def get_text_parts(text, *parts, sep=' '):
+    """Get parts of given text separated with given separator
+
+    >>> from pyams_utils.text import get_text_parts
+
+    >>> get_text_parts(None) is None
+    True
+    >>> get_text_parts('')
+    ''
+    >>> get_text_parts('text')
+    'text'
+    >>> get_text_parts('text', 0)
+    'text'
+    >>> get_text_parts('text', 3)
+    't'
+    >>> get_text_parts('text', 0, -1)
+    'text'
+    >>> get_text_parts('text', 0, 3, -1)
+    'tex t'
+    >>> get_text_parts('FR01234567890', 0, 4, 7, 10, -1, sep='-')
+    'FR01-234-567-890'
+    """
+    if not (text and parts):
+        return text
+    if len(parts) == 1:
+        return text[parts[0]:]
+    result = []
+    for index, cols in enumerate(parts[1:]):
+        if parts[index+1] == -1:
+            result.append(text[parts[index]:])
+        else:
+            result.append(text[parts[index]:parts[index+1]])
+    return sep.join(result)
+
+
 @adapter_config(name='truncate',
                 required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
