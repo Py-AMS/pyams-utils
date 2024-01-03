@@ -2,6 +2,11 @@
 Changelog
 =========
 
+2.1.0
+-----
+ - added text function to get sub-parts from input string
+ - added helper to load object from ZODB from it's OID
+
 2.0.3
 -----
  - added helper to IUniqueID interface getter
