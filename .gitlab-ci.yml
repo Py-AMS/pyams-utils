@@ -32,6 +32,7 @@ test-3.7:
         - buildout
         - mkdir ./coverage
         - coverage erase
+        - coverage debug config
         - coverage run ./bin/test | tee ./coverage/coverage.log
         - coverage xml
         - GLOBAL_COVER=$(coverage report | grep TOTAL | awk '{print $4}' | cut -d '%' -f 1)
