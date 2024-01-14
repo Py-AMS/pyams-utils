@@ -16,9 +16,10 @@
 This module provides several classes, adapters and functions about containers.
 """
 
-from typing import Callable, Iterable
+from typing import Iterable
 
 from BTrees.OOBTree import OOBTree  # pylint: disable=import-error
+from ZODB.interfaces import IConnection
 from persistent.interfaces import IPersistent
 from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_registry
@@ -26,28 +27,39 @@ from zope.container.interfaces import IContainer
 from zope.container.ordered import OrderedContainer
 from zope.interface import Interface
 from zope.lifecycleevent.interfaces import IObjectMovedEvent
+from zope.location import locate
 from zope.location.interfaces import IContained, ISublocations
 
+from pyams_catalog.utils import index_object
 from pyams_utils.adapter import ContextAdapter, adapter_config
 
 
 __docformat__ = 'restructuredtext'
 
+from pyams_utils.interfaces import ICacheKeyValue
+
 
 class SimpleContainerMixin:
     """Simple container mixin class"""
 
-    next_id = 1
-
-    def append(self, obj: IPersistent):
+    def append(self, item: IPersistent, notify=True):
         """Append object to container"""
-        key = str(self.next_id)
-        self[key] = obj
-        self.next_id += 1
-        return obj.__name__
+        try:
+            IConnection(self).add(item)
+        except TypeError:
+            pass
+        key = ICacheKeyValue(item)
+        if not notify:
+            # pre-locate container item to avoid multiple notifications
+            locate(item, self, key)
+        self[key] = item
+        if not notify:
+            # make sure that gallery item is correctly indexed
+            index_object(item)
+        return item.__name__
 
 
-class BTreeOrderedContainer(OrderedContainer):
+class BTreeOrderedContainer(SimpleContainerMixin, OrderedContainer):
     """BTree based ordered container
 
     This container maintain a manual order of it's contents

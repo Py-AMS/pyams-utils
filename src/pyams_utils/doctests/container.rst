@@ -27,14 +27,12 @@ The simple container class is used to handle a simple sequence inside.
     ...     """Simple container class"""
 
     >>> container = SimpleContainer()
-    >>> container.next_id
-    1
-    >>> container.append(Contained())
-    '1'
-    >>> container.append(Contained())
-    '2'
-    >>> container.next_id
-    3
+    >>> bool(container.append(Contained()))
+    True
+    >>> bool(container.append(Contained()))
+    True
+    >>> len(container)
+    2
 
 
 BTree ordered containers
@@ -123,7 +121,7 @@ The ISublocations interface allows to find all objects matching a given interfac
 
     >>> class IMyContent(Interface):
     ...     """Custom content marker interface"""
-    >>> from pyams_utils.container import find_objects_providing
+    >>> from pyams_utils.finder import find_objects_providing
     >>> list(find_objects_providing(container, IMyContent))
     []
 
