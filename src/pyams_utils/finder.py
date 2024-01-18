@@ -13,7 +13,7 @@
 """PyAMS_utils.finder module
 
 This module provides functions which can be used to *find* objects 
-which are located inside a container and which match provided criteria.
+which are located inside a container and which match specific conditions.
 """
 
 __docformat__ = 'restructuredtext'
