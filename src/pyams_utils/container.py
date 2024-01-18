@@ -30,13 +30,16 @@ from zope.lifecycleevent.interfaces import IObjectMovedEvent
 from zope.location import locate
 from zope.location.interfaces import IContained, ISublocations
 
-from pyams_catalog.utils import index_object
+try:
+    from pyams_catalog.utils import index_object
+except ImportError:
+    index_object = None
+
 from pyams_utils.adapter import ContextAdapter, adapter_config
+from pyams_utils.interfaces import ICacheKeyValue
 
 
 __docformat__ = 'restructuredtext'
-
-from pyams_utils.interfaces import ICacheKeyValue
 
 
 class SimpleContainerMixin:
@@ -53,7 +56,7 @@ class SimpleContainerMixin:
             # pre-locate container item to avoid multiple notifications
             locate(item, self, key)
         self[key] = item
-        if not notify:
+        if (not notify) and (index_object is not None):
             # make sure that gallery item is correctly indexed
             index_object(item)
         return item.__name__
