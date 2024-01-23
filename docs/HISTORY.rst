@@ -2,6 +2,11 @@
 Changelog
 =========
 
+2.2.0
+-----
+ - updated base container mixin class
+ - moved finding helpers to new module
+
 2.1.0
 -----
  - added text function to get sub-parts from input string
