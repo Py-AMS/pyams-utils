@@ -17,6 +17,15 @@ implementing this interface, and then to register it as a factory:
     >>> class IMyInterface(Interface):
     ...     '''Custom marker interface'''
 
+You can get an interface name:
+
+    >>> from pyams_utils.factory import get_interface_name, get_interface_base_name
+
+    >>> get_interface_name(IMyInterface)
+    'pyams_utils.tests.test_utilsdocs.IMyInterface'
+    >>> get_interface_base_name(IMyInterface)
+    'IMyInterface'
+
     >>> @implementer(IMyInterface)
     ... class MyClass:
     ...    '''Class implementing my interface'''

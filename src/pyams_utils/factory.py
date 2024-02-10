@@ -42,6 +42,11 @@ def get_interface_name(iface):
     return iface.__module__ + '.' + iface.__name__
 
 
+def get_interface_base_name(iface):
+    """Get interface base name"""
+    return iface.__name__
+
+
 @adapter(Interface)
 @implementer(IObjectFactory)
 class ObjectFactoryAdapter:
