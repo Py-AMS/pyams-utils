@@ -231,18 +231,37 @@ def get_parent(context, interface=Interface, allow_context=True, condition=None)
         context; otherwise, traversing is done starting from context's parent
     :param callable condition: an optional function that should return a 'True' result when
         called with parent as first argument
+    :return:
     """
     if allow_context:
         parent = context
     else:
         parent = getattr(context, '__parent__', None)
-    while parent is not None:
-        if interface.providedBy(parent):
-            target = interface(parent)
-            if (not condition) or condition(target):
-                return target
-        parent = getattr(parent, '__parent__', None)
+    for context in lineage(parent):
+        if interface.providedBy(context) and ((not condition) or condition(context)):
+            return context
     return None
+
+
+def get_parents_until(context, interface=Interface, allow_context=True, condition=None):
+    """Get iterator over context parents until a parent with provided interface
+
+    :param object context: base element
+    :param Interface interface: the interface that ending parent should implement
+    :param boolean allow_context: if 'True' (the default), traversing is done starting with
+        context; otherwise, traversing is done starting from context's parent
+    :param callable condition: an optional function which is called on each parent element
+        and which should return a 'True' result for parent to be yielded by iterator
+    :return: an iterator over context's parents
+    """
+    if allow_context:
+        parent = context
+    else:
+        parent = getattr(context, '__parent__', None)
+    for context in lineage(parent):
+        yield context
+        if interface.providedBy(context) and ((not condition) or condition(context)):
+            return
 
 
 @adapter_config(required=IContained, provides=IPathElements)

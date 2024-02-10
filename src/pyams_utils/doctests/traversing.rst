@@ -281,6 +281,47 @@ Traverser should handle virtual host correctly:
     True
 
 
+Getting context parents
+-----------------------
+
+Functions are available to get parents from a given object.
+
+    >>> from pyams_utils.traversing import get_parent, get_parents_until
+
+    >>> get_parent(child, IMyFolder) is child
+    True
+    >>> get_parent(child, IMyFolder, allow_context=False) is parent
+    True
+
+You can also set a condition on first returned item:
+
+    >>> get_parent(subchild, IMyFolder, condition=lambda x: len(x) != 0) is child
+    True
+
+Trying to get a missing parent just returns a null value or an empty list:
+
+    >>> from zope.interface import Interface
+    >>> class ICustom(Interface):
+    ...     """Custom interface"""
+
+    >>> get_parent(subchild, ICustom) is None
+    True
+
+You can also get all parents until a parent with given interface is found:
+
+    >>> list(get_parents_until(subchild, IMyFolder)) == list([subchild])
+    True
+    >>> list(get_parents_until(subchild, IMyFolder, allow_context=False)) == list([child])
+    True
+    >>> list(get_parents_until(subchild, IMyFolder, condition=lambda x: len(x) != 0)) == list([subchild, child])
+    True
+
+Getting parents until missing parent interface returns all parents:
+
+    >>> list(get_parents_until(subchild, ICustom)) == list([subchild, child, parent])
+    True
+
+
 Context path elements
 ---------------------
 
