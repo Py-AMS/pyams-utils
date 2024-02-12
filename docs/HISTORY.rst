@@ -2,6 +2,12 @@
 Changelog
 =========
 
+2.3.0
+-----
+ - added helper to get interface base name
+ - updated parent getter, and added new getter to get parents from context until a given interface
+   is found
+
 2.2.0
 -----
  - updated base container mixin class
