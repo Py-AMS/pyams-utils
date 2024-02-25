@@ -122,3 +122,16 @@ into a RuntimeError:
     >>> check, myiter = boolean_iter(custom([]))
     >>> check
     False
+
+
+Getting next sequence value
+---------------------------
+
+    >>> from pyams_utils.list import next_from
+
+    >>> next_from(None) is None
+    True
+    >>> next_from({'first'})
+    'first'
+    >>> next_from(('first', 'second'))
+    'first'

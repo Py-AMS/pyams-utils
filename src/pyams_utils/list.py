@@ -132,6 +132,16 @@ def boolean_iter(iterable):
     return next(values), values
 
 
+def next_from(value):
+    """Return the next value from provided sequence"""
+    if not value:
+        return None
+    try:
+        return next(iter(value))
+    except TypeError:
+        return value
+
+
 @adapter_config(name='boolean_iter',
                 required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
