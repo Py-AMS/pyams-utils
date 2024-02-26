@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.3.1
+-----
+ - added helper to get next item from any iterable
+
 2.3.0
 -----
  - added helper to get interface base name
