@@ -40,8 +40,13 @@ class ProxyInfo(Persistent):
     password = FieldProperty(IProxyInfo['password'])
     selected_origins = FieldProperty(IProxyInfo['selected_origins'])
 
+    def __bool__(self):
+        return bool(self.host and self.port)
+
     def get_proxy_url(self, request):
         """Proxy URL getter"""
+        if not self.host:
+            return None
         if self.selected_origins:
             domains = map(str.strip, self.selected_origins.split(','))
             if request.host not in domains:
