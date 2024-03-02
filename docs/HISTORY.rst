@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.3.2
+-----
+ - updated HTTP proxy information class
+
 2.3.1
 -----
  - added helper to get next item from any iterable
