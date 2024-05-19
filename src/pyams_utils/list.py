@@ -20,7 +20,7 @@ tuple containing a boolean value to specify if iterator is empty or not, and the
 iterator).
 """
 
-from itertools import filterfalse, tee
+from itertools import filterfalse, tee, zip_longest
 from random import random, shuffle
 
 from zope.interface import Interface
@@ -132,16 +132,6 @@ def boolean_iter(iterable):
     return next(values), values
 
 
-def next_from(value):
-    """Return the next value from provided sequence"""
-    if not value:
-        return None
-    try:
-        return next(iter(value))
-    except TypeError:
-        return value
-
-
 @adapter_config(name='boolean_iter',
                 required=(Interface, Interface, Interface),
                 provides=ITALESExtension)
@@ -157,3 +147,36 @@ class BooleanIterCheckerExpression(ContextRequestViewAdapter):
         if context is None:
             context = self.context
         return boolean_iter(context)
+
+
+def grouped_iter(iterable, length, missing=None):
+    """Iterate over a set of items, grouped by length value"""
+    args = [iter(iterable)] * length
+    return zip_longest(*args, fillvalue=missing)
+
+
+@adapter_config(name='grouped_iter',
+                required=(Interface, Interface, Interface),
+                provides=ITALESExtension)
+class GroupedIterCheckerExpression(ContextRequestViewAdapter):
+    """TALES expression used to handle iterators
+
+    The expression returns a list of tuples containing the items of the original iterator,
+    grouped by subgroups of given length value.
+    """
+
+    def render(self, context=None, length=3, missing=None):
+        """Render TALES extension; see `ITALESExtension` interface"""
+        if context is None:
+            context = self.context
+        return grouped_iter(context, length, missing)
+
+
+def next_from(value):
+    """Return the next value from provided sequence"""
+    if not value:
+        return None
+    try:
+        return next(iter(value))
+    except TypeError:
+        return value

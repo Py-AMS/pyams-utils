@@ -3,7 +3,7 @@
 PyAMS_utils list module
 =======================
 
-This small module provides a few helpers to handle lists
+This small module provides a few helpers to handle lists and iterators.
 
 
 Getting unique elements of a list
@@ -122,6 +122,36 @@ into a RuntimeError:
     >>> check, myiter = boolean_iter(custom([]))
     >>> check
     False
+
+
+List grouped iterator
+---------------------
+
+The "grouped_iter" returns an iterator over elements of an input iterable, making sub-groups of
+a given length:
+
+    >>> from pyams_utils.list import grouped_iter
+
+    >>> mylist = [1, 2, 3, 4, 5]
+    >>> list(grouped_iter(mylist, 3))
+    [(1, 2, 3), (4, 5, None)]
+    >>> list(grouped_iter(mylist, 4, -1))
+    [(1, 2, 3, 4), (5, -1, -1, -1)]
+
+This function can also be used from a Chameleon template with a TALES extension:
+
+    >>> from pyams_utils.list import GroupedIterCheckerExpression
+    >>> mylist = empty(())
+    >>> expression = GroupedIterCheckerExpression(mylist, None, None)
+    >>> expression.render()
+    <itertools.zip_longest object at 0x...>
+    >>> list(expression.render())
+    []
+
+    >>> mylist = empty((1, 2, 3, 4, 5))
+    >>> expression = GroupedIterCheckerExpression(mylist, None, None)
+    >>> list(expression.render(length=4))
+    [(1, 2, 3, 4), (5, None, None, None)]
 
 
 Getting next sequence value
