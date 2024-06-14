@@ -90,7 +90,7 @@ sonarcloud:
         paths:
             - .sonar/cache
     script:
-        - sonar-scanner
+        - sonar-scanner -Dsonar.qualitygate.wait=true -Dsonar.organization=pyams
     only:
         - merge_requests
         - master
