@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.4.1
+-----
+ - updated Python 3.12 support
+
 2.4.0
 -----
  - added "grouped_iter" function to get iterator items by groups
