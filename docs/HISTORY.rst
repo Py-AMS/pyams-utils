@@ -2,6 +2,12 @@
 Changelog
 =========
 
+2.4.0
+-----
+ - added "grouped_iter" function to get iterator items by groups
+ - added support for SonarCloud
+ - added support for Python 3.12
+
 2.3.2
 -----
  - updated HTTP proxy information class
