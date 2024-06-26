@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.4.4
+-----
+ - temporary drop of Python 3.12 support...
+
 2.4.3
 -----
  - updated Python 3.12 support
