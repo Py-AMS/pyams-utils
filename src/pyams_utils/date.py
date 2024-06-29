@@ -295,24 +295,21 @@ def get_age(value, request=None):
     now = gmtime(datetime.now(timezone.utc))
     delta = now - gmtime(value)
     if delta.days > 60:
-        result = translate(_("%d months ago")) % int(round(delta.days * 1.0 / 30))
-    elif delta.days > 10:
-        result = translate(_("%d weeks ago")) % int(round(delta.days * 1.0 / 7))
-    elif delta.days > 2:
-        result = translate(_("%d days ago")) % delta.days
-    elif delta.days == 2:
-        result = translate(_("the day before yesterday"))
-    elif delta.days == 1:
-        result = translate(_("yesterday"))
-    else:  # less than one day
-        hours = int(round(delta.seconds * 1.0 / 3600))
-        if hours > 1:
-            result = translate(_("%d hours ago")) % hours
-        elif delta.seconds > 300:
-            result = translate(_("%d minutes ago")) % int(round(delta.seconds * 1.0 / 60))
-        else:
-            result = translate(_("less than 5 minutes ago"))
-    return result
+        return translate(_("%d months ago")) % int(round(delta.days * 1.0 / 30))
+    if delta.days > 10:
+        return translate(_("%d weeks ago")) % int(round(delta.days * 1.0 / 7))
+    if delta.days > 2:
+        return translate(_("%d days ago")) % delta.days
+    if delta.days == 2:
+        return translate(_("the day before yesterday"))
+    if delta.days == 1:
+        return translate(_("yesterday"))
+    hours = int(round(delta.seconds * 1.0 / 3600))
+    if hours > 1:
+        return translate(_("%d hours ago")) % hours
+    if delta.seconds > 300:
+        return translate(_("%d minutes ago")) % int(round(delta.seconds * 1.0 / 60))
+    return translate(_("less than 5 minutes ago"))
 
 
 def get_duration(first, last=None, request=None):  # pylint: disable=too-many-branches
@@ -393,28 +390,22 @@ def get_duration(first, last=None, request=None):  # pylint: disable=too-many-br
         request = check_request()
     translate = request.localizer.translate
     if delta.days > 60:
-        result = translate(_("%d months")) % int(round(delta.days * 1.0 / 30))
-    elif delta.days > 10:
-        result = translate(_("%d weeks")) % int(round(delta.days * 1.0 / 7))
-    elif delta.days >= 2:
-        result = translate(_("%d days")) % delta.days
-    else:
-        hours = int(round(delta.seconds * 1.0 / 3600))
-        if delta.days == 1:
-            if hours == 0:
-                result = translate(_("24 hours"))
-            else:
-                result = translate(_("%d day and %d hours")) % (delta.days, hours)
-        else:
-            if hours > 2:
-                result = translate(_("%d hours")) % hours
-            else:
-                minutes = int(round(delta.seconds * 1.0 / 60))
-                if minutes > 2:
-                    result = translate(_("%d minutes")) % minutes
-                else:
-                    result = translate(_("%d seconds")) % delta.seconds
-    return result
+        return translate(_("%d months")) % int(round(delta.days * 1.0 / 30))
+    if delta.days > 10:
+        return translate(_("%d weeks")) % int(round(delta.days * 1.0 / 7))
+    if delta.days >= 2:
+        return translate(_("%d days")) % delta.days
+    hours = int(round(delta.seconds * 1.0 / 3600))
+    if delta.days == 1:
+        if hours == 0:
+            return translate(_("24 hours"))
+        return translate(_("%d day and %d hours")) % (delta.days, hours)
+    if hours > 2:
+        return translate(_("%d hours")) % hours
+    minutes = int(round(delta.seconds * 1.0 / 60))
+    if minutes > 2:
+        return translate(_("%d minutes")) % minutes
+    return translate(_("%d seconds")) % delta.seconds
 
 
 #
