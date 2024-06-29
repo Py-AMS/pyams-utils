@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.5.1
+-----
+ - small code refactoring
+
 2.5.0
 -----
  - switch default timezone from GMT to UTC
