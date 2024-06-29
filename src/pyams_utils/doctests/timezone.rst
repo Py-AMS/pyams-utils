@@ -30,19 +30,22 @@ Other systems can also get timezone from source IP address (see, for example,
     >>> request = DummyRequest()
     >>> from zope.interface.common.idatetime import ITZInfo
     >>> ITZInfo(request)
-    <StaticTzInfo 'GMT'>
+    <UTC>
 
-    >>> from datetime import datetime
+    >>> from datetime import datetime, timezone
     >>> from pyams_utils.timezone import tztime, gmtime, localgmtime
 
 "tztime" is used to check timezone of provided datetime; if no timezone is associated, the
-provided datetime is localized in GMT:
+provided datetime is localized in UTC:
 
     >>> now = datetime.utcnow()
     >>> now.tzinfo is None
     True
+    >>> now = datetime.now(timezone.utc)
+    >>> now.tzinfo
+    datetime.timezone.utc
     >>> tztime(now)
-    datetime.datetime(..., tzinfo=<StaticTzInfo 'GMT'>)
+    datetime.datetime(..., tzinfo=<UTC>)
     >>> tztime(None) is None
     True
     >>> tztime('string')
@@ -68,25 +71,25 @@ provided datetime is localized in GMT:
     >>> ITZInfo(request)
     <DstTzInfo 'Europe/Paris' ... STD>
 
-"gmtime" is used to convert provided datetime to GMT:
+"gmtime" is used to convert provided datetime to UTC:
 
     >>> tznow = tztime(now)
     >>> tznow
     datetime.datetime(..., tzinfo=<DstTzInfo 'Europe/Paris' ...>)
     >>> gmtime(tznow)
-    datetime.datetime(..., tzinfo=<StaticTzInfo 'GMT'>)
+    datetime.datetime(..., tzinfo=<UTC>)
     >>> gmtime(None) is None
     True
     >>> gmtime('string')
     'string'
 
-"localgmtime" function is used to convert a value to GMT; but input value is assumed to be
+"localgmtime" function is used to convert a value to UTC; but input value is assumed to be
 in server's timezone:
 
     >>> localgmtime(now)
-    datetime.datetime(..., tzinfo=<StaticTzInfo 'GMT'>)
+    datetime.datetime(..., tzinfo=<UTC>)
     >>> localgmtime(tznow)
-    datetime.datetime(..., tzinfo=<StaticTzInfo 'GMT'>)
+    datetime.datetime(..., tzinfo=<UTC>)
     >>> localgmtime(None) is None
     True
     >>> localgmtime('string')

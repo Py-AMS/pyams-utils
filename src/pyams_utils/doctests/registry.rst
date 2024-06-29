@@ -100,7 +100,7 @@ into PyAMS_utils package:
     >>> from pyams_utils.timezone.utility import ServerTimezoneUtility
     >>> tz = ServerTimezoneUtility()
     >>> tz.timezone
-    'GMT'
+    'UTC'
 
 We can register this utility into our local registry:
 

@@ -36,6 +36,7 @@ __docformat__ = 'restructuredtext'
 
 
 GMT = pytz.timezone('GMT')
+UTC = pytz.timezone('UTC')
 
 
 @adapter_config(required=IRequest, provides=ITZInfo)
@@ -49,39 +50,39 @@ def tzinfo(request=None):  # pylint: disable=unused-argument
     util = query_utility(IServerTimezone)
     if util is not None:
         return pytz.timezone(util.timezone)
-    return GMT
+    return UTC
 
 
 def tztime(value):
     """Convert datetime to local timezone
 
-    :param datetime value: input datetime; value is assumed to be in GMT if no timezone is given
+    :param datetime value: input datetime; value is assumed to be in UTC if no timezone is given
     """
     if not value:
         return None
     if not isinstance(value, datetime):
         return value
     if not value.tzinfo:
-        value = GMT.localize(value)
+        value = UTC.localize(value)
     return value.astimezone(tzinfo())
 
 
 def gmtime(value):
-    """Convert datetime to GMT
+    """Convert datetime to UTC
 
-    Value is assumed to be in GMT if no timezone is given
+    Value is assumed to be in UTC if no timezone is given
     """
     if not value:
         return None
     if not isinstance(value, datetime):
         return value
     if not value.tzinfo:
-        value = GMT.localize(value)
-    return value.astimezone(GMT)
+        value = UTC.localize(value)
+    return value.astimezone(UTC)
 
 
 def localgmtime(value):
-    """Convert datetime to GMT
+    """Convert datetime to UTC
 
     Value is assumed to be in server timezone if none is given
     """
@@ -91,4 +92,4 @@ def localgmtime(value):
         return value
     if not value.tzinfo:
         value = tzinfo().localize(value)
-    return value.astimezone(GMT)
+    return value.astimezone(UTC)

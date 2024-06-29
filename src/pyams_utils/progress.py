@@ -33,7 +33,7 @@ requests to "get_progress_status.json", providing the progress ID, to get the op
 This last operation is done automatically in PyAMS forms.
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from threading import local
 
 from beaker import cache
@@ -106,7 +106,7 @@ def init_progress_status(progress_id, owner, label, tags=None, length=None, curr
         'tags': tags,
         'length': length,
         'current': current,
-        'started': datetime.utcnow().isoformat()
+        'started': datetime.now(timezone.utc).isoformat()
     }
     # Store task status
     cache_key = PROGRESS_TASK_KEY.format(progress_id)

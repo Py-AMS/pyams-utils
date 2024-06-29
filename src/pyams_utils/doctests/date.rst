@@ -14,15 +14,15 @@ Dates functions are used to convert dates from/to string representation:
     >>> include_utils(config)
 
     >>> import pytz
-    >>> from datetime import datetime
+    >>> from datetime import datetime, timezone
     >>> from pyams_utils import date
-    >>> gmt = pytz.timezone('GMT')
-    >>> now = datetime.fromtimestamp(1205000000, gmt)
+    >>> utc = pytz.timezone('UTC')
+    >>> now = datetime.fromtimestamp(1205000000, utc)
     >>> now
-    datetime.datetime(2008, 3, 8, 18, 13, 20, tzinfo=<StaticTzInfo 'GMT'>)
+    datetime.datetime(2008, 3, 8, 18, 13, 20, tzinfo=<UTC>)
 
 You can get an unicode representation of a date in ASCII format using 'unidate' fonction ; date is
-converted to GMT:
+converted to UTC:
 
     >>> udate = date.unidate(now)
     >>> udate
@@ -32,7 +32,7 @@ converted to GMT:
 
     >>> ddate = date.parse_date(udate)
     >>> ddate
-    datetime.datetime(2008, 3, 8, 18, 13, 20, tzinfo=<StaticTzInfo 'GMT'>)
+    datetime.datetime(2008, 3, 8, 18, 13, 20, tzinfo=<UTC>)
 
 'date_to_datetime' can be used to convert a 'date' type to a 'datetime' value ; if a 'datetime' value
 is used as argument, it is returned 'as is':
@@ -40,7 +40,7 @@ is used as argument, it is returned 'as is':
     >>> ddate.date()
     datetime.date(2008, 3, 8)
     >>> date.date_to_datetime(ddate)
-    datetime.datetime(2008, 3, 8, 18, 13, 20, tzinfo=<StaticTzInfo 'GMT'>)
+    datetime.datetime(2008, 3, 8, 18, 13, 20, tzinfo=<UTC>)
     >>> date.date_to_datetime(ddate.date())
     datetime.datetime(2008, 3, 8, 0, 0)
 
@@ -77,7 +77,7 @@ template:
     >>> my_content = MyContent()
 
     >>> zdc = IZopeDublinCore(my_content)
-    >>> zdc.modified = zdc.created = datetime.utcnow()
+    >>> zdc.modified = zdc.created = datetime.now(timezone.utc)
 
     >>> from pyramid.renderers import render
     >>> output = render(template, {'context': my_content, 'request': DummyRequest()})
@@ -104,7 +104,7 @@ Timezones handling
 ------------------
 
 Timezones handling gave me headaches at first. I finally concluded that the best way (for me !) to handle
-TZ data was to store every datetime value in GMT timezone.
+TZ data was to store every datetime value in UTC.
 As far as I know, there is no easy way to know the user's timezone from his request settings. So you can:
 - store this timezone in user's profile,
 - define a static server's timezone
@@ -115,12 +115,12 @@ My current default user's timezone is set to 'Europe/Paris'; you should probably
 
     >>> from pyams_utils import timezone
     >>> timezone.tztime(ddate)
-    datetime.datetime(2008, 3, 8, 18, 13, 20, tzinfo=<StaticTzInfo 'GMT'>)
+    datetime.datetime(2008, 3, 8, 18, 13, 20, tzinfo=<UTC>)
 
-'gmtime' function can be used to convert a datetime to GMT:
+'gmtime' function can be used to convert a datetime to UTC:
 
     >>> timezone.gmtime(now)
-    datetime.datetime(2008, 3, 8, 18, 13, 20, tzinfo=<StaticTzInfo 'GMT'>)
+    datetime.datetime(2008, 3, 8, 18, 13, 20, tzinfo=<UTC>)
 
 
 TALES extensions

@@ -16,7 +16,7 @@ This module provides several functions concerning conversion, parsing and format
 dates and datetimes.
 """
 
-from datetime import date, datetime, time, timedelta
+from datetime import date, datetime, time, timedelta, timezone
 
 from pyramid.interfaces import IRequest
 from zope.dublincore.interfaces import IZopeDublinCore
@@ -28,7 +28,7 @@ from pyams_utils.interfaces import MISSING_INFO
 from pyams_utils.interfaces.tales import ITALESExtension
 from pyams_utils.interfaces.text import ITextRenderer
 from pyams_utils.request import check_request
-from pyams_utils.timezone import gmtime, tztime
+from pyams_utils.timezone import UTC, gmtime, tztime
 
 
 __docformat__ = 'restructuredtext'
@@ -39,7 +39,7 @@ from pyams_utils import _
 def unidate(value):
     """Get specified date converted to unicode ISO format
 
-    Dates are always assumed to be stored in GMT timezone
+    Dates are always assumed to be stored in UTC
 
     :param date value: input date to convert to unicode
     :return: unicode; input date converted to unicode
@@ -61,14 +61,14 @@ def unidate(value):
 def parse_date(value):
     """Get date specified in unicode ISO format to Python datetime object
 
-    Dates are always assumed to be stored in GMT timezone
+    Dates are always assumed to be stored in UTC
 
     :param str value: unicode date to be parsed
     :return: datetime; the specified value, converted to datetime
 
     >>> from pyams_utils.date import parse_date
     >>> parse_date('2016-11-15T10:13:12+00:00')
-    datetime.datetime(2016, 11, 15, 10, 13, 12, tzinfo=<StaticTzInfo 'GMT'>)
+    datetime.datetime(2016, 11, 15, 10, 13, 12, tzinfo=<UTC>)
     >>> parse_date(None) is None
     True
     """
@@ -265,9 +265,9 @@ def get_age(value, request=None):
     :param datetime value: input datetime to be compared with current datetime
     :return: str; the delta value, converted to months, weeks, days, hours or minutes
 
-    >>> from datetime import datetime, timedelta
+    >>> from datetime import datetime, timedelta, timezone
     >>> from pyams_utils.date import get_age
-    >>> now = datetime.utcnow()
+    >>> now = datetime.now(timezone.utc)
     >>> get_age(now)
     'less than 5 minutes ago'
     >>> get_age(now - timedelta(minutes=10))
@@ -292,7 +292,7 @@ def get_age(value, request=None):
     if request is None:
         request = check_request()
     translate = request.localizer.translate
-    now = gmtime(datetime.utcnow())
+    now = gmtime(datetime.now(timezone.utc))
     delta = now - gmtime(value)
     if delta.days > 60:
         result = translate(_("%d months ago")) % int(round(delta.days * 1.0 / 30))
@@ -323,8 +323,9 @@ def get_duration(first, last=None, request=None):  # pylint: disable=too-many-br
     :param request: the request from which to extract localization infos
     :return: str; approximate delta between the two input dates
 
-    >>> from datetime import datetime, timedelta
+    >>> from datetime import datetime, timedelta, timezone
     >>> from pyams_utils.date import get_duration
+    >>> from pyams_utils.timezone import UTC
     >>> from pyramid.testing import DummyRequest
 
     Let's try with a provided timedelta:
@@ -371,8 +372,8 @@ def get_duration(first, last=None, request=None):  # pylint: disable=too-many-br
     >>> date2 = datetime(2015, 1, 1, 0, 0, 15)
     >>> get_duration(date1, date2, request)
     '15 seconds'
-    >>> now = datetime.utcnow()
-    >>> delta = now - date1
+    >>> now = datetime.now(timezone.utc)
+    >>> delta = now - UTC.localize(date1)
     >>> get_duration(date1, None, request) == '%d months' % int(round(delta.days * 1.0 / 30))
     True
     """
@@ -380,8 +381,12 @@ def get_duration(first, last=None, request=None):  # pylint: disable=too-many-br
         delta = first
     else:
         if last is None:
-            last = datetime.utcnow()
+            last = datetime.now(timezone.utc)
         assert isinstance(first, datetime) and isinstance(last, datetime)
+        if not first.tzinfo:
+            first = UTC.localize(first)
+        if not last.tzinfo:
+            last = UTC.localize(last)
         first, last = min(first, last), max(first, last)
         delta = last - first
     if request is None:
@@ -429,7 +434,7 @@ def get_timestamp(context, formatting=None):
     zdc = IZopeDublinCore(context, None)
     if zdc is not None:
         return format_func(tztime(zdc.modified))
-    return format_func(tztime(datetime.utcnow()))
+    return format_func(tztime(datetime.now(timezone.utc)))
 
 
 @adapter_config(name='timestamp',
@@ -463,5 +468,5 @@ class NowTextRenderer(ContextRequestAdapter):
         """Render current server datetime using provided format string"""
         if not format_string:
             format_string = '%c'
-        now = tztime(datetime.utcnow())
+        now = tztime(datetime.now(timezone.utc))
         return now.strftime(format_string)

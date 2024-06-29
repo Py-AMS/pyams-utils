@@ -273,7 +273,7 @@ class TimezoneField(Choice):
         if 'source' in kw:
             kw.pop('source')
         if 'default' not in kw:
-            kw['default'] = u'GMT'
+            kw['default'] = 'UTC'
         super().__init__(vocabulary=TIMEZONES_VOCABULARY_NAME, **kw)
 
 

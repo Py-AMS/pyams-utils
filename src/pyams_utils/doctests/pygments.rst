@@ -25,8 +25,8 @@ A view is used to get CSS styles:
     >>> get_pygments_style_view(request).body
     b'pre { line-height: 125%; }...'
 
-    >>> from datetime import datetime
-    >>> request = DummyRequest(if_modified_since=datetime.utcnow())
+    >>> from datetime import datetime, timezone
+    >>> request = DummyRequest(if_modified_since=datetime.now(timezone.utc))
     >>> get_pygments_style_view(request).status_code
     304
 

@@ -216,7 +216,7 @@ This schema field can be used to handle timezone selection:
     >>> from pyams_utils.schema import TimezoneField
     >>> field = TimezoneField()
     >>> field.default
-    'GMT'
+    'UTC'
 
 Timezone vocabulary is forced:
 
