@@ -2,6 +2,11 @@
 Changelog
 =========
 
+2.5.0
+-----
+ - switch default timezone from GMT to UTC
+ - replaced calls to datetime.utcnow() with datetime.now(timezone.utc)
+
 2.4.4
 -----
  - temporary drop of Python 3.12 support...
