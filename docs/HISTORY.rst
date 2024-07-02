@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.6.0
+-----
+ - added new factory to handle internal requests
+
 2.5.1
 -----
  - small code refactoring
