@@ -148,6 +148,15 @@ class PyAMSRequest(Request):
         return super().has_permission(permission, context)
 
 
+INTERNAL_USER_ID = 'system:internal'
+
+
+class PyAMSInternalRequest(PyAMSRequest):
+    """PyAMS internal request"""
+    
+    principal_id = INTERNAL_USER_ID
+    
+
 def get_request(raise_exception=True):
     """Get current request
 
@@ -178,9 +187,12 @@ def check_request(path='/', environ=None, base_url=None, headers=None,
     except MissingRequestError:
         if registry is None:
             registry = get_current_registry()
-        factory = registry.queryUtility(IRequestFactory)
-        if factory is None:
-            factory = PyAMSRequest
+        if principal_id == INTERNAL_USER_ID:
+            factory = PyAMSInternalRequest
+        else:
+            factory = registry.queryUtility(IRequestFactory)
+            if factory is None:
+                factory = PyAMSRequest
         request = factory.blank(path, environ, base_url, headers, POST, **kwargs)
         request.registry = registry  # pylint: disable=attribute-defined-outside-init
         request.context = kwargs.get('context', None)

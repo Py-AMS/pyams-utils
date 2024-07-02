@@ -218,6 +218,14 @@ We need to define a security policy to get other ACLs:
     ...     print(request.has_permission('View'))
     ACLDenied permission 'View' via ACE '<default deny>' in ACL '<No ACL found on any object in resource lineage>' on context <object object at 0x...> for principals {'system.Everyone'}
 
+We also have a custom request factory to handle "internal" requests, this is requests which
+can be used by internal services (for example by scheduled tasks):
+
+    >>> from pyams_utils.request import INTERNAL_USER_ID, PyAMSInternalRequest
+    >>> request = check_request(principal_id=INTERNAL_USER_ID)
+    >>> isinstance(request, PyAMSInternalRequest)
+    True
+
 
 Debugging request
 -----------------
