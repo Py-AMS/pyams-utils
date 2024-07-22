@@ -87,6 +87,24 @@ Of course not matching objects should return a false value:
     >>> selector(event)
     False
 
+You can also filter events based on form events context:
+
+    >>> class Form:
+    ...     def __init__(self, context):
+    ...         self.context = context
+
+    >>> class DataExtractedEvent:
+    ...     def __init__(self, context):
+    ...         self.form = Form(context)
+
+    >>> event = DataExtractedEvent(content)
+    >>> selector(event)
+    True
+
+    >>> event = DataExtractedEvent(object())
+    >>> selector(event)
+    False
+
 
 Tests cleanup:
 

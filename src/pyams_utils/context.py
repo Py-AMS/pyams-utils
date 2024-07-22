@@ -25,6 +25,8 @@ from io import StringIO
 
 __docformat__ = 'restructuredtext'
 
+from pyams_utils.factory import is_interface
+
 
 @contextmanager
 def capture(func, *args, **kwargs):
@@ -92,10 +94,14 @@ class ContextSelector:  # pylint: disable=too-few-public-methods
 
     def __call__(self, event):
         for intf in self.interfaces:
-            try:
-                if intf.providedBy(event.object):
+            if is_interface(intf):
+                if hasattr(event, 'object') and intf.providedBy(event.object):
                     return True
-            except (AttributeError, TypeError):
-                if isinstance(event.object, intf):
+                if hasattr(event, 'form') and intf.providedBy(event.form.context):
+                    return True
+            else:
+                if hasattr(event, 'object') and isinstance(event.object, intf):
+                    return True
+                if hasattr(event, 'form') and isinstance(event.form.context, intf):
                     return True
         return False
