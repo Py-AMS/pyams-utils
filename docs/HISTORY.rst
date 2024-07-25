@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.6.1
+-----
+ - allow usage of event form context in "context_selector" subscriber predicate
+
 2.6.0
 -----
  - added new factory to handle internal requests
