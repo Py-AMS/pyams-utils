@@ -32,10 +32,9 @@ from pyramid.interfaces import IRequest
 from pyams_utils.adapter import adapter_config
 from pyams_utils.interfaces.rest import ICORSRequestHandler
 
-
 __docformat__ = 'restructuredtext'
 
-from pyams_utils import _, json
+from pyams_utils import _
 
 
 #
@@ -61,7 +60,8 @@ class CORSRequestHandler:
         if 'Access-Control-Request-Headers' in req_headers:
             headers = set(map(str.lower,
                               filter(str.__len__,
-                                     map(str.strip, req_headers['Access-Control-Request-Headers'].split(','))))) \
+                                     map(str.strip,
+                                         req_headers['Access-Control-Request-Headers'].split(','))))) \
                       | {'origin'}
             resp_headers['Access-Control-Allow-Headers'] = ', '.join(headers)
         if 'Access-Control-Request-Method' in req_headers:
