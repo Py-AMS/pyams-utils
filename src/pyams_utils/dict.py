@@ -21,7 +21,33 @@ __docformat__ = 'restructuredtext'
 
 
 class DotDict(dict):
-    """A utility class which behaves like a dict, but also allows dot-access to keys"""
+    """A utility class which behaves like a dict, but also allows dot-access to keys
+    
+    >>> from pyams_utils.dict import DotDict
+    >>> mydict = DotDict({'key1': 'Value 1'})
+    >>> mydict
+    <DotDict({'key1': 'Value 1'})>
+    >>> mydict.key1
+    'Value 1'
+    >>> mydict.key2
+    Traceback (most recent call last):
+    ...
+    KeyError: 'key2'
+    
+    Inner lists or mappings, if any, are also converted to DotDict class:
+    
+    >>> mydict = DotDict({'key1': {'key2': 'Value 2'}})
+    >>> mydict
+    <DotDict({'key1': <DotDict({'key2': 'Value 2'})>})>
+    >>> mydict.key1.key2
+    'Value 2'
+    
+    >>> mydict = DotDict({'key1': [{'key2': 'Value 2'}]})
+    >>> mydict
+    <DotDict({'key1': [<DotDict({'key2': 'Value 2'})>]})>
+    >>> mydict.key1[0].key2
+    'Value 2'
+    """
 
     __getattr__ = dict.__getitem__
     __setattr__ = dict.__setitem__
