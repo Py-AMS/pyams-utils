@@ -288,7 +288,9 @@ def text_to_html(text, renderer='text', **kwargs):
     You can provide several renderers by giving their names separated by semicolon; renderers
     will then act as in a pipe, each renderer transforming output of the previous one.
     """
-    request = check_request()
+    request = kwargs.pop('request', None)
+    if request is None:
+        request = check_request()
     registry = request.registry
     for renderer_name in renderer.split(';'):
         renderer = registry.queryMultiAdapter((text, request), IHTMLRenderer, name=renderer_name)
