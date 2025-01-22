@@ -96,6 +96,27 @@ def unique_iter(iterable, key=None):
                 yield element
 
 
+def unique_iter_max(iterable, key, sort_key=None):
+    """Get unique items sorted from an iterator
+    
+    :param iterator iterable: input iterator
+    :params callable key: an identity function which is used to get 'identity' value of each element
+        in the list
+    :param callable sort_key: a function used to sort elements inside each iterable
+    :return: an iterator of unique values containing only the last element of each iterator elements
+    """
+    seen = {}
+    for element in iterable:
+        k = key(element)
+        if k not in seen:
+            seen[k] = set()
+        seen[k].add(element)
+    yield from (
+        sorted(v, key=sort_key)[-1]
+        for k, v in seen.items()
+    )
+    
+    
 def random_iter(iterable, limit=1):
     """Get items randomly from an iterator
     """

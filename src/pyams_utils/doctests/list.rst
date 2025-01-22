@@ -55,6 +55,38 @@ You can also set an 'id' function applied on each element:
     ['A', 'B', '2', 4]
 
 
+Getting last elements of unique iterator lists
+----------------------------------------------
+
+The "unique_iter_last" is used to extract items from an iterator; if several items from this iterator
+share the same identity key, only the "last" one (based on a provided sorting function) is returned:
+
+    >>> from pyams_utils.list import unique_iter_max
+
+    >>> mylist = [1.0, 1.1, 2.0, 2.1, 2.2, 3, 4]
+    >>> list(unique_iter_max(mylist, key=round))
+    [1.1, 2.2, 3, 4]
+
+    >>> class Item:
+    ...     def __init__(self, value, label):
+    ...         self.value = value
+    ...         self.label = label
+    ...     def __repr__(self):
+    ...         return f"{self.value}: '{self.label}'"
+
+    >>> mylist = [
+    ...     Item(1.0, '1.0'),
+    ...     Item(1.1, '1.1'),
+    ...     Item(2.0, '2.0'),
+    ...     Item(2.1, '2.1'),
+    ...     Item(2.2, '2.2'),
+    ...     Item(3, '3'),
+    ...     Item(4, '4'),
+    ... ]
+    >>> list(unique_iter_max(mylist, key=lambda x: round(x.value), sort_key=lambda x: x.label))
+    [1.1: '1.1', 2.2: '2.2', 3: '3', 4: '4']
+
+
 List random iterator
 --------------------
 
