@@ -2,6 +2,12 @@
 Changelog
 =========
 
+2.7.0
+-----
+ - added "unique_iter_max" function in *list* module to extract unique items
+   sharing the same "identity" from an iterator
+ - updated doctests
+
 2.6.1
 -----
  - allow usage of event form context in "context_selector" subscriber predicate
