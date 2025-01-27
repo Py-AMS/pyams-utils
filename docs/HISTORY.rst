@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.7.1
+-----
+ - updated doctest for Python 3.12
+
 2.7.0
 -----
  - added "unique_iter_max" function in *list* module to extract unique items
