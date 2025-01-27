@@ -15,7 +15,7 @@ This module can be used to define server locales:
 
     >>> import locale
     >>> locale.getlocale(locale.LC_ALL)
-    ('en_US', 'UTF-8')
+    ('...', 'UTF-8')
 
 
 Tests cleanup:
