@@ -7,6 +7,7 @@ Changelog
  - added "unique_iter_max" function in *list* module to extract unique items
    sharing the same "identity" from an iterator
  - updated doctests
+ - added support for Python 3.12
 
 2.6.1
 -----
