@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.7.2
+-----
+ - added REST decimal schema type converter
+
 2.7.1
 -----
  - updated doctest for Python 3.12
