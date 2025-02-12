@@ -20,7 +20,7 @@ import enum
 import sys
 from cgi import FieldStorage
 
-from colander import Date, Enum, Invalid, Mapping, MappingSchema, SchemaNode, SchemaType, SequenceSchema, \
+from colander import Date, Decimal, Enum, Invalid, Mapping, MappingSchema, SchemaNode, SchemaType, SequenceSchema, \
     String, Tuple, TupleSchema, drop, null
 from cornice_swagger import CorniceSwagger
 from cornice_swagger.converters.schema import ArrayTypeConverter, ObjectTypeConverter, \
@@ -188,6 +188,18 @@ class PropertiesMappingTypeConverter(ObjectTypeConverter):
     """Properties mapping type converter"""
 
 
+class DecimalTypeConverter(TypeConverter):
+    """Decimal type converter"""
+
+    type = 'number'
+
+    def convert_type(self, schema_node):
+        """Decimal type converter"""
+        converted = super().convert_type(schema_node)
+        converted['type'] = 'number'
+        return converted
+    
+    
 class DateRangeSchema(TupleSchema):
     """Dates range schema type"""
     after = SchemaNode(Date(),
@@ -246,6 +258,7 @@ CorniceSwagger.custom_type_converters.update({
     StringArraySchema: StringArrayTypeConverter,
     StringListSchema: StringListTypeConverter,
     PropertiesMapping: PropertiesMappingTypeConverter,
+    Decimal: DecimalTypeConverter,
     DateRangeSchema: DateRangeTypeConverter,
     FileUploadType: FileUploadTypeConverter,
     ObjectUploadType: ObjectUploadTypeConverter
