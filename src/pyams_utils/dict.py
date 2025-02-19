@@ -17,6 +17,8 @@ dictionary; if given value argument is a boolean 'true' value, given dictionary'
 or updated, otherwise dictionary is left unchanged.
 """
 
+from html import escape
+
 __docformat__ = 'restructuredtext'
 
 
@@ -167,6 +169,50 @@ def format_dict(input_dict: dict):
         return '{}'
     return "{{\n{}\n}}".format('\n'.join(('    {}: {}'.format(key, value)
                                          for key, value in input_dict.items())))
+
+
+def escape_dict(value, in_place=False):
+    """Escape all values from input dictionary, leaving input unchanged
+
+    >>> from pyams_utils.dict import escape_dict
+    >>> input = {
+    ...     'key1': '<value1 />',
+    ...     'key2': {'key3': 'value2&value3'},
+    ...     'key4': ['<value4 />'],
+    ...     'key5': set(['<value5 />']),
+    ...     'key6': 6
+    ... }
+    >>> escape_dict(input)
+    {'key1': '&lt;value1 /&gt;', 'key2': {'key3': 'value2&amp;value3'}, 'key4': ['&lt;value4 /&gt;'], 'key5': {'&lt;value5 /&gt;'}, 'key6': 6}
+
+    Initial value is not modified::
+    >>> input
+    {'key1': '<value1 />', 'key2': {'key3': 'value2&value3'}, 'key4': ['<value4 />'], 'key5': {'<value5 />'}, 'key6': 6}
+
+    >>> escape_dict(input, in_place=True)
+    {'key1': '&lt;value1 /&gt;', 'key2': {'key3': 'value2&amp;value3'}, 'key4': ['&lt;value4 /&gt;'], 'key5': {'&lt;value5 /&gt;'}, 'key6': 6}
+    >>> input
+    {'key1': '&lt;value1 /&gt;', 'key2': {'key3': 'value2&amp;value3'}, 'key4': ['&lt;value4 /&gt;'], 'key5': {'&lt;value5 /&gt;'}, 'key6': 6}
+    """
+    result = value if in_place else {}
+    for key, val in value.items():
+        if isinstance(val, str):
+            result[key] = escape(val)
+        elif isinstance(val, dict):
+            result[key] = escape_dict(val)
+        elif isinstance(val, list):
+            result[key] = [
+                escape_dict(item) if isinstance(item, dict) else escape(item)
+                for item in val
+            ]
+        elif isinstance(val, set):
+            result[key] = {
+                escape_dict(item) if isinstance(item, dict) else escape(item)
+                for item in val
+            }
+        else:
+            result[key] = val
+    return result
 
 
 def boolean_dict(input_dict: dict):
