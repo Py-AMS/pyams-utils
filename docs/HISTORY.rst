@@ -2,6 +2,11 @@
 Changelog
 =========
 
+2.7.3
+-----
+ - added "escape_dict" helper function to escape all mapping values (including inner dicts, lists or sets)
+   in a single call
+
 2.7.2
 -----
  - added REST decimal schema type converter
