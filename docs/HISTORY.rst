@@ -2,6 +2,11 @@
 Changelog
 =========
 
+2.7.4
+-----
+ - added lists helpers
+ - updated Gitlab-CI configuration for Python 3.12
+
 2.7.3
 -----
  - added "escape_dict" helper function to escape all mapping values (including inner dicts, lists or sets)
