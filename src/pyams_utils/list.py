@@ -193,6 +193,17 @@ class GroupedIterCheckerExpression(ContextRequestViewAdapter):
         return grouped_iter(context, length, missing)
 
 
+@adapter_config(name='tee_iter', context=(Interface, Interface, Interface),
+                provides=ITALESExtension)
+class IterValuesTeeExpression(ContextRequestViewAdapter):
+    """TALES expression used to tee iterators"""
+
+    def render(self, context=None):
+        if context is None:
+            context = self.context
+        return tee(context)
+
+
 def next_from(value):
     """Return the next value from provided sequence"""
     if not value:
@@ -201,3 +212,9 @@ def next_from(value):
         return next(iter(value))
     except TypeError:
         return value
+
+
+def paginate(items, page_size):
+    """Iterate over items by pages of given size"""
+    for idx in range(0, len(items), page_size):
+        yield items[idx:idx+page_size]

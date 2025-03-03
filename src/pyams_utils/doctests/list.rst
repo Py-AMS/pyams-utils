@@ -63,7 +63,7 @@ share the same identity key, only the "last" one (based on a provided sorting fu
 
     >>> from pyams_utils.list import unique_iter_max
 
-    >>> mylist = [1.0, 1.1, 2.0, 2.1, 2.2, 3, 4]
+    >>> mylist = [1.0, 2.0, 1.1, 2.0, 2.1, 2.2, 3, 4]
     >>> list(unique_iter_max(mylist, key=round))
     [1.1, 2.2, 3, 4]
 
@@ -186,6 +186,24 @@ This function can also be used from a Chameleon template with a TALES extension:
     [(1, 2, 3, 4), (5, None, None, None)]
 
 
+Tee iterator TALES expression
+-----------------------------
+
+This TALES expression can be used when you have to create a tee on a given iterator:
+
+    >>> from pyams_utils.list import IterValuesTeeExpression
+    >>> mylist = empty((1, 2, 3, 4, 5))
+    >>> myiter = iter(mylist)
+    >>> expression = IterValuesTeeExpression(myiter, None, None)
+    >>> results = expression.render()
+    >>> results
+    (<itertools._tee object at 0x...>, <itertools._tee object at 0x...>)
+    >>> list(results[0])
+    [1, 2, 3, 4, 5]
+    >>> list(results[1])
+    [1, 2, 3, 4, 5]
+
+
 Getting next sequence value
 ---------------------------
 
@@ -197,3 +215,14 @@ Getting next sequence value
     'first'
     >>> next_from(('first', 'second'))
     'first'
+
+
+List pagination
+---------------
+
+You can create subsets of an incoming list of any size:
+
+    >>> from pyams_utils.list import paginate
+    >>> mylist = [1, 2, 3, 4, 5]
+    >>> list(paginate(mylist, 2))
+    [[1, 2], [3, 4], [5]]
