@@ -191,6 +191,37 @@ Rendering choices and sequences require a *field* and a *context* arguments:
     'text'
 
 
+Text renderer using input values
+--------------------------------
+
+You can use a custom text renderer to replace marked strings using the "${{param:name}}" syntax.
+
+    >>> from pyams_utils.text import render_text
+    >>> params = {'sample': 'value'}
+
+    >>> render_text('This is a sample ${{param:sample}}', **params)
+    'This is a sample value'
+
+You can also use a dotted notation if the provided argument supports it:
+
+    >>> from pyams_utils.dict import DotDict
+    >>> params = DotDict({'sample': {'inner': 'value'}})
+
+    >>> render_text('This is a sample ${{param:sample.inner}}', **params)
+    'This is a sample value'
+
+Using this renderer without any parameter name or an unknown one also returns the same value:
+
+    >>> render_text('${{param:unknown}}', **params)
+    ''
+    >>> render_text('${{param}}', **params)
+    ''
+    >>> render_text('${{param:}}', **params)
+    ''
+    >>> render_text('${{param}}')
+    ''
+
+
 Breaking lines
 --------------
 

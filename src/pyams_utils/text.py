@@ -391,14 +391,39 @@ class BrTalesExtension(ContextRequestViewAdapter):
 TEXT_FRAGMENTS = re.compile(r'(\${{([^{}]*)}})')
 
 
-def render_text(value, request=None):
-    """Render provided text using registered renderers
+@adapter_config(name='param',
+                required=(str, Interface),
+                provides=ITextRenderer)
+class ParamTextRenderer(ContextRequestAdapter):
+    """param: text renderer
+    
+    This renderer can be used to render text using the "${{param:name}}" syntax.
+    The returned value is then extracted from the provided keyword arguments mapping.
+    """
+    
+    @staticmethod
+    def render(*args, **kwargs):
+        if not args:
+            return ''
+        names = args[0].split('.')
+        value = kwargs.get(names[0])
+        try:
+            for name in names[1:]:
+                value = getattr(value, name)
+        except AttributeError:
+            return ''
+        else:
+            return value
+        
+    
+def render_text(value, request=None, **kwargs):
+    """Render the provided text using registered renderers
 
-    Dynamic parts of provided input string are set using "${{renderer}}" syntax, where
+    Dynamic parts of the provided input string are set using "${{renderer}}" syntax, where
     'renderer' should be the name of a registered named multi-adapter for (str, request) providing
     ITextRenderer interface.
 
-    If renderer is needing arguments, they can be provided using ${{renderer:arg1,arg2}} syntax;
+    If the renderer is needing arguments, they can be provided using ${{renderer:arg1,arg2}} syntax;
     all arguments will be given to adapter's 'render' method as strings.
 
     If named renderer can't be found, the result is an empty string.
@@ -415,7 +440,7 @@ def render_text(value, request=None):
                                                       name=renderer_name)
         if renderer is None:
             return ''
-        return renderer.render(*args)
+        return renderer.render(*args, **kwargs)
 
     if not value:
         return value
