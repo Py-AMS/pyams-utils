@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.7.5
+-----
+ - added "param" text renderer to extract value from provided objects mapping
+
 2.7.4
 -----
  - added lists helpers
