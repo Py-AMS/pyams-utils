@@ -455,7 +455,7 @@ class NowTextRenderer(ContextRequestAdapter):
     """Text renderer for current server datetime"""
 
     @staticmethod
-    def render(format_string=None):
+    def render(format_string=None, **kwargs):
         """Render current server datetime using provided format string"""
         if not format_string:
             format_string = '%c'
