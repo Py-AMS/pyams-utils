@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.7.6
+-----
+ - packaging issue
+
 2.7.5
 -----
  - added "param" text renderer to extract value from provided objects mapping
