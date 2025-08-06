@@ -58,22 +58,29 @@ def unidate(value):
     return None
 
 
-def parse_date(value):
+def parse_date(value, to_gmt=True):
     """Get date specified in unicode ISO format to Python datetime object
 
     Dates are always assumed to be stored in UTC
 
     :param str value: unicode date to be parsed
+    :param bool to_gmt: if True, date is converted to UTC timezone; otherwise, date is
+        left in its initial timezone
     :return: datetime; the specified value, converted to datetime
 
     >>> from pyams_utils.date import parse_date
     >>> parse_date('2016-11-15T10:13:12+00:00')
     datetime.datetime(2016, 11, 15, 10, 13, 12, tzinfo=<UTC>)
+    >>> parse_date('2016-11-15T10:13:12+02:00', to_gmt=False)
+    datetime.datetime(2016, 11, 15, 10, 13, 12, tzinfo=...)
     >>> parse_date(None) is None
     True
     """
     if value is not None:
-        return gmtime(datetime.fromisoformat(value))
+        value = datetime.fromisoformat(value)
+        if to_gmt:
+            value = gmtime(value)
+        return value
     return None
 
 
