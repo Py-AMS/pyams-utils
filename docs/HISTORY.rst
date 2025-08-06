@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.7.7
+-----
+ - added argument to disable automatic conversion to GMT in date parser
+
 2.7.6
 -----
  - packaging issue
